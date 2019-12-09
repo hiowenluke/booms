@@ -1,5 +1,4 @@
 
-const be = require('benchmark-easy')();
 const services = require('./lib/doomsClient');
 
 const main = async () => {
@@ -8,5 +7,4 @@ const main = async () => {
 	// console.log(result);
 };
 
-// module.exports = main;
-be.start(main, 10000);
+module.exports = main;
