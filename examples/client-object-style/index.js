@@ -1,10 +1,7 @@
 
-const services = require('./lib/doomsServices');
+const services = require('./lib/doomsClient');
 
 const main = async () => {
-
-	// Get services by names 's1', 's2'.
-	// If the names are omitted, all services will be returned
 	const {s1, s2} = await services('s1', 's2');
 
 	let result;

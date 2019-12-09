@@ -27,4 +27,4 @@ const options = {
 // 		It can be omitted or replaced with other names such as "./biz", "./lib", etc.
 // 		It should be started with ".".
 
-require('../../src').initServer('s2', './src', options);
+require('../../src').initService('s2', './src', options);
