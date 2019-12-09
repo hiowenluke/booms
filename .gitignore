@@ -5,4 +5,4 @@ coverage/
 .idea
 __logs/
 test/__count/__log.txt
-./src/Proto/proto_files
+src/Proto/proto_files/
