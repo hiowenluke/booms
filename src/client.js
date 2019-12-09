@@ -1,10 +1,12 @@
 
-const myRedis = require('./__lib/myRedis');
-const RPC = require('grpc');
-const config = require('./config');
-const lib = require('./__lib');
+const grpc = require('grpc');
+const keyPaths = require('keypaths');
 
-let rpc;
+const config = require('./config');
+const Proto = require('./Proto');
+const myJson = require('./__lib/myJson');
+const myRedis = require('./__lib/myRedis');
+
 let isInitialized;
 
 const cache = {
@@ -29,41 +31,49 @@ const cache = {
 	}
 };
 
-const attachCallFunction = (obj, path = '', serviceName) => {
+const attachCallFunction = (service, obj, path = '') => {
 	Object.keys(obj).forEach(key => {
 		const node = obj[key];
+		const subPath = path + key;
 
 		// If it is ending node, replace it with function
 		if (!Object.keys(node).length) {
 			obj[key] = async (...args) => {
-				const queue = (serviceName ? serviceName + ':' : '') + path + '/' + key;
-				return await rpc.call(config.queuePrefix + queue, ...args);
+				return new Promise(resolve => {
+					service.proxy({funcName: subPath, argsStr: JSON.stringify(args)}, (err, response) => {
+						const message = response.message;
+						const result = myJson.parse(message);
+						resolve(result);
+					});
+				});
 			};
 		}
 		else {
 			// Recursion
-			attachCallFunction(node, path + '/' + key, serviceName);
+			attachCallFunction(service, node, subPath + '.');
 		}
 	});
 };
 
 const me = {
-	init(options = {}) {
+	init(...args) {
 		if (!isInitialized) {
 			isInitialized = 1;
 
-			const {redisConfig, grpcConfig} = config.getAllConfigurations([options]);
+			const {redisConfig} = config.getAllConfigurations(args);
 			myRedis.init(redisConfig);
-			rpc = RPC(grpcConfig);
 		}
 
 		return this.get;
 	},
 
-	async get(...names) {
+	async get(...args) {
 		try {
-			const serviceNames = names.length ? names : await myRedis.getAllServiceNames();
-			if (!serviceNames.length) return {};
+			let serviceNames = args;
+
+			if (!serviceNames.length) {
+				serviceNames = await myRedis.getAllServiceNames();
+			}
 
 			const leftNames = [];
 			const services = cache.getByNames(serviceNames, leftNames);
@@ -71,13 +81,15 @@ const me = {
 			// Get the left services by names
 			for (let i = 0; i < leftNames.length; i ++) {
 				const serviceName = leftNames[i];
-				const string = await myRedis.getServiceData(serviceName);
-				const keyPaths = string.split(',');
-				const obj = lib.pathsToObj(keyPaths);
+				const {host, port, paths} = await myRedis.getServiceData(serviceName);
 
-				attachCallFunction(obj, '', serviceName);
+				const proto = Proto.create(serviceName);
+				const service = new proto.Main(`${host}:${port}`, grpc.credentials.createInsecure());
+				const obj = keyPaths.toObject(paths);
 
+				attachCallFunction(service, obj);
 				cache.add(serviceName, obj);
+
 				services[serviceName] = obj;
 			}
 

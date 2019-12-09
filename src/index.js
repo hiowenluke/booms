@@ -1,20 +1,17 @@
 
-const me = require('kdo')();
 const caller = require('caller');
+const service = require('./service');
+const client = require('./client');
 
-const main = {
-	async initServer(...args) {
+const me = {
+	async initService(...args) {
 		const pathToCaller = caller();
-		await me.server.init(pathToCaller, ...args);
+		return await service.init(pathToCaller, ...args);
 	},
 
-	initCall(...args) {
-		return me.call.init(...args);
+	initClient(...args) {
+		return client.init(...args);
 	},
-
-	initServices(...args) {
-		return me.services.init(...args);
-	}
 };
 
-module.exports = main;
+module.exports = me;
