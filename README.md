@@ -142,7 +142,7 @@ main();
 4\. Client: call the remote functions with Message Style:
 
 ```js
-const call = require('dooms').initClient();
+const call = require('dooms').initCall();
 
 const main = async () => {
     let result;
@@ -161,6 +161,12 @@ main();
 
 ```js
 const options = {
+
+    // Specify the gRPC options.
+    // It can be omitted if the host is "localhost".
+    gRPC: {
+        host: 'localhost',      // gRPC host
+    },
 
     // Specify the Redis options.
     // It can be omitted if it is the default options (like below) of Redis.
@@ -186,7 +192,7 @@ require('dooms').initServices(options);
 
 For initializing client with Message Style:
 ```js
-require('dooms').initClient(options);
+require('dooms').initCall(options);
 ```
 
 ## Example
