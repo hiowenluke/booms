@@ -47,14 +47,14 @@ To run this demo, download this repo first if not yet (see above).
 1\) Open a new tab in terminal, then:
 
 ```sh
-node ./example/service1
+node ./examples/service1
 # Service s1 is running...
 ```
 
 2\) Open a new tab in terminal, then:
 
 ```sh
-node ./example/service2
+node ./examples/service2
 # Service s2 is running...
 ```
 
@@ -63,7 +63,7 @@ node ./example/service2
 1\) Open a new tab in terminal, then:
 
 ```sh
-node ./example/client-with-object-style
+node ./examples/client-with-object-style
 
 # Microservices #1
 # Microservices #2
@@ -75,7 +75,7 @@ node ./example/client-with-object-style
 2\) Open a new tab in terminal, then:
 
 ```sh
-node ./example/client-with-message-style
+node ./examples/client-with-message-style
 
 # Microservices #1
 # Microservices #2
@@ -86,23 +86,23 @@ node ./example/client-with-message-style
 
 ## Usage
 
-1\. Create functions in directory "[./src](./example/service1/src)" in server project, such as below:
+1\. Create functions in directory "[./src](./examples/service1/src)" in server project, such as below:
 
-* [src/say/hi.js](./example/service1/src/say/hi.js)
+* [src/say/hi.js](./examples/service1/src/say/hi.js)
 ```js
 module.exports = async (name, age) => {
     return {msg: `Hi, I'm ${name}, ${age} years old.`};
 };
 ```
 
-* [src/about.js](./example/service1/src/about.js)
+* [src/about.js](./examples/service1/src/about.js)
 ```js
 module.exports = async () => {
     return `Microservices #1`;
 };
 ```
 
-2\. Load the directory "./src" as a microservice named "s1" in [index.js](./example/service1/index.js).
+2\. Load the directory "./src" as a microservice named "s1" in [index.js](./examples/service1/index.js).
 
 ```js
 // "s1"
@@ -197,7 +197,7 @@ require('dooms').initCall(options);
 
 ## Example
 
-See files in directory [example](./example) to learn more.
+See files in directory [examples](./examples) to learn more.
 
 ## License
 
