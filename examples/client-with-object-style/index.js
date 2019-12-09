@@ -2,7 +2,7 @@
 const services = require('./lib/doomsClient');
 
 const main = async () => {
-	const {s1, s2} = await services('s1', 's2');
+	const {s1, s2} = await services();
 
 	let result;
 	result = await s1.about();
