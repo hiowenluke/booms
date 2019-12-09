@@ -199,6 +199,57 @@ require('dooms').initCall(options);
 
 See files in directory [examples](./examples) to learn more.
 
+## Benchmark
+
+Dooms is extends from gRPC-node, making it easy for node.js developers to use gRPC. However, Dooms' performance is still close to gRPC-node.
+
+**gRPC-node**
+
+```sh
+node ./benchmark/gRPC-node
+```
+```sh
+Running scripts...
+Benchmarking [10000] times, [10] runs.
+Starting...
+Run #1: 3.303 seconds, 3028 times/sec.
+Run #2: 3.091 seconds, 3235 times/sec.
+Run #3: 3.123 seconds, 3202 times/sec.
+Run #4: 3.012 seconds, 3320 times/sec.
+Run #5: 3.026 seconds, 3304 times/sec.
+Run #6: 3.102 seconds, 3223 times/sec.
+Run #7: 3.071 seconds, 3256 times/sec.
+Run #8: 3.152 seconds, 3172 times/sec.
+Run #9: 3.138 seconds, 3186 times/sec.
+Run #10: 3.126 seconds, 3198 times/sec.
+Done.
+Average: 3.11 seconds, 3212 times/sec.
+```
+
+**Dooms**
+
+```sh
+node ./benchmark/dooms
+```
+```sh
+Running scripts...
+Benchmarking [10000] times, [10] runs.
+Starting...
+Run #1: 3.722 seconds, 2686 times/sec.
+Run #2: 3.324 seconds, 3008 times/sec.
+Run #3: 3.353 seconds, 2982 times/sec.
+Run #4: 3.312 seconds, 3019 times/sec.
+Run #5: 3.258 seconds, 3069 times/sec.
+Run #6: 3.217 seconds, 3108 times/sec.
+Run #7: 3.357 seconds, 2978 times/sec.
+Run #8: 3.286 seconds, 3043 times/sec.
+Run #9: 3.105 seconds, 3221 times/sec.
+Run #10: 3.345 seconds, 2989 times/sec.
+Done.
+Average: 3.33 seconds, 3010 times/sec.
+```
+
+
 ## License
 
 [MIT](LICENSE)
