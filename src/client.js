@@ -8,28 +8,7 @@ const myJson = require('./__lib/myJson');
 const myRedis = require('./__lib/myRedis');
 
 let isInitialized;
-
-const cache = {
-	data: {},
-
-	getByNames(names, leftNames) {
-		const services = {};
-		names.forEach(name => {
-			if (this.data[name]) {
-				services[name] = this.data[name];
-			}
-			else {
-				leftNames.push(name);
-			}
-		});
-
-		return services;
-	},
-
-	add(name, service) {
-		this.data[name] = service;
-	}
-};
+let isServicesFetched;
 
 const attachCallFunction = (service, obj, path = '') => {
 	Object.keys(obj).forEach(key => {
@@ -56,6 +35,8 @@ const attachCallFunction = (service, obj, path = '') => {
 };
 
 const me = {
+	services: {},
+
 	init(...args) {
 		if (!isInitialized) {
 			isInitialized = 1;
@@ -64,36 +45,45 @@ const me = {
 			myRedis.init(redisConfig);
 		}
 
-		return this.get;
+		return this.get.bind(this);
 	},
 
-	async get(...args) {
+	async fetchServices() {
+		const names = await myRedis.getAllServiceNames();
+
+		for (let i = 0; i < names.length; i ++) {
+			const name = names[i];
+			const {host, port, paths} = await myRedis.getServiceData(name);
+
+			const proto = Proto.create(name);
+			const service = new proto.Main(`${host}:${port}`, grpc.credentials.createInsecure());
+
+			const obj = keyPaths.toObject(paths);
+			attachCallFunction(service, obj);
+
+			this.services[name] = obj;
+		}
+	},
+
+	async get(...names) {
 		try {
-			let serviceNames = args;
-
-			if (!serviceNames.length) {
-				serviceNames = await myRedis.getAllServiceNames();
+			if (!isServicesFetched) {
+				isServicesFetched = 1;
+				await this.fetchServices();
 			}
 
-			const leftNames = [];
-			const services = cache.getByNames(serviceNames, leftNames);
-
-			// Get the left services by names
-			for (let i = 0; i < leftNames.length; i ++) {
-				const serviceName = leftNames[i];
-				const {host, port, paths} = await myRedis.getServiceData(serviceName);
-
-				const proto = Proto.create(serviceName);
-				const service = new proto.Main(`${host}:${port}`, grpc.credentials.createInsecure());
-				const obj = keyPaths.toObject(paths);
-
-				attachCallFunction(service, obj);
-				cache.add(serviceName, obj);
-
-				services[serviceName] = obj;
+			if (!names.length) {
+				return this.services;
 			}
-
-			return services;
+			else {
+				const services = {};
+				for (let i = 0; i < names.length; i ++) {
+					const name = names[i];
+					const obj = this.services[name];
+					services[name] = obj;
+				}
+				return services;
+			}
 		}
 		catch(e) {
 			console.log(e);
