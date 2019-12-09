@@ -24,7 +24,7 @@
     "chai": "^4.2.0",
     "mocha": "^6.2.2",
     "lodash": "^4.17.15",
-    "benchmark-easy": "^0.2.3"
+    "benchmark-easy": "^0.3.0"
   },
   "repository": {
     "type": "git",
