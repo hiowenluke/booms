@@ -1,5 +1,5 @@
 
-const exec = require('child_process').exec;
+const spawn = require('child_process').spawn;
 const test = require('./test');
 
 const wait = (ms = 1000) => {
@@ -10,12 +10,20 @@ const wait = (ms = 1000) => {
 
 describe('Booms', () => {
 
+	const cps = [];
+
 	before(async () => {
-		exec('node ../examples/service1');
-		exec('node ../examples/service2');
+		cps.push(spawn('node', ['../examples/service1']));
+		cps.push(spawn('node', ['../examples/service2']));
 
 		// Waiting for all services are ready
 		await wait();
+	});
+
+	after(() => {
+		cps.forEach(cp => {
+			process.kill(cp.pid, 'SIGTERM');
+		});
 	});
 
 	it('object style', async () => {
