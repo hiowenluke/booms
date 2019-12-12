@@ -1,6 +1,6 @@
 
-// from initServices: [options]
-// from initService: ['s1', './src', options]
+// from initClient: [options]
+// from initClient: ['s1', './src', options]
 const fn = (args, defaultOptions) => {
 	let doomsConfig = {};
 	let grpcConfig = {};
