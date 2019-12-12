@@ -32,7 +32,7 @@ var packageDefinition = protoLoader.loadSync(
 var hello_proto = grpc.loadPackageDefinition(packageDefinition).helloworld;
 var client = new hello_proto.Greeter('localhost:50051', grpc.credentials.createInsecure());
 
-async function sayHello (username = 'world') {
+function sayHello (username = 'world') {
     return new Promise(resolve => {
         client.sayHello({name: username}, function(err, response) {
             resolve('Greeting: ' + response.message);
@@ -46,3 +46,4 @@ async function main() {
 }
 
 module.exports = main;
+// main();
