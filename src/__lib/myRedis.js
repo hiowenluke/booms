@@ -3,20 +3,16 @@ const Redis = require('ioredis');
 
 /** @name lib.myRedis */
 const me = {
-	prefix: '', // "rpc_dooms_"
-	names: '', // "rpc_dooms_#services_names"
+	prefix: 'rpc_dooms_',
+	names: 'services_names',
 
-	init(config, prefix) {
+	init(config) {
 		this.redis = new Redis(config);
-
-		this.prefix = prefix;
-		this.names = this.prefix + '#services_names';
-
 		return this.redis;
 	},
 
 	async getAllServiceNames() {
-		const string = await this.redis.get(this.names);
+		const string = await this.get(this.names);
 		return string ? string.split(',') : [];
 	},
 
@@ -25,7 +21,7 @@ const me = {
 		arr.push(name);
 
 		const uniqueArr = Array.from(new Set(arr));
-		await this.redis.set(this.names, uniqueArr.join(','));
+		await this.set(this.names, uniqueArr.join(','));
 	},
 
 	async saveServiceDataJson(name, data) {
@@ -33,17 +29,25 @@ const me = {
 			data.name = name;
 			data = JSON.stringify(data);
 		}
-		await this.redis.set(this.prefix + name, data);
+		await this.set(name, data);
 	},
 
 	async getServiceData(name) {
-		const string = await this.redis.get(this.prefix + name);
+		const string = await this.get(name);
 		return JSON.parse(string);
 	},
 
 	async saveServiceData(name, data) {
 		await this.saveServiceName(name);
 		await this.saveServiceDataJson(name, data);
+	},
+
+	async set(key, value) {
+		await this.redis.set(this.prefix + '#' + key, value);
+	},
+
+	async get(key) {
+		return await this.redis.get(this.prefix + '#' + key);
 	}
 };
 
