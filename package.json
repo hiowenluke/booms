@@ -21,10 +21,10 @@
     "minimist": "^1.2.0"
   },
   "devDependencies": {
+    "benchmark-easy": "^0.4.1",
     "chai": "^4.2.0",
-    "mocha": "^6.2.2",
     "lodash": "^4.17.15",
-    "benchmark-easy": "^0.3.0"
+    "mocha": "^6.2.2"
   },
   "repository": {
     "type": "git",
