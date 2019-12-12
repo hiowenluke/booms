@@ -34,8 +34,12 @@ const TEMPLATE = `
 const me = {
 	create(serviceName) {
 		const content = TEMPLATE.replace('{serviceName}', serviceName);
-
 		const PROTO_PATH = root + `/${serviceName}.proto`;
+
+		if (!fs.existsSync(root)) {
+			fs.mkdirSync(root);
+		}
+
 		fs.writeFileSync(PROTO_PATH, content, 'utf-8');
 
 		const packageDefinition = protoLoader.loadSync(PROTO_PATH, pkgDefineOptions);
