@@ -12,7 +12,7 @@ const main = async () => {
 	console.log(result); // "Microservices #2"
 
 	result = await s1.say.hi('owen', 100);
-	console.log(result); // { msg: 'Hi, I\'m owen, 100 years old.' }
+	console.log(result); // { msg: 'Hi, I am owen, 100 years old.' }
 };
 
 main();

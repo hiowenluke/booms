@@ -1,8 +1,8 @@
 
 const options = {
-    redis: {
-        host: 'localhost',
-    }
+	redis: {
+		host: 'localhost',
+	}
 };
 
 const services = require('../../../src').initClient(options);

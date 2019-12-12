@@ -1,6 +1,6 @@
 
 const fn = async (name, age) => {
-	return {msg: `Hi, I'm ${name}, ${age} years old.`};
+	return {msg: `Hi, I am ${name}, ${age} years old.`};
 };
 
 module.exports = fn;
