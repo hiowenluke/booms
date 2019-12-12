@@ -1,14 +1,7 @@
 
 # Dooms
 
-A light and easy-to-use microservices framework for [Node.js](https://nodejs.org). Dooms loads a directory as a microservice, the client calls remote functions in it with Object Style like **service1.do.say.hi('Hello world!')** or Message Style like **call('service1:/do/say/hi', 'Hello world!')** and gets the results immediately. 
-
-With Dooms, you do not need to define your services in [Protobuf](https://developers.google.com/protocol-buffers/docs/proto3) files. Just write your business code into function files in a directory (such as "src", "biz", "lib"), Dooms will automatically and dynamicaly loads them.
-
-Dooms is based on [gRPC](https://grpc.io) and [Redis](https://github.com/antirez/redis). Dooms is extended from [gRPC-node](https://github.com/grpc/grpc-node), and its performance is very hight and close to gRPC-node. (see [Benchmark](#Benchmark)).
-
-* [Why Enterprises Are Embracing Microservices and Node.js](https://thenewstack.io/enterprises-embracing-microservices-node-js/)
-* [Microservices With Node.js: Scalable, Superior, and Secure Apps](https://dzone.com/articles/microservices-with-nodejs-scalable-superior-and-se)
+A RPC microservices framework for [Node.js](https://nodejs.org), loads a directory as a microservice, calls remote functions in it like **s1.say.hi()** or **call('s1:/say/hi')**. Dooms is based on [gRPC-node](https://github.com/grpc/grpc-node), but no [proto](https://developers.google.com/protocol-buffers/docs/proto3) files needed, more easy to use.
 
 ## Server Environment
 
@@ -84,19 +77,12 @@ node ./examples/client-with-message-style
 
 ## Usage
 
-1\. Create functions in directory "[./src](./examples/service1/src)" in server project, such as below:
+1\. Create function files in directory "[./src](./examples/service1/src)" in server project, such as below:
 
 * [src/say/hi.js](./examples/service1/src/say/hi.js)
 ```js
 module.exports = async (name, age) => {
     return {msg: `Hi, I'm ${name}, ${age} years old.`};
-};
-```
-
-* [src/about.js](./examples/service1/src/about.js)
-```js
-module.exports = async () => {
-    return `Microservices #1`;
 };
 ```
 
@@ -115,37 +101,27 @@ module.exports = async () => {
 require('dooms').initService('s1', './src');
 ```
 
-3\. Client: call the remote functions with Object Style
+3\. Call like s1.say.hi()
 
 ```js
-const services = require('dooms').initServices();
+const services = require('dooms').initClient();
 
 const main = async () => {
     const {s1} = await services();
-
-    let result;
-    result = await s1.about();
-    console.log(result); // "Microservices #1"
-
-    result = await s1.say.hi('owen', 100);
+    const result = await s1.say.hi('owen', 100);
     console.log(result); // {msg: 'Hi, I\'m owen, 100 years old.'}
 };
 
 main();
 ```
 
-4\. Client: call the remote functions with Message Style:
+4\. Call like call('s1:/say/hi')
 
 ```js
 const call = require('dooms').initCall();
 
 const main = async () => {
-    let result;
-
-    result = await call('s1:/about');
-    console.log(result); // "Microservices #1"
-
-    result = await call('s1:/say/hi', 'owen', 100);
+    const result = await call('s1:/say/hi', 'owen', 100);
     console.log(result); // {msg: 'Hi, I\'m owen, 100 years old.'}
 };
 
@@ -154,7 +130,7 @@ main();
 
 ## Options
 
-### For server
+1\. For server
 
 ```js
 const options = {
@@ -170,19 +146,18 @@ const options = {
     redis: {
         host: 'localhost',      // Redis host
         // port: '6379',           // Redis port
-        // password: 'auth',       // Redis password
         // db: 0,                  // Redis database number
         // family: 4,              // 4 (IPv4) or 6 (IPv6)
     },
 };
 ```
 
-For initializing server:
+Use it
 ```js
 require('dooms').initService('s1', './src', options);
 ```
 
-### For client
+2\. For client
 
 Only redis options required.
 
@@ -193,19 +168,18 @@ const options = {
     redis: {
         host: 'localhost',      // Redis host
         // port: '6379',           // Redis port
-        // password: 'auth',       // Redis password
         // db: 0,                  // Redis database number
         // family: 4,              // 4 (IPv4) or 6 (IPv6)
     },
 };
 ```
 
-For initializing client with Object Style:
+Use it
 ```js
-require('dooms').initServices(options);
+require('dooms').initClient(options);
 ```
 
-For initializing client with Message Style:
+Or
 ```js
 require('dooms').initCall(options);
 ```
@@ -214,54 +188,14 @@ require('dooms').initCall(options);
 
 See files in directory [examples](./examples) to learn more.
 
-## Benchmark
+## Performance
 
-**gRPC-node**
+Dooms is extended from [gRPC-node](https://github.com/grpc/grpc-node). It is as fast as gRPC-node, much faster than socket.io-based RPC. (See [Benchmark](https://github.com/hiowenluke/benchmark-easy))
 
-```sh
-node ./benchmark/gRPC-node
-```
-```sh
-Running scripts...
-Benchmarking [10000] times, [10] runs.
-Starting...
-Run #1: 3.303 seconds, 3028 times/sec.
-Run #2: 3.091 seconds, 3235 times/sec.
-Run #3: 3.123 seconds, 3202 times/sec.
-Run #4: 3.012 seconds, 3320 times/sec.
-Run #5: 3.026 seconds, 3304 times/sec.
-Run #6: 3.102 seconds, 3223 times/sec.
-Run #7: 3.071 seconds, 3256 times/sec.
-Run #8: 3.152 seconds, 3172 times/sec.
-Run #9: 3.138 seconds, 3186 times/sec.
-Run #10: 3.126 seconds, 3198 times/sec.
-Done.
-Average: 3.11 seconds, 3212 times/sec.
-```
+## Why
 
-**Dooms**
-
-```sh
-node ./benchmark/dooms
-```
-```sh
-Running scripts...
-Benchmarking [10000] times, [10] runs.
-Starting...
-Run #1: 3.722 seconds, 2686 times/sec.
-Run #2: 3.324 seconds, 3008 times/sec.
-Run #3: 3.353 seconds, 2982 times/sec.
-Run #4: 3.312 seconds, 3019 times/sec.
-Run #5: 3.258 seconds, 3069 times/sec.
-Run #6: 3.217 seconds, 3108 times/sec.
-Run #7: 3.357 seconds, 2978 times/sec.
-Run #8: 3.286 seconds, 3043 times/sec.
-Run #9: 3.105 seconds, 3221 times/sec.
-Run #10: 3.345 seconds, 2989 times/sec.
-Done.
-Average: 3.33 seconds, 3010 times/sec.
-```
-
+* [Why Enterprises Are Embracing Microservices and Node.js](https://thenewstack.io/enterprises-embracing-microservices-node-js/)
+* [Microservices With Node.js: Scalable, Superior, and Secure Apps](https://dzone.com/articles/microservices-with-nodejs-scalable-superior-and-se)
 
 ## License
 
