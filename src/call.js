@@ -49,10 +49,6 @@ const me = {
 			const name = names[i];
 			const {host, port, apis} = await myRedis.getServiceData(name);
 
-			if (!apis) {
-				debugger;
-			}
-
 			const proto = Proto.create(name);
 			const service = new proto.Main(`${host}:${port}`, grpc.credentials.createInsecure());
 
