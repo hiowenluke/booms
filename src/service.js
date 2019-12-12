@@ -71,8 +71,8 @@ const me = {
 		const {host} = grpcConfig;
 
 		const port = this.port;
-		const paths = keyPaths.toPaths(this.source);
-		const data = {host, port, paths};
+		const apis = keyPaths.toPaths(this.source);
+		const data = {host, port, apis};
 
 		await myRedis.saveServiceData(name, data);
 	},
