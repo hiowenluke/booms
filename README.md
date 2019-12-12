@@ -17,116 +17,98 @@ A RPC microservices framework for [Node.js](https://nodejs.org), loads a directo
 npm install booms --save
 ```
 
-## Test
+## TRY IT! (in under 5 minutes)
 
-Download this repo
+### 1. Server
 
-```sh
-git clone https://github.com/hiowenluke/booms.git
-cd booms
-npm install
-```
-
-Test
+0\) Init a demo project
 
 ```sh
-npm test
+mkdir ./booms-demo && cd ./booms-demo
+npm init -y
+npm install booms --save
 ```
 
-## TRY IT!
-
-To run this demo, download this repo first if not yet (see above).
-
-### 1. Run microservices
-
-1\) Open a new tab in terminal, then:
+Create folder "**src**" (and its sub folder "say"")
 
 ```sh
-node ./examples/service1
-# Service s1 is running...
+mkdir -p src/say
 ```
 
-2\) Open a new tab in terminal, then:
+1\) Create "./src/say/hi.js"
 
-```sh
-node ./examples/service2
-# Service s2 is running...
-```
-
-### 2. Run client
-
-1\) Open a new tab in terminal, then:
-
-```sh
-node ./examples/client-with-object-style
-
-# Microservices #1
-# Microservices #2
-# { msg: 'Hi, I\'m owen, 100 years old.' }
-```
-
-2\) Open a new tab in terminal, then:
-
-```sh
-node ./examples/client-with-message-style
-
-# Microservices #1
-# Microservices #2
-# { msg: 'Hi, I\'m owen, 100 years old.' }
-```
-
-## Usage
-
-1\. Create function files in directory "[./src](./examples/service1/src)" in server project, such as below:
-
-* [src/say/hi.js](./examples/service1/src/say/hi.js)
 ```js
 module.exports = async (name, age) => {
-    return {msg: `Hi, I'm ${name}, ${age} years old.`};
+    return {msg: `Hi, I am ${name}, ${age} years old.`};
 };
 ```
 
-2\. Load the directory "./src" as a microservice named "s1" in [index.js](./examples/service1/index.js).
+2\) Create index.js
 
 ```js
-// "s1"
-//      The name of this microservice.
-//      It can be omitted if you have only one microservice.
-
-// "./src"
-//      The root folder name of business files such as "src/say/hi.js".
-//      It can be omitted or replaced with other names such as "./biz", "./src", etc.
-//      It should be started with ".".
-
-require('booms').initService('s1', './src');
+require('booms').initService();
 ```
 
-3\. Call like s1.say.hi()
+3\) Run
+
+```sh
+node index.js
+```
+
+```sh
+Service s1 is running on port 50051...
+```
+
+### 2. Client: call like s1.say.hi()
+
+1\) Open a new tab in your teminal, then create "s1.js".
 
 ```js
 const services = require('booms').initClient();
-
 const main = async () => {
     const {s1} = await services();
     const result = await s1.say.hi('owen', 100);
-    console.log(result); // {msg: 'Hi, I\'m owen, 100 years old.'}
+    console.log(result);
 };
-
 main();
 ```
 
-4\. Call like call('s1:/say/hi')
+2\) Run
+
+```sh
+node s1.js
+```
+
+```sh
+{ msg: 'Hi, I am owen, 100 years old.' }
+```
+
+### 3. Client: call like call('s1:/say/hi')
+
+1\) Open a new tab in your teminal, then create "call.js".
 
 ```js
 const call = require('booms').initCall();
-
 const main = async () => {
     const result = await call('s1:/say/hi', 'owen', 100);
-    console.log(result); // {msg: 'Hi, I\'m owen, 100 years old.'}
+    console.log(result);
 };
-
 main();
 ```
+
+2\) Run
+
+```sh
+node call.js
+```
+
+```sh
+{ msg: 'Hi, I am owen, 100 years old.' }
+```
+
+## Example
+
+See [examples](./examples) to learn more.
 
 ## Options
 
@@ -155,6 +137,15 @@ const options = {
 Use it
 ```js
 require('booms').initService('s1', './src', options);
+
+// "s1"
+//      The name of this microservice.
+//      The default value is "s1".
+
+// "./src"
+//      The root folder name of business function files.
+//      It can be omitted or replaced with other names such as "./biz", "./src", etc.
+//      It should be started with ".".
 ```
 
 2\. For client
@@ -184,9 +175,14 @@ Or
 require('booms').initCall(options);
 ```
 
-## Example
+## Test
 
-See files in directory [examples](./examples) to learn more.
+```sh
+git clone https://github.com/hiowenluke/booms.git
+cd booms
+npm install
+npm test
+```
 
 ## Performance
 
