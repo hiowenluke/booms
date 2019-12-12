@@ -8,6 +8,7 @@ const config = require('./config');
 const Proto = require('./Proto');
 const myJson = require('./__lib/myJson');
 const myRedis = require('./__lib/myRedis');
+const ports = require('./__lib/ports');
 
 const me = {
 	definition: [],
@@ -17,7 +18,8 @@ const me = {
 	async init(caller, ...args) {
 		try {
 			const {doomsConfig, grpcConfig, redisConfig} = config.getAllConfigurations(args);
-			myRedis.init(redisConfig, doomsConfig.redisPrefix);
+			myRedis.init(redisConfig);
+			ports.init(myRedis);
 
 			await this.initSource(caller, doomsConfig);
 			await this.initDefinition(doomsConfig);
@@ -56,14 +58,7 @@ const me = {
 	},
 
 	async calcServicePort(doomsConfig) {
-		let port = doomsConfig.startingPort;
-
-		const servicesNames = await myRedis.getAllServiceNames();
-		if (servicesNames.length) {
-			port += servicesNames.length;
-		}
-
-		this.port = port;
+		this.port = await ports.calc(doomsConfig.name);
 	},
 
 	async saveToRedis(doomsConfig, grpcConfig) {
@@ -84,7 +79,7 @@ const me = {
 		service.bind(`0.0.0.0:${this.port}`, grpc.ServerCredentials.createInsecure());
 		service.start();
 
-		console.log(`Service ${doomsConfig.name} is running...`);
+		console.log(`Service ${doomsConfig.name} is running on port ${this.port}...`);
 	}
 };
 
