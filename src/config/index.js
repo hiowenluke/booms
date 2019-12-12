@@ -5,8 +5,6 @@ const me = {
 	dooms: {
 		folder: './src',
 		name: '', // Microservice name
-		redisPrefix: 'rpc_dooms_',
-		startingPort: 50051,
 	},
 
 	gRPC: {
