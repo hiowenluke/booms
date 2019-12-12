@@ -17,7 +17,7 @@ const createTempFile = (filePath) => {
 	return tmpFile;
 };
 
-const getResult = async (filePath) => {
+const getResult = (filePath) => {
 	return new Promise(resolve => {
 		const tmpFile = createTempFile(filePath);
 		exec('node ' + tmpFile, (code, stdout, stderr) => {
