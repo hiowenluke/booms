@@ -21,7 +21,7 @@ npm install booms --save
 
 ### 1. Server
 
-0\) Init a demo project
+0\) Initialize a demo project
 
 ```sh
 mkdir ./booms-demo && cd ./booms-demo
@@ -43,7 +43,7 @@ module.exports = async (name, age) => {
 };
 ```
 
-2\) Create index.js
+2\) Create "index.js"
 
 ```js
 require('booms').initService();
@@ -61,7 +61,7 @@ Service s1 is running on port 50051...
 
 ### 2. Client: call like s1.say.hi()
 
-1\) Open a new tab in your teminal, then create "s1.js".
+1\) Open a new tab in your terminal, then create "s1.js".
 
 ```js
 const services = require('booms').initClient();
@@ -85,7 +85,7 @@ node s1.js
 
 ### 3. Client: call like call('s1:/say/hi')
 
-1\) Open a new tab in your teminal, then create "call.js".
+1\) Open a new tab in your terminal, then create "call.js".
 
 ```js
 const call = require('booms').initCall();
