@@ -31,7 +31,7 @@ const verify = (result) => {
 	const comparision = [
 		"Microservices #1",
 		"Microservices #2",
-		{ msg: 'Hi, I\'m owen, 100 years old.' },
+		{ msg: 'Hi, I am owen, 100 years old.' },
 	];
 
 	result = result.replace(/\s*?$/g, '').split('\n');
