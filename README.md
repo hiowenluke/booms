@@ -109,7 +109,7 @@ See [examples](./examples) to learn more.
 
 ## Options
 
-1\. For server
+### 1. For server
 
 ```js
 const options = {
@@ -141,11 +141,11 @@ require('booms').initService('s1', './src', options);
 
 // "./src"
 //      The root folder name of business function files.
-//      It can be omitted or replaced with other names such as "./biz", "./src", etc.
+//      The default value is "./src"
 //      It should be started with ".".
 ```
 
-2\. For client
+### 2. For client
 
 Only redis options required.
 
