@@ -1,9 +1,11 @@
 
 # Dooms
 
-A light and easy-to-use microservices framework for [Node.js](https://nodejs.org). Dooms loads a directory as a microservice, so that the client can calls remote functions in it with Object Style like **service1.do.say.hi('Hello world!')** or Message Style like **call('service1:/do/say/hi', 'Hello world!')** and gets the results immediately. 
+A light and easy-to-use microservices framework for [Node.js](https://nodejs.org). Dooms loads a directory as a microservice, the client calls remote functions in it with Object Style like **service1.do.say.hi('Hello world!')** or Message Style like **call('service1:/do/say/hi', 'Hello world!')** and gets the results immediately. 
 
-Dooms is based on [gRPC](https://grpc.io) and [Redis](https://github.com/antirez/redis). 
+With Dooms, you do not need to define your services in [Protobuf](https://developers.google.com/protocol-buffers/docs/proto3) files. Just write your business code into function files in a directory (such as "src", "biz", "lib"), Dooms will automatically and dynamicaly loads them.
+
+Dooms is based on [gRPC](https://grpc.io) and [Redis](https://github.com/antirez/redis). Dooms is extended from [gRPC-node](https://github.com/grpc/grpc-node), and its performance is very hight and close to gRPC-node. (see [Benchmark](#Benchmark)).
 
 * [Why Enterprises Are Embracing Microservices and Node.js](https://thenewstack.io/enterprises-embracing-microservices-node-js/)
 * [Microservices With Node.js: Scalable, Superior, and Secure Apps](https://dzone.com/articles/microservices-with-nodejs-scalable-superior-and-se)
@@ -70,8 +72,6 @@ node ./examples/client-with-object-style
 # { msg: 'Hi, I\'m owen, 100 years old.' }
 ```
 
-**Press Ctrl + C twice to quit this demo.**
-
 2\) Open a new tab in terminal, then:
 
 ```sh
@@ -81,8 +81,6 @@ node ./examples/client-with-message-style
 # Microservices #2
 # { msg: 'Hi, I\'m owen, 100 years old.' }
 ```
-
-**Press Ctrl + C twice to quit this demo.**
 
 ## Usage
 
@@ -114,7 +112,7 @@ module.exports = async () => {
 //      It can be omitted or replaced with other names such as "./biz", "./src", etc.
 //      It should be started with ".".
 
-require('dooms').initServer('s1', './src');
+require('dooms').initService('s1', './src');
 ```
 
 3\. Client: call the remote functions with Object Style
@@ -123,10 +121,7 @@ require('dooms').initServer('s1', './src');
 const services = require('dooms').initServices();
 
 const main = async () => {
-
-    // Get services by names 's1', 's2', ..., etc.
-    // If the names are omitted, all services will be returned
-    const {s1} = await services('s1');
+    const {s1} = await services();
 
     let result;
     result = await s1.about();
@@ -159,6 +154,8 @@ main();
 
 ## Options
 
+### For server
+
 ```js
 const options = {
 
@@ -182,7 +179,25 @@ const options = {
 
 For initializing server:
 ```js
-require('dooms').initServer('s1', './src', options);
+require('dooms').initService('s1', './src', options);
+```
+
+### For client
+
+Only redis options required.
+
+```js
+const options = {
+    // Specify the Redis options.
+    // It can be omitted if it is the default options (like below) of Redis.
+    redis: {
+        host: 'localhost',      // Redis host
+        // port: '6379',           // Redis port
+        // password: 'auth',       // Redis password
+        // db: 0,                  // Redis database number
+        // family: 4,              // 4 (IPv4) or 6 (IPv6)
+    },
+};
 ```
 
 For initializing client with Object Style:
@@ -200,8 +215,6 @@ require('dooms').initCall(options);
 See files in directory [examples](./examples) to learn more.
 
 ## Benchmark
-
-Dooms is extends from gRPC-node, making it easy for node.js developers to use gRPC. However, Dooms' performance is still close to gRPC-node.
 
 **gRPC-node**
 
