@@ -6,10 +6,10 @@ const me = {
 	prefix: '', // "rpc_dooms_"
 	names: '', // "rpc_dooms_#services_names"
 
-	init(config) {
+	init(config, prefix) {
 		this.redis = new Redis(config);
 
-		this.prefix = config.redisPrefix;
+		this.prefix = prefix;
 		this.names = this.prefix + '#services_names';
 	},
 
@@ -26,11 +26,14 @@ const me = {
 	async saveServiceName(name) {
 		const arr = await this.getAllServiceNames();
 		arr.push(name);
-		await this.redis.set(this.names, arr.join(','));
+
+		const uniqueArr = Array.from(new Set(arr));
+		await this.redis.set(this.names, uniqueArr.join(','));
 	},
 
 	async saveServiceDataJson(name, data) {
 		if (typeof data === 'object') {
+			data.name = name;
 			data = JSON.stringify(data);
 		}
 		await this.redis.set(this.prefix + name, data);
