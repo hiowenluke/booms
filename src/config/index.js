@@ -4,7 +4,7 @@ const getAllConfigurations = require('./getAllConfigurations');
 const me = {
 	booms: {
 		folder: './src',
-		name: '', // Microservice name
+		name: 's1', // Microservice name
 	},
 
 	gRPC: {
