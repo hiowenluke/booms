@@ -24,7 +24,7 @@ const options = {
 
 // "./src"
 //		The root folder name of business function files.
-//		It can be omitted or replaced with other names such as "./biz", "./src", etc.
+//		The default value is "./src"
 //		It should be started with ".".
 
 require('../../src').initService('s1', './src', options);
