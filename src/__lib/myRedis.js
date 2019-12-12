@@ -11,11 +11,8 @@ const me = {
 
 		this.prefix = prefix;
 		this.names = this.prefix + '#services_names';
-	},
 
-	async isServiceNameExists(name) {
-		const names = await this.getAllServiceNames();
-		return names.indexOf(name) >= 0;
+		return this.redis;
 	},
 
 	async getAllServiceNames() {
