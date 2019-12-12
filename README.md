@@ -27,11 +27,8 @@ npm install booms --save
 mkdir ./booms-demo && cd ./booms-demo
 npm init -y
 npm install booms --save
-```
 
-Create folder "**src**" (and its sub folder "say"")
-
-```sh
+# Create folders
 mkdir -p src/say
 ```
 
