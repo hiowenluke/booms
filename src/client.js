@@ -17,7 +17,7 @@ const attachCallFunction = (service, obj, path = '') => {
 
 		// If it is ending node, replace it with function
 		if (!Object.keys(node).length) {
-			obj[key] = async (...args) => {
+			obj[key] = (...args) => {
 				return new Promise(resolve => {
 					service.proxy({funcName: subPath, argsStr: JSON.stringify(args)}, (err, response) => {
 						const message = response.message;
@@ -41,8 +41,8 @@ const me = {
 		if (!isInitialized) {
 			isInitialized = 1;
 
-			const {redisConfig} = config.getAllConfigurations(args);
-			myRedis.init(redisConfig);
+			const {doomsConfig, redisConfig} = config.getAllConfigurations(args);
+			myRedis.init(redisConfig, doomsConfig.redisPrefix);
 		}
 
 		return this.get.bind(this);
@@ -53,12 +53,12 @@ const me = {
 
 		for (let i = 0; i < names.length; i ++) {
 			const name = names[i];
-			const {host, port, paths} = await myRedis.getServiceData(name);
+			const {host, port, apis} = await myRedis.getServiceData(name);
 
 			const proto = Proto.create(name);
 			const service = new proto.Main(`${host}:${port}`, grpc.credentials.createInsecure());
 
-			const obj = keyPaths.toObject(paths);
+			const obj = keyPaths.toObject(apis);
 			attachCallFunction(service, obj);
 
 			this.services[name] = obj;
