@@ -1,5 +1,5 @@
 {
-  "name": "dooms",
+  "name": "booms",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -28,10 +28,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hiowenluke/dooms.git"
+    "url": "git+https://github.com/hiowenluke/booms.git"
   },
   "bugs": {
-    "url": "https://github.com/hiowenluke/dooms/issues"
+    "url": "https://github.com/hiowenluke/booms/issues"
   },
-  "homepage": "https://github.com/hiowenluke/dooms#readme"
+  "homepage": "https://github.com/hiowenluke/booms#readme"
 }
