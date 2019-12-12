@@ -41,8 +41,8 @@ const me = {
 		if (!isInitialized) {
 			isInitialized = 1;
 
-			const {doomsConfig, redisConfig} = config.getAllConfigurations(args);
-			myRedis.init(redisConfig, doomsConfig.redisPrefix);
+			const {redisConfig} = config.getAllConfigurations(args);
+			myRedis.init(redisConfig);
 		}
 
 		return this.get.bind(this);
