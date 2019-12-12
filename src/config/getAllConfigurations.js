@@ -2,7 +2,7 @@
 // from initClient: [options]
 // from initClient: ['s1', './src', options]
 const fn = (args, defaultOptions) => {
-	let doomsConfig = {};
+	let boomsConfig = {};
 	let grpcConfig = {};
 	let redisConfig = {};
 
@@ -16,7 +16,7 @@ const fn = (args, defaultOptions) => {
 		// {name: 's1', folder: './lib', {gRPC: {host: 'localhost'}, redis: {host: 'localhost'}}}
 		// {name: 's1', folder: './lib', {host: 'localhost'}}
 		if (typeof ax === 'object') {
-			doomsConfig = {name: ax.name, folder: ax.folder};
+			boomsConfig = {name: ax.name, folder: ax.folder};
 			grpcConfig = ax.gRPC;
 			redisConfig = ax.redis;
 
@@ -36,24 +36,24 @@ const fn = (args, defaultOptions) => {
 			// 		('./lib')
 			// 		('./lib', 's1')
 			if (a0.substr(0, 1) === '.') {
-				doomsConfig.folder = a0;
-				a1 && (doomsConfig.name = a1);
+				boomsConfig.folder = a0;
+				a1 && (boomsConfig.name = a1);
 			}
 			else {
 				// The first arg is service name
 				// 		('s1')
 				// 		('s1', './lib')
-				doomsConfig.name = a0;
-				a1 && (doomsConfig.folder = a1);
+				boomsConfig.name = a0;
+				a1 && (boomsConfig.folder = a1);
 			}
 		}
 	}
 
-	doomsConfig = Object.assign({}, defaultOptions.dooms, doomsConfig);
+	boomsConfig = Object.assign({}, defaultOptions.booms, boomsConfig);
 	grpcConfig = Object.assign({}, defaultOptions.gRPC, grpcConfig);
 	redisConfig = Object.assign({}, defaultOptions.redis, redisConfig);
 
-	return {doomsConfig, grpcConfig, redisConfig};
+	return {boomsConfig, grpcConfig, redisConfig};
 };
 
 module.exports = fn;

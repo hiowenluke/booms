@@ -2,7 +2,7 @@
 const getAllConfigurations = require('./getAllConfigurations');
 
 const me = {
-	dooms: {
+	booms: {
 		folder: './src',
 		name: '', // Microservice name
 	},
@@ -16,8 +16,8 @@ const me = {
 	},
 
 	getAllConfigurations(args) {
-		const {doomsConfig, grpcConfig, redisConfig} = getAllConfigurations(args, this);
-		return {doomsConfig, grpcConfig, redisConfig};
+		const {boomsConfig, grpcConfig, redisConfig} = getAllConfigurations(args, this);
+		return {boomsConfig, grpcConfig, redisConfig};
 	}
 };
 

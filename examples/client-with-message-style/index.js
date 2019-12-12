@@ -1,5 +1,5 @@
 
-const call = require('./lib/doomsCall');
+const call = require('./lib/boomsCall');
 
 const main = async () => {
 	let result;

@@ -17,29 +17,29 @@ const me = {
 
 	async init(caller, ...args) {
 		try {
-			const {doomsConfig, grpcConfig, redisConfig} = config.getAllConfigurations(args);
+			const {boomsConfig, grpcConfig, redisConfig} = config.getAllConfigurations(args);
 			myRedis.init(redisConfig);
 			ports.init(myRedis);
 
-			await this.initSource(caller, doomsConfig);
-			await this.initDefinition(doomsConfig);
-			await this.calcServicePort(doomsConfig);
-			await this.saveToRedis(doomsConfig, grpcConfig, redisConfig);
-			await this.createService(doomsConfig);
+			await this.initSource(caller, boomsConfig);
+			await this.initDefinition(boomsConfig);
+			await this.calcServicePort(boomsConfig);
+			await this.saveToRedis(boomsConfig, grpcConfig, redisConfig);
+			await this.createService(boomsConfig);
 		}
 		catch(e) {
 			console.log(e);
 		}
 	},
 
-	async initSource(caller, doomsConfig) {
-		const {folder} = doomsConfig;
+	async initSource(caller, boomsConfig) {
+		const {folder} = boomsConfig;
 		const root = path.resolve(caller, '..');
 		this.source = kdo(root + '/' + folder);
 	},
 
-	async initDefinition(doomsConfig) {
-		const serviceName = doomsConfig.name;
+	async initDefinition(boomsConfig) {
+		const serviceName = boomsConfig.name;
 		const proto = Proto.create(serviceName);
 
 		const proxy = async (call, callback) => {
@@ -57,12 +57,12 @@ const me = {
 		this.definition = [proto.Main.service, {proxy}];
 	},
 
-	async calcServicePort(doomsConfig) {
-		this.port = await ports.calc(doomsConfig.name);
+	async calcServicePort(boomsConfig) {
+		this.port = await ports.calc(boomsConfig.name);
 	},
 
-	async saveToRedis(doomsConfig, grpcConfig) {
-		const {name} = doomsConfig;
+	async saveToRedis(boomsConfig, grpcConfig) {
+		const {name} = boomsConfig;
 		const {host} = grpcConfig;
 
 		const port = this.port;
@@ -72,14 +72,14 @@ const me = {
 		await myRedis.saveServiceData(name, data);
 	},
 
-	async createService(doomsConfig) {
+	async createService(boomsConfig) {
 		const service = new grpc.Server();
 
 		service.addService(...this.definition);
 		service.bind(`0.0.0.0:${this.port}`, grpc.ServerCredentials.createInsecure());
 		service.start();
 
-		console.log(`Service ${doomsConfig.name} is running on port ${this.port}...`);
+		console.log(`Service ${boomsConfig.name} is running on port ${this.port}...`);
 	}
 };
 

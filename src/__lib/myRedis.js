@@ -3,7 +3,7 @@ const Redis = require('ioredis');
 
 /** @name lib.myRedis */
 const me = {
-	prefix: 'rpc_dooms_',
+	prefix: 'rpc_booms_',
 	names: 'services_names',
 
 	init(config) {

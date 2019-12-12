@@ -1,7 +1,7 @@
 
-# Dooms
+# Booms
 
-A RPC microservices framework for [Node.js](https://nodejs.org), loads a directory as a microservice, calls remote functions in it like **s1.say.hi()** or **call('s1:/say/hi')**. Dooms is based on [gRPC-node](https://github.com/grpc/grpc-node), but no [proto](https://developers.google.com/protocol-buffers/docs/proto3) files needed, more easy to use.
+A RPC microservices framework for [Node.js](https://nodejs.org), loads a directory as a microservice, calls remote functions in it like **s1.say.hi()** or **call('s1:/say/hi')**. Booms is based on [gRPC-node](https://github.com/grpc/grpc-node), but no [proto](https://developers.google.com/protocol-buffers/docs/proto3) files needed, more easy to use.
 
 ## Server Environment
 
@@ -14,7 +14,7 @@ A RPC microservices framework for [Node.js](https://nodejs.org), loads a directo
 ## Install
 
 ```sh
-npm install dooms --save
+npm install booms --save
 ```
 
 ## Test
@@ -22,8 +22,8 @@ npm install dooms --save
 Download this repo
 
 ```sh
-git clone https://github.com/hiowenluke/dooms.git
-cd dooms
+git clone https://github.com/hiowenluke/booms.git
+cd booms
 npm install
 ```
 
@@ -98,13 +98,13 @@ module.exports = async (name, age) => {
 //      It can be omitted or replaced with other names such as "./biz", "./src", etc.
 //      It should be started with ".".
 
-require('dooms').initService('s1', './src');
+require('booms').initService('s1', './src');
 ```
 
 3\. Call like s1.say.hi()
 
 ```js
-const services = require('dooms').initClient();
+const services = require('booms').initClient();
 
 const main = async () => {
     const {s1} = await services();
@@ -118,7 +118,7 @@ main();
 4\. Call like call('s1:/say/hi')
 
 ```js
-const call = require('dooms').initCall();
+const call = require('booms').initCall();
 
 const main = async () => {
     const result = await call('s1:/say/hi', 'owen', 100);
@@ -154,7 +154,7 @@ const options = {
 
 Use it
 ```js
-require('dooms').initService('s1', './src', options);
+require('booms').initService('s1', './src', options);
 ```
 
 2\. For client
@@ -176,12 +176,12 @@ const options = {
 
 Use it
 ```js
-require('dooms').initClient(options);
+require('booms').initClient(options);
 ```
 
 Or
 ```js
-require('dooms').initCall(options);
+require('booms').initCall(options);
 ```
 
 ## Example
@@ -190,7 +190,7 @@ See files in directory [examples](./examples) to learn more.
 
 ## Performance
 
-Dooms is extended from [gRPC-node](https://github.com/grpc/grpc-node). It is as fast as gRPC-node, much faster than socket.io-based RPC. (See [Benchmark](https://github.com/hiowenluke/benchmark-easy))
+Booms is extended from [gRPC-node](https://github.com/grpc/grpc-node). It is as fast as gRPC-node, much faster than socket.io-based RPC. (See [Benchmark](https://github.com/hiowenluke/benchmark-easy))
 
 ## Why
 

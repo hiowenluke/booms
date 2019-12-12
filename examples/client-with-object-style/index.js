@@ -1,5 +1,5 @@
 
-const services = require('./lib/doomsClient');
+const services = require('./lib/boomsClient');
 
 const main = async () => {
 	const {s1, s2} = await services();

@@ -8,7 +8,7 @@ const wait = (ms = 1000) => {
 	})
 };
 
-describe('Dooms', () => {
+describe('Booms', () => {
 
 	before(async () => {
 		exec('node ../examples/service1');
