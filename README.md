@@ -1,7 +1,7 @@
 
 # Booms
 
-A RPC microservices framework for [Node.js](https://nodejs.org), loads a directory as a microservice, calls remote functions in it like **s1.say.hi()** or **call('s1:/say/hi')**. Booms is based on [gRPC-node](https://github.com/grpc/grpc-node), but no [proto](https://developers.google.com/protocol-buffers/docs/proto3) files needed, more easy to use.
+A high performance RPC microservices framework for [Node.js](https://nodejs.org), loads a directory as a microservice, calls remote functions in it like **s1.say.hi()** or **rpc('s1:/say/hi')**. Booms is based on [gRPC-node](https://github.com/grpc/grpc-node), but no [proto](https://developers.google.com/protocol-buffers/docs/proto3) files needed, more easy to use.
 
 ## Server Environment
 
@@ -80,14 +80,14 @@ node s1.js
 { msg: 'Hi, I am owen, 100 years old.' }
 ```
 
-### 3. Client: call like call('s1:/say/hi')
+### 3. Client: call like rpc('s1:/say/hi')
 
-1\) Open a new tab in your terminal, then create "call.js".
+1\) Open a new tab in your terminal, then create "rpc.js".
 
 ```js
-const call = require('booms').initCall();
+const rpc = require('booms').initRpc();
 const main = async () => {
-    const result = await call('s1:/say/hi', 'owen', 100);
+    const result = await rpc('s1:/say/hi', 'owen', 100);
     console.log(result);
 };
 main();
@@ -96,7 +96,7 @@ main();
 2\) Run
 
 ```sh
-node call.js
+node rpc.js
 ```
 
 ```sh
@@ -169,7 +169,7 @@ require('booms').initClient(options);
 
 Or
 ```js
-require('booms').initCall(options);
+require('booms').initRpc(options);
 ```
 
 ## Test
