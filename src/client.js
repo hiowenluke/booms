@@ -4,8 +4,8 @@ const keyPaths = require('keypaths');
 
 const config = require('./config');
 const Proto = require('./Proto');
-const myJson = require('./__lib/myJson');
 const myRedis = require('./__lib/myRedis');
+const getProxyPromise = require('./gRPC/getProxyPromise');
 
 let isInitialized;
 let isServicesFetched;
@@ -18,13 +18,7 @@ const attachCallFunction = (service, obj, path = '') => {
 		// If it is ending node, replace it with function
 		if (!Object.keys(node).length) {
 			obj[key] = (...args) => {
-				return new Promise(resolve => {
-					service.proxy({funcName: subPath, argsStr: JSON.stringify(args)}, (err, response) => {
-						const message = response.message;
-						const result = myJson.parse(message);
-						resolve(result);
-					});
-				});
+				return getProxyPromise(service, subPath, args);
 			};
 		}
 		else {
