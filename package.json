@@ -1,12 +1,15 @@
 {
   "name": "booms",
   "version": "1.1.1",
-  "description": "",
+  "description": "A high performance RPC microservices framework for Node.js, loads a directory as a microservice, calls remote functions in it like s1.say.hi() or rpc('s1:/say/hi'). Booms is based on gRPC-node, but no proto files needed, more easy to use.",
   "main": "index.js",
   "scripts": {
     "test": "cd test && mocha . --exit"
   },
-  "keywords": [],
+  "keywords": [
+    "rpc",
+    "microservices"
+  ],
   "author": "hi.owen.luke@gmail.com",
   "license": "MIT",
   "dependencies": {
