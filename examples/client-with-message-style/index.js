@@ -1,16 +1,16 @@
 
-const call = require('./lib/boomsCall');
+const rpc = require('./lib/boomsRpc');
 
 const main = async () => {
 	let result;
 
-	result = await call('s1:/about');
+	result = await rpc('s1:/about');
 	console.log(result); // "Microservices #1"
 
-	result = await call('s2:/about');
+	result = await rpc('s2:/about');
 	console.log(result); // "Microservices #2"
 
-	result = await call('s1:/say/hi', 'owen', 100);
+	result = await rpc('s1:/say/hi', 'owen', 100);
 	console.log(result); // { msg: 'Hi, I am owen, 100 years old.' }
 };
 
