@@ -4,8 +4,8 @@ const keyPaths = require('keypaths');
 
 const config = require('./config');
 const Proto = require('./Proto');
-const myJson = require('./__lib/myJson');
 const myRedis = require('./__lib/myRedis');
+const getProxyPromise = require('./gRPC/getProxyPromise');
 
 let isInitialized;
 let isServicesFetched;
@@ -15,13 +15,7 @@ const attachCallFunction = (service, apis) => {
 
 	apis.forEach(api => {
 		obj[api] = (...args) => {
-			return new Promise(resolve => {
-				service.proxy({funcName: api, argsStr: JSON.stringify(args)}, (err, response) => {
-					const message = response.message;
-					const result = myJson.parse(message);
-					resolve(result);
-				});
-			});
+			return getProxyPromise(service, api, args);
 		};
 	});
 
