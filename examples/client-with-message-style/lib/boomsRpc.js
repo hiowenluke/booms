@@ -5,5 +5,5 @@ const options = {
 	}
 };
 
-const call = require('../../../src').initCall(options);
+const call = require('../../../src').initRpc(options);
 module.exports = call;
