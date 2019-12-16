@@ -9,6 +9,7 @@ const Proto = require('./Proto');
 const myJson = require('./__lib/myJson');
 const myRedis = require('./__lib/myRedis');
 const ports = require('./__lib/ports');
+const rpcArgs = require('./gRPC/rpcArgs');
 
 const me = {
 	definition: [],
@@ -44,8 +45,10 @@ const me = {
 
 		const proxy = async (call, callback) => {
 			const funcName = call.request.funcName;
-			const argsStr = call.request.argsStr;
-			const args = JSON.parse(argsStr);
+			let argsStr = call.request.argsStr;
+			argsStr = rpcArgs.decode(argsStr);
+
+			let args = JSON.parse(argsStr);
 
 			const fn = keyPaths.get(this.source, funcName);
 			const result = await fn(...args);
