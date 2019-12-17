@@ -1,7 +1,7 @@
 
 # Booms
 
-A high performance RPC microservices framework for [Node.js](https://nodejs.org), loads a directory as a microservice, calls remote functions in it like **s1.say.hi()** or **rpc('s1:/say/hi')**. Booms is based on [gRPC-node](https://github.com/grpc/grpc-node), but it does not require you to write [proto](https://developers.google.com/protocol-buffers/docs/proto3) files, which is more easier to use.
+A high performance RPC microservices framework for [Node.js](https://nodejs.org), loads a directory as a microservice, calls remote functions in it like **s1.say.hi()** or **call('s1:/say/hi')**. Booms is based on [gRPC-node](https://github.com/grpc/grpc-node), but it does not require you to write [proto](https://developers.google.com/protocol-buffers/docs/proto3) files, which is more easier to use.
 
 ## Server Environment
 
@@ -27,12 +27,9 @@ npm install booms --save
 mkdir ./booms-demo && cd ./booms-demo
 npm init -y
 npm install booms --save
-
-# Create folders
-mkdir -p src/say
 ```
 
-1\) Create "./src/say/hi.js"
+1\) Create folders `mkdir -p src/say`, then create "./src/say/hi.js"
 
 ```js
 module.exports = async (name, age) => {
@@ -40,7 +37,7 @@ module.exports = async (name, age) => {
 };
 ```
 
-2\) Create "index.js"
+2\) Create "index.js".
 
 ```js
 require('booms').initService();
@@ -68,7 +65,7 @@ node boomsInit.js
 Booms remote services definitions have been saved to ./lib/services
 ```
 
-2\) Create "do.js", require the ./lib/services created above.
+2\) Create "do.js".
 
 ```js
 const {s1} = require('./lib/services');
@@ -86,14 +83,14 @@ node do.js
 { msg: 'Hi, I am owen, 100 years old.' }
 ```
 
-### 3. Client: call like rpc('s1:/say/hi')
+### 3. Client: call like call('s1:/say/hi')
 
-1\) Open a new tab in your terminal, then create "rpc.js".
+1\) Open a new tab in your terminal, then create "call.js".
 
 ```js
-const rpc = require('booms').initRpc();
+const call = require('booms').initCall();
 const main = async () => {
-    const result = await rpc('s1:/say/hi', 'owen', 100);
+    const result = await call('s1:/say/hi', 'owen', 100);
     console.log(result);
 };
 main();
@@ -102,7 +99,7 @@ main();
 2\) Run
 
 ```sh
-node rpc.js
+node call.js
 { msg: 'Hi, I am owen, 100 years old.' }
 ```
 
@@ -173,7 +170,7 @@ require('booms').initClient(servicesNames, folderName, options);
 
 Or
 ```js
-require('booms').initRpc(options);
+require('booms').initCall(options);
 ```
 
 ## Test
@@ -187,7 +184,7 @@ npm test
 
 ## Performance
 
-Booms is extended from [gRPC-node](https://github.com/grpc/grpc-node). It is as fast as gRPC-node, much faster than socket-based RPC framworks. (See [Benchmark](https://github.com/hiowenluke/benchmark-easy))
+Booms is extended from [gRPC-node](https://github.com/grpc/grpc-node). It is as fast as gRPC-node, much faster than socket-based and MQ-based RPC framworks. (See [Benchmark](https://github.com/hiowenluke/benchmark-easy))
 
 ## Why
 
