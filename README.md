@@ -61,7 +61,7 @@ Service s1 is running on port 50051...
 require('booms').initClient();
 ```
 
-Run it. (This will create **./lib/services** in current directory)
+Run it. (This will fetch the remote services definitions and save to **./lib/services** in current directory)
 
 ```sh
 node boomsInit.js
@@ -160,10 +160,10 @@ require('booms').initClient(options);
 ```
 ```js
 // The names of the remote services which will be fetched.
-// If it is omitted, Booms will fetch all remote services.
+// If it is omitted, Booms will fetch all remote services definitions.
 const servicesNames = ['s1', 's2']; 
 
-// The folder where the remote services data files will be stored.
+// The folder where the remote services definitions data files will be stored.
 // If it is omitted, it will be set as './lib/services'.
 const folderName = './lib/services'; 
 
