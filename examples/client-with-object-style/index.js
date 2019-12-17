@@ -1,7 +1,7 @@
 
 // Note:
-// 		Please run ./boomsInit.js first to
-// 		create services file before run this file
+// 		Please run ./boomsInit.js first to fetch the remote services definitions
+// 		and save the data files to ./lib/services before run this file
 
 const {s1, s2} = require('./lib/services');
 
