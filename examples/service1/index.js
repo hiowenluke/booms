@@ -4,7 +4,7 @@ const options = {
 	// Specify the gRPC options.
 	// It can be omitted if the host is "localhost".
 	gRPC: {
-		host: 'localhost',	  // gRPC host
+		host: 'localhost',
 	},
 
 	// Specify the Redis options.
@@ -18,13 +18,13 @@ const options = {
 	},
 };
 
-// "s1"
-//		The name of this microservice.
-//		The default value is "s1".
+// The name of this microservice.
+// If it is omitted, it will be set as "s1".
+const serviceName = 's1';
 
-// "./src"
-//		The root folder name of business function files.
-//		The default value is "./src"
-//		It should be started with ".".
+// The name of the folder which will be loaded.
+// It can be omitted if it is "./src".
+// It should be started with "."
+const folderName = './src';
 
-require('../../src').initService('s1', './src', options);
+require('../../src').initService(serviceName, folderName, options);
