@@ -12,6 +12,7 @@ const servicesNames = ['s1', 's2'];
 
 // The folder where the remote services data files will be stored.
 // If it is omitted, it will be set as './lib/services'.
+// It must be same as require('./lib/services') in index.js.
 const folderName = './lib/services';
 
 require('../../src').initClient(servicesNames, folderName, options);
