@@ -14,7 +14,7 @@ const me = {
 		return call.init(...args);
 	},
 
-	async initClient(...args) {
+	async fetchServices(...args) {
 		const pathToCaller = caller();
 		return await omg.do(pathToCaller, ...args);
 	}

@@ -15,4 +15,4 @@ const servicesNames = ['s1', 's2'];
 // It must be same as require('./lib/services') in index.js.
 const folderName = './lib/services';
 
-require('../../src').initClient(servicesNames, folderName, options);
+require('../../src').fetchServices(servicesNames, folderName, options);

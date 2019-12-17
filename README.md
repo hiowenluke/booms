@@ -55,7 +55,7 @@ Service s1 is running on port 50051...
 1\) Open a new tab in your terminal, then create "boomsInit.js".
 
 ```js
-require('booms').initClient();
+require('booms').fetchServices();
 ```
 
 Run it.
@@ -154,7 +154,7 @@ const options = {
 
 Use it
 ```js
-require('booms').initClient(options);
+require('booms').fetchServices(options);
 ```
 ```js
 // The names of the remote services which will be fetched.
@@ -165,7 +165,7 @@ const servicesNames = ['s1', 's2'];
 // If it is omitted, it will be set as './lib/services'.
 const folderName = './lib/services'; 
 
-require('booms').initClient(servicesNames, folderName, options);
+require('booms').fetchServices(servicesNames, folderName, options);
 ```
 
 Or
