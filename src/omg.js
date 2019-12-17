@@ -9,22 +9,26 @@ const myRedis = require('./__lib/myRedis');
 const defaultDestFolder = './lib/services';
 
 const parseArgs = (args) => {
-	const [a0, a1] = args;
-	let options, folder;
+	let options, folder, names;
 
-	if (typeof a0 === 'string') {
-		folder = a0;
-		options = a1;
-	}
-	else {
-		folder = a1;
-		options = a0;
-	}
+	args.forEach(arg => {
+		const type = typeof arg;
+		if (Array.isArray(arg)) {
+			names = arg;
+		}
+		else if (type === 'string') {
+			folder = arg;
+		}
+		else if (type === 'object') {
+			options = arg;
+		}
+	});
 
 	folder = folder || defaultDestFolder;
 	options = options || {};
+	names = names || [];
 
-	return [options, folder];
+	return [options, folder, names];
 };
 
 const createFiles = (destFolderPath) => {
@@ -36,11 +40,13 @@ const createFiles = (destFolderPath) => {
 	fx.copySync(sourceFolderPath, destFolderPath);
 };
 
-const getServicesInfos = async (options) => {
+const getServicesInfos = async (options, names) => {
 	const {redisConfig} = config.getAllConfigurations([options]);
 	myRedis.init(redisConfig);
 
-	const names = await myRedis.getAllServiceNames();
+	if (!names || !names.length) {
+		names = await myRedis.getAllServiceNames();
+	}
 
 	const infos = {};
 	for (let i = 0; i < names.length; i ++) {
@@ -130,13 +136,13 @@ const fixNodeModulesPath = (destFolder) => {
 
 const me = {
 	async do(caller, ...args) {
-		const [options, folder] = parseArgs(args);
+		const [options, folder, names] = parseArgs(args);
 
 		const destRoot = path.resolve(caller, '..');
 		const destFolderPath = path.resolve(destRoot, folder);
 		createFiles(destFolderPath);
 
-		const servicesInfos = await getServicesInfos(options);
+		const servicesInfos = await getServicesInfos(options, names);
 		const servicesApis = getServicesApis(servicesInfos);
 
 		writeToDataFile(destFolderPath, servicesInfos, servicesApis);
