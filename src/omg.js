@@ -22,6 +22,8 @@ const parseArgs = (args) => {
 	}
 
 	folder = folder || defaultDestFolder;
+	options = options || {};
+
 	return [options, folder];
 };
 
