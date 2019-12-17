@@ -49,6 +49,8 @@ const me = {
 			const obj = attachCallFunction(service, apis);
 			this.services[name] = obj;
 		}
+
+		myRedis.disconnect();
 	},
 
 	async get(apiPath, ...args) {

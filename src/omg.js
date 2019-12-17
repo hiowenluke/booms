@@ -49,6 +49,7 @@ const getServicesInfos = async (options) => {
 		infos[name] = info;
 	}
 
+	myRedis.disconnect();
 	return infos;
 };
 

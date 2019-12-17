@@ -27,6 +27,8 @@ const me = {
 			await this.calcServicePort(boomsConfig);
 			await this.saveToRedis(boomsConfig, grpcConfig, redisConfig);
 			await this.createService(boomsConfig);
+
+			myRedis.disconnect();
 		}
 		catch(e) {
 			console.log(e);
