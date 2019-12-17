@@ -113,22 +113,14 @@ See [examples](./examples) to learn more.
 
 ### 1. Server
 
+The options can be omitted if it is same as the following.
 ```js
 const options = {
-
-    // Specify the gRPC options.
-    // It can be omitted if the host is "localhost".
     gRPC: {
-        host: 'localhost',      // gRPC host
+        host: 'localhost'
     },
-
-    // Specify the Redis options.
-    // It can be omitted if it is the default options (like below) of Redis.
     redis: {
-        host: 'localhost',      // Redis host
-        // port: '6379',           // Redis port
-        // db: 0,                  // Redis database number
-        // family: 4,              // 4 (IPv4) or 6 (IPv6)
+        host: 'localhost'
     },
 };
 ```
@@ -138,31 +130,26 @@ Use it
 require('booms').initService(options);
 ```
 ```js
-require('booms').initService('s1', './src', options);
+// The name of this microservice.
+// If it is omitted, it will be set as "s1".
+const serviceName = 's1';
 
-// "s1"
-//      The name of this microservice.
-//      The default value is "s1".
+// The name of the folder which will be loaded.
+// It can be omitted if it is "./src".
+// It should be started with "."
+const folderName = './src'; 
 
-// "./src"
-//      The root folder name of business function files.
-//      The default value is "./src"
-//      It should be started with ".".
+require('booms').initService(serviceName, folderName, options);
 ```
 
 ### 2. Client
 
-Only redis options required.
+Only redis options required. The options can be omitted if it is same as the following.
 
 ```js
 const options = {
-    // Specify the Redis options.
-    // It can be omitted if it is the default options (like below) of Redis.
     redis: {
-        host: 'localhost',      // Redis host
-        // port: '6379',           // Redis port
-        // db: 0,                  // Redis database number
-        // family: 4,              // 4 (IPv4) or 6 (IPv6)
+        host: 'localhost'
     },
 };
 ```
@@ -172,15 +159,15 @@ Use it
 require('booms').initClient(options);
 ```
 ```js
-require('booms').initClient(['s1', 's2'], './lib/services', options);
+// The names of the remote services which will be fetched.
+// If it is omitted, Booms will fetch all remote services.
+const servicesNames = ['s1', 's2']; 
 
-// ['s1', 's2']
-//    The names of the remote services which will be fetched.
-//    If it is omitted, then Booms will fetch all remote services.
+// The folder where the remote services data files will be stored.
+// If it is omitted, it will be set as './lib/services'.
+const folderName = './lib/services'; 
 
-// './lib/services'
-//    The folder where the remote services data files will be stored.
-//    If it is omitted, it will be set as './lib/services'.
+require('booms').initClient(servicesNames, folderName, options);
 ```
 
 Or
