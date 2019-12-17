@@ -148,7 +148,7 @@ const me = {
 		writeToDataFile(destFolderPath, servicesInfos, servicesApis);
 		fixNodeModulesPath(destFolderPath);
 
-		console.log('Booms Services saved to ' + folder);
+		console.log('Booms remote services definitions have been saved to ' + folder);
 	}
 };
 
