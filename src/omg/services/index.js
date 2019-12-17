@@ -1,6 +1,5 @@
 
 const call = require('./booms/call');
-const keyPaths = require('keypaths');
 const data = require('./data');
 
 const attachCallFunction = (serviceName, host, port, obj, path = '') => {
