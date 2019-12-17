@@ -61,10 +61,11 @@ Service s1 is running on port 50051...
 require('booms').initClient();
 ```
 
-Run it. (This will fetch the remote services definitions and save to **./lib/services** in current directory)
+Run it.
 
 ```sh
 node boomsInit.js
+Booms remote services definitions have been saved to ./lib/services
 ```
 
 2\) Create "do.js", require the ./lib/services created above.
