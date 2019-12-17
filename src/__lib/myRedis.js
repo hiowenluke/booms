@@ -48,6 +48,10 @@ const me = {
 
 	async get(key) {
 		return await this.redis.get(this.prefix + '#' + key);
+	},
+
+	disconnect() {
+		this.redis.disconnect();
 	}
 };
 
