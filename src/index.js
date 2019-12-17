@@ -1,7 +1,7 @@
 
 const caller = require('caller');
 const service = require('./service');
-const rpc = require('./rpc');
+const call = require('./call');
 const omg = require('./omg');
 
 const me = {
@@ -10,8 +10,8 @@ const me = {
 		return await service.init(pathToCaller, ...args);
 	},
 
-	initRpc(...args) {
-		return rpc.init(...args);
+	initCall(...args) {
+		return call.init(...args);
 	},
 
 	async initClient(...args) {
