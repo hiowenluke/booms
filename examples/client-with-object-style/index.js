@@ -1,4 +1,8 @@
 
+// Note:
+// 		Please run ./boomsInit.js first to
+// 		create services file before run this file
+
 const {s1, s2} = require('./lib/services');
 
 const main = async () => {
