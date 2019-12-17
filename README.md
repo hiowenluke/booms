@@ -1,7 +1,7 @@
 
 # Booms
 
-A high performance RPC microservices framework for [Node.js](https://nodejs.org), loads a directory as a microservice, calls remote functions in it like **s1.say.hi()** or **rpc('s1:/say/hi')**. Booms is based on [gRPC-node](https://github.com/grpc/grpc-node), but no [proto](https://developers.google.com/protocol-buffers/docs/proto3) files needed, more easy to use.
+A high performance RPC microservices framework for [Node.js](https://nodejs.org), loads a directory as a microservice, calls remote functions in it like **s1.say.hi()** or **rpc('s1:/say/hi')**. Booms is based on [gRPC-node](https://github.com/grpc/grpc-node), but it does not require you to write [proto](https://developers.google.com/protocol-buffers/docs/proto3) files, which is more easier to use.
 
 ## Server Environment
 
@@ -50,33 +50,38 @@ require('booms').initService();
 
 ```sh
 node index.js
-```
-
-```sh
 Service s1 is running on port 50051...
 ```
 
 ### 2. Client: call like s1.say.hi()
 
-1\) Open a new tab in your terminal, then create "s1.js".
+1\) Open a new tab in your terminal, then create "boomsInit.js".
 
 ```js
-const services = require('booms').initClient();
+require('booms').initClient();
+```
+
+Run it. (This will create **./lib/services** in current directory)
+
+```sh
+node boomsInit.js
+```
+
+2\) Create "do.js", require the ./lib/services created above.
+
+```js
+const {s1} = require('./lib/services');
 const main = async () => {
-    const {s1} = await services();
     const result = await s1.say.hi('owen', 100);
     console.log(result);
 };
 main();
 ```
 
-2\) Run
+3\) Run
 
 ```sh
-node s1.js
-```
-
-```sh
+node do.js
 { msg: 'Hi, I am owen, 100 years old.' }
 ```
 
@@ -97,9 +102,6 @@ main();
 
 ```sh
 node rpc.js
-```
-
-```sh
 { msg: 'Hi, I am owen, 100 years old.' }
 ```
 
@@ -109,7 +111,7 @@ See [examples](./examples) to learn more.
 
 ## Options
 
-### 1. For server
+### 1. Server
 
 ```js
 const options = {
@@ -133,6 +135,9 @@ const options = {
 
 Use it
 ```js
+require('booms').initService(options);
+```
+```js
 require('booms').initService('s1', './src', options);
 
 // "s1"
@@ -145,7 +150,7 @@ require('booms').initService('s1', './src', options);
 //      It should be started with ".".
 ```
 
-### 2. For client
+### 2. Client
 
 Only redis options required.
 
@@ -166,6 +171,17 @@ Use it
 ```js
 require('booms').initClient(options);
 ```
+```js
+require('booms').initClient(['s1', 's2'], './lib/services', options);
+
+// ['s1', 's2']
+//    The names of the remote services which will be fetched.
+//    If it is omitted, then Booms will fetch all remote services.
+
+// './lib/services'
+//    The folder where the remote services data files will be stored.
+//    If it is omitted, it will be set as './lib/services'.
+```
 
 Or
 ```js
@@ -183,7 +199,7 @@ npm test
 
 ## Performance
 
-Booms is extended from [gRPC-node](https://github.com/grpc/grpc-node). It is as fast as gRPC-node, much faster than socket.io-based RPC. (See [Benchmark](https://github.com/hiowenluke/benchmark-easy))
+Booms is extended from [gRPC-node](https://github.com/grpc/grpc-node). It is as fast as gRPC-node, much faster than socket-based RPC framworks. (See [Benchmark](https://github.com/hiowenluke/benchmark-easy))
 
 ## Why
 
