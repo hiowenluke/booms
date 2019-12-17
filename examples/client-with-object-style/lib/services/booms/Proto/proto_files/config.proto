@@ -1,0 +1,16 @@
+
+	syntax = "proto3";
+	package config;
+	
+	service Main {
+		rpc Proxy (Input) returns (Output) {}
+	}
+	
+	message Input {
+		string funcName = 1;
+		string argsStr = 2;
+	}
+	
+	message Output {
+		string message = 1;
+	}
