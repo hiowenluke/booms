@@ -1,5 +1,5 @@
 
-const rpc = require('./lib/boomsRpc');
+const rpc = require('./lib/rpc');
 
 const main = async () => {
 	let result;
