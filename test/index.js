@@ -27,7 +27,11 @@ describe('Booms', () => {
 	});
 
 	it('object style', async () => {
-		await test('../examples/client-with-object-style/index');
+		await test('../examples/client/index');
+	});
+
+	it('object style lite', async () => {
+		await test('../examples/client-lite/index');
 	});
 
 	it('message style', async () => {
