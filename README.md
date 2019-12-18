@@ -37,7 +37,7 @@ npm init -y
 npm install booms --save
 ```
 
-1\) Create folders `mkdir -p src/say`, then create "./src/say/hi.js"
+1\) Run `mkdir -p src/say` to create folders, then create "./src/say/hi.js"
 
 ```js
 module.exports = async (name, age) => {
@@ -60,11 +60,12 @@ Service s1 is running on port 50051...
 
 ### 2. Client
 
-Open a new tab in your terminal first.
+Open a new tab in your terminal first 
 
 0\) Initialize this client
 
 ```sh
+cd ..
 mkdir ./client && cd ./client
 npm init -y
 npm install booms --save
