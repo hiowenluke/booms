@@ -17,6 +17,6 @@ const folderName = './boomsServices';
 
 // The timer for redoing fetch (unit is seconds).
 // If it is omitted, Booms will does fetch only once.
-const timer = 3;
+const timer = 10;
 
 require('../../src').fetchServices(servicesNames, folderName, options, timer);
