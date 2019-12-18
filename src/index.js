@@ -1,6 +1,7 @@
 
 const caller = require('caller');
 const service = require('./service');
+const client = require('./client');
 const call = require('./call');
 const omg = require('./omg');
 
@@ -12,6 +13,10 @@ const me = {
 
 	initCall(...args) {
 		return call.init(...args);
+	},
+
+	initClient(...args) {
+		return client.init(...args);
 	},
 
 	async fetchServices(...args) {
