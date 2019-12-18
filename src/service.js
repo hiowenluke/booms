@@ -47,10 +47,10 @@ const me = {
 
 		const proxy = async (call, callback) => {
 			const funcName = call.request.funcName;
-			let argsStr = call.request.argsStr;
-			argsStr = rpcArgs.decode(argsStr);
+			const argsStr = call.request.argsStr;
 
 			let args = JSON.parse(argsStr);
+			args = rpcArgs.decode(args);
 
 			const fn = keyPaths.get(this.source, funcName);
 			const result = await fn(...args);
