@@ -220,6 +220,7 @@ const servicesNames = ['s1', 's2'];
 
 // The folder where the remote services definitions will be stored.
 // If it is omitted, it will be set as './boomsServices'.
+// It should be started with "."
 const folderName = './boomsServices'; 
 
 // The timer for redoing fetch (unit is seconds).
