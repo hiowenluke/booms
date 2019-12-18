@@ -1,5 +1,5 @@
 
-const infos = {
+const services = {
     "s1": {
         "host": "localhost",
         "port": 50051
@@ -22,4 +22,4 @@ const apis = {
     }
 };
 
-module.exports = {infos, apis};
+module.exports = {services, apis};

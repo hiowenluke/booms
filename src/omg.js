@@ -88,7 +88,7 @@ const getServicesApis = (infos) => {
 };
 
 const writeToDataFile = (destFolder, infos, apis) => {
-	const filePath = destFolder + '/data.js';
+	const filePath = destFolder + '/definitions.js';
 	const content = fx.readFileSync(filePath, 'utf-8');
 
 	// Only need host and port of info

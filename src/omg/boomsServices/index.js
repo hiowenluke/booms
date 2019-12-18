@@ -1,6 +1,6 @@
 
 const call = require('./booms/call');
-const data = require('./data');
+const definitions = require('./definitions');
 
 let isInitialized;
 
@@ -23,11 +23,11 @@ const attachCallFunction = (serviceName, host, port, obj, path = '') => {
 const init = () => {
 	if (isInitialized) return;
 
-	const {infos, apis} = data;
-	const names = Object.keys(infos);
+	const {services, apis} = definitions;
+	const names = Object.keys(services);
 	for (let i = 0; i < names.length; i ++) {
 		const name = names[i];
-		const {host, port} = infos[name];
+		const {host, port} = services[name];
 		const obj = apis[name];
 		attachCallFunction(name, host, port, obj);
 	}
@@ -36,4 +36,4 @@ const init = () => {
 };
 
 init();
-module.exports = data.apis;
+module.exports = definitions.apis;
