@@ -57,6 +57,8 @@ const me = {
 
 			this.services[name] = obj;
 		}
+
+		myRedis.disconnect();
 	},
 
 	async get(...names) {
