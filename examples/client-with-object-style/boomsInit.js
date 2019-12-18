@@ -11,9 +11,9 @@ const options = {
 const servicesNames = ['s1', 's2'];
 
 // The folder where the remote services definitions data files will be stored.
-// If it is omitted, it will be set as './lib/services'.
-// It must be same as require('./lib/services') in index.js.
-const folderName = './lib/services';
+// If it is omitted, it will be set as './boomsServices'.
+// It must be same as require('./boomsServices') in index.js.
+const folderName = './boomsServices';
 
 // The timer for redoing fetch (unit is seconds).
 // If it is omitted, Booms will does fetch only once.

@@ -7,7 +7,7 @@ const readline = require('readline');
 const config = require('./config');
 const myRedis = require('./__lib/myRedis');
 
-const defaultDestFolder = './lib/services';
+const defaultDestFolder = './boomServices';
 
 const parseArgs = (args) => {
 	let options, folder, names, timer;
@@ -41,7 +41,7 @@ const createFiles = (destFolderPath) => {
 	const parentPath = destFolderPath.substr(0, lastIndex);
 	fx.mkdirsSync(parentPath);
 
-	const sourceFolderPath = path.resolve(__dirname, './omg/services');
+	const sourceFolderPath = path.resolve(__dirname, './omg/' + defaultDestFolder);
 	fx.copySync(sourceFolderPath, destFolderPath);
 };
 

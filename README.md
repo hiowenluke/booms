@@ -61,14 +61,14 @@ require('booms').fetchServices();
 Run it
 
 ```sh
-[Booms] The remote services definitions will be saved to ./lib/services
+[Booms] The remote services definitions will be saved to ./boomsServices
 [09:43:54] Done.
 ```
 
 2\) Create "do.js".
 
 ```js
-const {s1} = require('./lib/services');
+const {s1} = require('./boomsServices');
 const main = async () => {
     const result = await s1.say.hi('owen', 100);
     console.log(result);
@@ -163,8 +163,8 @@ Or
 const servicesNames = ['s1', 's2']; 
 
 // The folder where the remote services definitions data files will be stored.
-// If it is omitted, it will be set as './lib/services'.
-const folderName = './lib/services'; 
+// If it is omitted, it will be set as './boomsServices'.
+const folderName = './boomsServices'; 
 
 // The timer for redoing fetch (unit is seconds).
 // If it is omitted, Booms will does fetch only once.
