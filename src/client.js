@@ -10,7 +10,7 @@ const getProxyPromise = require('./gRPC/getProxyPromise');
 let isInitialized;
 let isServicesFetched;
 
-const attachCallFunction = (service, obj, path = '') => {
+const attachCallFunction = (service, name, obj, path = '') => {
 	Object.keys(obj).forEach(key => {
 		const node = obj[key];
 		const subPath = path + key;
@@ -18,12 +18,12 @@ const attachCallFunction = (service, obj, path = '') => {
 		// If it is ending node, replace it with function
 		if (!Object.keys(node).length) {
 			obj[key] = (...args) => {
-				return getProxyPromise(service, subPath, args);
+				return getProxyPromise(service, name, subPath, args);
 			};
 		}
 		else {
 			// Recursion
-			attachCallFunction(service, node, subPath + '.');
+			attachCallFunction(service, name, node, subPath + '.');
 		}
 	});
 };
@@ -53,7 +53,7 @@ const me = {
 			const service = new proto.Main(`${host}:${port}`, grpc.credentials.createInsecure());
 
 			const obj = keyPaths.toObject(apis);
-			attachCallFunction(service, obj);
+			attachCallFunction(service, name, obj);
 
 			this.services[name] = obj;
 		}

@@ -17,10 +17,13 @@ const services = {
 	}
 };
 
-const getProxyPromise = (service, api, args) => {
+const getProxyPromise = (service, name, api, args) => {
 	return new Promise(resolve => {
 		args = args.map(item => item === undefined ? UNDEFINED : item);
 		service.proxy({funcName: api, argsStr: JSON.stringify(args)}, (err, response) => {
+			if (!response) {
+				throw new Error(`Service ${name} is not available. Is it running?`);
+			}
 			const message = response.message;
 			const result = message === UNDEFINED ? undefined : JSON.parse(message);
 			resolve(result);
@@ -30,7 +33,7 @@ const getProxyPromise = (service, api, args) => {
 
 const fn = (name, host, port, subPath, args) => {
 	const service = services.get(name, host, port);
-	return getProxyPromise(service, subPath, args);
+	return getProxyPromise(service, name, subPath, args);
 };
 
 module.exports = fn;

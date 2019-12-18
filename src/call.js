@@ -9,12 +9,12 @@ const getProxyPromise = require('./gRPC/getProxyPromise');
 let isInitialized;
 let isServicesFetched;
 
-const attachCallFunction = (service, apis) => {
+const attachCallFunction = (service, name, apis) => {
 	const obj = {};
 
 	apis.forEach(api => {
 		obj[api] = (...args) => {
-			return getProxyPromise(service, api, args);
+			return getProxyPromise(service, name, api, args);
 		};
 	});
 
@@ -45,7 +45,7 @@ const me = {
 			const proto = Proto.create(name);
 			const service = new proto.Main(`${host}:${port}`, grpc.credentials.createInsecure());
 
-			const obj = attachCallFunction(service, apis);
+			const obj = attachCallFunction(service, name, apis);
 			this.services[name] = obj;
 		}
 
