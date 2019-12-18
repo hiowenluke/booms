@@ -1,7 +1,9 @@
 
 # Booms
 
-A high performance RPC microservices framework for [Node.js](https://nodejs.org), loads a directory as a microservice, calls remote functions in it like **s1.say.hi()** or **call('s1:/say/hi')**. Booms is based on [gRPC-node](https://github.com/grpc/grpc-node), but it does not require you to write [proto](https://developers.google.com/protocol-buffers/docs/proto3) files, which is more easier to use.
+A high performance RPC microservices framework for [Node.js](https://nodejs.org). With Booms, we can load a module directory as a service, call the remote functions in it like **s1.say.hi()**, same as we do it with local files. 
+
+Booms is based on [gRPC-node](https://github.com/grpc/grpc-node), but it does not require you to write [proto](https://developers.google.com/protocol-buffers/docs/proto3) files, which is more easier to use.
 
 ## Server Environment
 
@@ -19,12 +21,18 @@ npm install booms --save
 
 ## TRY IT! (in under 5 minutes)
 
-### 1. Server
-
-0\) Initialize a demo project
+Create a demo folder first.
 
 ```sh
 mkdir ./booms-demo && cd ./booms-demo
+```
+
+### 1. Server
+
+0\) Initialize this server
+
+```sh
+mkdir ./server && cd ./server
 npm init -y
 npm install booms --save
 ```
@@ -50,9 +58,19 @@ node index.js
 Service s1 is running on port 50051...
 ```
 
-### 2. Client: call like s1.say.hi()
+### 2. Client
 
-1\) Open a new tab in your terminal, then create "init.js".
+Open a new tab in your terminal first.
+
+0\) Initialize this client
+
+```sh
+mkdir ./client && cd ./client
+npm init -y
+npm install booms --save
+```
+
+1\) Create "boomsInit.js".
 
 ```js
 require('booms').fetchServices();
@@ -61,11 +79,12 @@ require('booms').fetchServices();
 Run it
 
 ```sh
+node boomsInit.js
 [Booms] The remote services definitions will be saved to ./boomsServices
 [09:43:54] Done.
 ```
 
-2\) Create "do.js".
+2\) Create "index.js".
 
 ```js
 const {s1} = require('./boomsServices');
@@ -79,37 +98,74 @@ main();
 3\) Run
 
 ```sh
-node do.js
+node index.js
 { msg: 'Hi, I am owen, 100 years old.' }
 ```
 
-### 3. Client: call like call('s1:/say/hi')
+## Usage
 
-1\) Open a new tab in your terminal, then create "call.js".
+### 1\. Server
+
+1\) Install Booms: `npm install booms --save`
+2\) Create business function files like below in a directory such as "[./src](./examples/service1/src)" (or any other name)
 
 ```js
-const call = require('booms').initCall();
+// ./src/say.hi.js
+module.exports = async (name, age) => {
+    return {msg: `Hi, I am ${name}, ${age} years old.`};
+};
+```
+3\) Create "index.js"
+
+```js
+require('booms').initService();
+```
+
+4\) Run
+
+```sh
+node index.js
+Service s1 is running on port 50051...
+```
+
+### 2\. Client
+
+1\) Install Booms: `npm install booms --save`
+2\) Create "boomsInit.js"
+
+```js
+require('booms').fetchServices();
+```
+
+Run it
+
+```sh
+node boomsInit.js
+[Booms] The remote services definitions will be saved to ./boomsServices
+[09:43:54] Done.
+```
+
+3\) Call the remote functions
+
+```js
+// do.js
+const {s1} = require('./boomsServices');
 const main = async () => {
-    const result = await call('s1:/say/hi', 'owen', 100);
+    const result = await s1.say.hi('owen', 100);
     console.log(result);
 };
 main();
 ```
 
-2\) Run
-
-```sh
-node call.js
-{ msg: 'Hi, I am owen, 100 years old.' }
-```
+As we can see, we can require the remote services and call the remote functions as same as do it with local files. That is, we can  easily disassemble a project, move sub modules directories to any other location and load them as microservices any time without the caller having to adjust any code. 
 
 ## Example
 
-See [examples](./examples) to learn more.
+See files in [examples](./examples) to learn more.
 
 ## Options
 
-### .initService(options)
+### Server
 
 ```js
 // The options can be omitted if it is same as the following.
@@ -141,7 +197,7 @@ const folderName = './src';
 require('booms').initService(serviceName, folderName, options);
 ```
 
-### .fetchServices(options)
+### Client
 
 ```js
 // Only redis options required. 
@@ -168,21 +224,10 @@ const folderName = './boomsServices';
 
 // The timer for redoing fetch (unit is seconds).
 // If it is omitted, Booms will does fetch only once.
+// When the remote services change frequently, use it.
 const timer = 30;
 
 require('booms').fetchServices(servicesNames, folderName, options, timer);
-```
-
-### .initCall(options)
-
-```js
-const options = {
-    redis: {
-        host: 'localhost'
-    },
-};
-
-require('booms').initCall(options);
 ```
 
 ## Test
