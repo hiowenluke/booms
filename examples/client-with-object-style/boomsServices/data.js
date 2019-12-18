@@ -12,6 +12,7 @@ const infos = {
 
 const apis = {
     "s1": {
+        "about": {},
         "say": {
             "hi": {}
         }
