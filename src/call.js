@@ -1,6 +1,5 @@
 
 const grpc = require('grpc');
-const keyPaths = require('keypaths');
 
 const config = require('./config');
 const Proto = require('./Proto');
