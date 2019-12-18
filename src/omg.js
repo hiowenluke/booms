@@ -7,7 +7,7 @@ const readline = require('readline');
 const config = require('./config');
 const myRedis = require('./__lib/myRedis');
 
-const defaultDestFolder = './boomServices';
+const defaultDestFolder = './boomsServices';
 
 const parseArgs = (args) => {
 	let options, folder, names, timer;
