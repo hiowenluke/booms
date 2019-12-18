@@ -1,7 +1,7 @@
 
 # Booms
 
-A high performance RPC microservices framework for [Node.js](https://nodejs.org). With Booms, we can load a module directory as a service, call the remote functions in it like **s1.say.hi()**, same as we do it with local files. 
+A high performance and easy-to-use RPC microservices framework for [Node.js](https://nodejs.org). With Booms, we can load a directory as a service, call the remote functions in it like **s1.say.hi()**, same as we do it with local files. 
 
 Booms is based on [gRPC-node](https://github.com/grpc/grpc-node), but it does not require you to write [proto](https://developers.google.com/protocol-buffers/docs/proto3) files, which is more easier to use.
 
