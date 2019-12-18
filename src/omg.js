@@ -2,6 +2,7 @@
 const fx = require('fs-extra');
 const path = require('path');
 const keyPaths = require('keypaths');
+const readline = require('readline');
 
 const config = require('./config');
 const myRedis = require('./__lib/myRedis');
@@ -9,7 +10,7 @@ const myRedis = require('./__lib/myRedis');
 const defaultDestFolder = './lib/services';
 
 const parseArgs = (args) => {
-	let options, folder, names;
+	let options, folder, names, timer;
 
 	args.forEach(arg => {
 		const type = typeof arg;
@@ -22,13 +23,17 @@ const parseArgs = (args) => {
 		else if (type === 'object') {
 			options = arg;
 		}
+		else if (type === 'number') {
+			timer = arg;
+		}
 	});
 
 	folder = folder || defaultDestFolder;
 	options = options || {};
 	names = names || [];
+	timer = timer || 0;
 
-	return [options, folder, names];
+	return [options, folder, names, timer];
 };
 
 const createFiles = (destFolderPath) => {
@@ -134,12 +139,34 @@ const fixNodeModulesPath = (destFolder) => {
 	});
 };
 
+const done = () => {
+	const date = new Date();
+	const hhmmss = date.toLocaleTimeString('en-US', { hour12: false });
+
+	const str = `[${hhmmss}] Done.`;
+	readline.moveCursor(process.stdout, 0, -1); // move cursor to up line
+	console.log(str);
+};
+
 const me = {
 	async do(caller, ...args) {
-		const [options, folder, names] = parseArgs(args);
-
+		const [options, folder, names, timer] = parseArgs(args);
 		const destRoot = path.resolve(caller, '..');
 		const destFolderPath = path.resolve(destRoot, folder);
+
+		console.log(`[Booms] The remote services definitions will be saved to ${folder}`);
+		process.stdout.write('\n'); // add a "\n" for done()
+
+		await this.once(destFolderPath, options, folder, names);
+
+		if (timer) {
+			setInterval(async () => {
+				await this.once(destFolderPath, options, folder, names);
+			}, timer * 1000);
+		}
+	},
+
+	async once(destFolderPath, options, folder, names) {
 		createFiles(destFolderPath);
 
 		const servicesInfos = await getServicesInfos(options, names);
@@ -148,7 +175,7 @@ const me = {
 		writeToDataFile(destFolderPath, servicesInfos, servicesApis);
 		fixNodeModulesPath(destFolderPath);
 
-		console.log('Booms remote services definitions have been saved to ' + folder);
+		done(folder);
 	}
 };
 
