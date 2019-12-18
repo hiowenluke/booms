@@ -52,17 +52,17 @@ Service s1 is running on port 50051...
 
 ### 2. Client: call like s1.say.hi()
 
-1\) Open a new tab in your terminal, then create "boomsInit.js".
+1\) Open a new tab in your terminal, then create "init.js".
 
 ```js
 require('booms').fetchServices();
 ```
 
-Run it.
+Run it
 
 ```sh
-node boomsInit.js
-Booms remote services definitions have been saved to ./lib/services
+[Booms] The remote services definitions will be saved to ./lib/services
+[09:43:54] Done.
 ```
 
 2\) Create "do.js".
@@ -109,10 +109,10 @@ See [examples](./examples) to learn more.
 
 ## Options
 
-### 1. Server
+### .initService(options)
 
-The options can be omitted if it is same as the following.
 ```js
+// The options can be omitted if it is same as the following.
 const options = {
     gRPC: {
         host: 'localhost'
@@ -121,12 +121,12 @@ const options = {
         host: 'localhost'
     },
 };
-```
 
-Use it
-```js
 require('booms').initService(options);
 ```
+
+Or
+
 ```js
 // The name of this microservice.
 // If it is omitted, it will be set as "s1".
@@ -137,25 +137,26 @@ const serviceName = 's1';
 // It should be started with "."
 const folderName = './src'; 
 
+// The order of the parameters can be arbitrary.
 require('booms').initService(serviceName, folderName, options);
 ```
 
-### 2. Client
-
-Only redis options required. The options can be omitted if it is same as the following.
+### .fetchServices(options)
 
 ```js
+// Only redis options required. 
+// The options can be omitted if it is same as the following.
 const options = {
     redis: {
         host: 'localhost'
     },
 };
-```
 
-Use it
-```js
 require('booms').fetchServices(options);
 ```
+
+Or
+
 ```js
 // The names of the remote services which will be fetched.
 // If it is omitted, Booms will fetch all remote services definitions.
@@ -165,11 +166,22 @@ const servicesNames = ['s1', 's2'];
 // If it is omitted, it will be set as './lib/services'.
 const folderName = './lib/services'; 
 
-require('booms').fetchServices(servicesNames, folderName, options);
+// The timer for redoing fetch (unit is seconds).
+// If it is omitted, Booms will does fetch only once.
+const timer = 30;
+
+require('booms').fetchServices(servicesNames, folderName, options, timer);
 ```
 
-Or
+### .initCall(options)
+
 ```js
+const options = {
+    redis: {
+        host: 'localhost'
+    },
+};
+
 require('booms').initCall(options);
 ```
 
