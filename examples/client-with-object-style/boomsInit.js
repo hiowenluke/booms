@@ -10,7 +10,7 @@ const options = {
 // If it is omitted, Booms will fetch all remote services definitions.
 const servicesNames = ['s1', 's2'];
 
-// The folder where the remote services definitions data files will be stored.
+// The folder where the remote services definitions will be stored.
 // If it is omitted, it will be set as './boomsServices'.
 // It must be same as require('./boomsServices') in index.js.
 const folderName = './boomsServices';
