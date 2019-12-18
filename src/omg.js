@@ -18,7 +18,15 @@ const parseArgs = (args) => {
 			names = arg;
 		}
 		else if (type === 'string') {
-			folder = arg;
+
+			// './src'
+			if (arg.substr(0, 1) === '.') {
+				folder = arg;
+			}
+			else {
+				// 's1'
+				names = [arg];
+			}
 		}
 		else if (type === 'object') {
 			options = arg;
