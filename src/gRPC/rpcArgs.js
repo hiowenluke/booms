@@ -4,8 +4,8 @@ const me = {
 		return args.map(item => item === undefined ? '__undefined__' : item);
 	},
 
-	decode(argsStr) {
-		return argsStr.replace(/__undefined__/g, undefined);
+	decode(args) {
+		return args.map(item => item === '__undefined__' ? undefined : item);
 	}
 };
 
