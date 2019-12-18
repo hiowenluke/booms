@@ -15,4 +15,8 @@ const servicesNames = ['s1', 's2'];
 // It must be same as require('./lib/services') in index.js.
 const folderName = './lib/services';
 
-require('../../src').fetchServices(servicesNames, folderName, options);
+// The timer for redoing fetch (unit is seconds).
+// If it is omitted, Booms will does fetch only once.
+const timer = 3;
+
+require('../../src').fetchServices(servicesNames, folderName, options, timer);
