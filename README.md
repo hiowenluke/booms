@@ -120,6 +120,7 @@ module.exports = async (name, age) => {
 3\) Create file "index.js" and run it.
 
 ```js
+// This will start a server named "s1" (the default name)
 require('booms').server.init();
 ```
 
@@ -127,20 +128,22 @@ require('booms').server.init();
 
 1\) Install Booms: `npm install booms --save`
 
-2\) Create file "boomsInit.js" and run it to save the remote services definitions to local directory "./boomsServers".
+2\) Create file "boomsInit.js" and run it.
 
 ```js
+// This will save the remote services definitions 
+// to local directory "./boomsServers".
 require('booms').client.fetchServers();
 ```
 
 3\) Call the remote functions like below.
 
 ```js
-// The s1 is the name of the server which we created above
+// The "s1" is the name of the server which we created above
 const {s1} = require('./boomsServers');
 const main = async () => {
     const result = await s1.say.hi('owen', 100);
-    console.log(result);
+    console.log(result); // { msg: 'Hi, I am owen, 100 years old.' }
 };
 main();
 ```
@@ -156,7 +159,7 @@ See files in [examples](./examples) to learn more.
 ```js
 // The options can be omitted if it is same as the following.
 const options = {
-    gRPC: {
+    server: {
         host: 'localhost'
     },
     redis: {
@@ -202,7 +205,7 @@ Or
 ```js
 // The names of the remote services which will be fetched.
 // If it is omitted, Booms will fetch all remote services definitions.
-const serverNames = ['s1', 's2']; 
+const serverNames = ['s1', 's2']; // Or "s1" if you just need it.
 
 // The folder where the remote services definitions will be stored.
 // If it is omitted, it will be set as './boomsServers'.
@@ -214,6 +217,7 @@ const saveToFolder = './boomsServers';
 // When the remote services change frequently, use it.
 const timer = 30;
 
+// The order of the parameters can be arbitrary.
 require('booms').client.fetchServers(serverNames, saveToFolder, options, timer);
 ```
 
@@ -228,7 +232,7 @@ npm test
 
 ## Performance
 
-Booms is based on Node.js native TCP socket, much faster than other RPC frameworks based on gRPC or MQ. (See [Benchmark](https://github.com/hiowenluke/rpc-frameworks-performance-pk))
+Booms is based on Node.js native TCP socket, much faster than other RPC frameworks based on gRPC or MQ. (See [RPC Frameworks Performance PK](https://github.com/hiowenluke/rpc-frameworks-performance-pk))
 
 ## Why Booms
 
