@@ -45,10 +45,11 @@ module.exports = async (name, age) => {
 };
 ```
 
-2\) Create file "index.js".
+2\) Create file "index.js"
 
 ```js
-require('booms').server.init();
+// Create a server named "s1"
+require('booms').server.init('s1');
 ```
 
 3\) Run
@@ -71,7 +72,7 @@ npm init -y
 npm install booms --save
 ```
 
-1\) Create file "boomsInit.js".
+1\) Create file "boomsInit.js"
 
 ```js
 require('booms').client.fetchServers();
@@ -85,7 +86,7 @@ node boomsInit.js
 [09:43:54] Done.
 ```
 
-2\) Create file "index.js".
+2\) Create file "index.js"
 
 ```js
 const {s1} = require('./boomsServers');
@@ -112,7 +113,7 @@ node index.js
 2\) Create business function files like below in directory "[./src](./examples/server1/src)" (or "./lib", "./biz", etc.)
 
 ```js
-// ./src/say.hi.js
+// E.g.: ./src/say.hi.js
 module.exports = async (name, age) => {
     return {msg: `Hi, I am ${name}, ${age} years old.`};
 };
@@ -120,8 +121,8 @@ module.exports = async (name, age) => {
 3\) Create file "index.js" and run it.
 
 ```js
-// This will start a server named "s1" (the default name)
-require('booms').server.init();
+// Create a server named "s1"
+require('booms').server.init('s1');
 ```
 
 ### 2\. Client
@@ -131,8 +132,7 @@ require('booms').server.init();
 2\) Create file "boomsInit.js" and run it.
 
 ```js
-// This will save the remote services definitions 
-// to local directory "./boomsServers".
+// Save the remote services definitions to local directory "./boomsServers".
 require('booms').client.fetchServers();
 ```
 
@@ -204,7 +204,7 @@ Or
 
 ```js
 // The names of the remote services which will be fetched.
-// If it is omitted, Booms will fetch all remote services definitions.
+// If it is omitted, Booms will fetches all.
 const serverNames = ['s1', 's2']; // Or "s1" if you just need it.
 
 // The folder where the remote services definitions will be stored.
