@@ -29,8 +29,8 @@ const getResult = (filePath) => {
 
 const verify = (result) => {
 	const comparision = [
-		"Microservices #1",
-		"Microservices #2",
+		"Server #1",
+		"Server #2",
 		{ msg: 'Hi, I am owen, 100 years old.' },
 	];
 

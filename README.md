@@ -1,9 +1,9 @@
 
 # Booms
 
-A high performance and easy-to-use RPC microservices framework for [Node.js](https://nodejs.org). With Booms, we can load a directory as a service, call the remote functions in it like **s1.say.hi()**, same as we do it with local files. 
+A high-performance and easy-to-use RPC microservices framework for [Node.js](https://nodejs.org), load a directory as a server, call the remote functions of it like **s1.say.hi()**, as same as do it at local. 
 
-Booms is based on [gRPC-node](https://github.com/grpc/grpc-node), but it does not require you to write [proto](https://developers.google.com/protocol-buffers/docs/proto3) files, which is more easier to use.
+Booms is based on Node.js native TCP socket. It does not require you to write [proto](https://developers.google.com/protocol-buffers/docs/proto3) files, which is more easier to use.
 
 ## Server Environment
 
@@ -37,7 +37,7 @@ npm init -y
 npm install booms --save
 ```
 
-1\) Run `mkdir -p src/say` to create folders, then create "./src/say/hi.js"
+1\) Run `mkdir -p src/say` to create folders, then create file "./src/say/hi.js"
 
 ```js
 module.exports = async (name, age) => {
@@ -45,22 +45,22 @@ module.exports = async (name, age) => {
 };
 ```
 
-2\) Create "index.js".
+2\) Create file "index.js".
 
 ```js
-require('booms').initService();
+require('booms').server.init();
 ```
 
 3\) Run
 
 ```sh
 node index.js
-Service s1 is running on port 50051...
+Server s1 listening on localhost:50051...
 ```
 
 ### 2. Client
 
-Open a new tab in your terminal first 
+Open a new tab in your terminal first.
 
 0\) Initialize this client
 
@@ -71,24 +71,24 @@ npm init -y
 npm install booms --save
 ```
 
-1\) Create "boomsInit.js".
+1\) Create file "boomsInit.js".
 
 ```js
-require('booms').fetchServices();
+require('booms').client.fetchServers();
 ```
 
 Run it
 
 ```sh
 node boomsInit.js
-[Booms] The remote services definitions will be saved to ./boomsServices
+[Booms] The remote services definitions will be saved to ./boomsServers
 [09:43:54] Done.
 ```
 
-2\) Create "index.js".
+2\) Create file "index.js".
 
 ```js
-const {s1} = require('./boomsServices');
+const {s1} = require('./boomsServers');
 const main = async () => {
     const result = await s1.say.hi('owen', 100);
     console.log(result);
@@ -108,7 +108,7 @@ node index.js
 ### 1\. Server
 
 1\) Install Booms: `npm install booms --save`
-2\) Create business function files like below in a directory such as "[./src](./examples/service1/src)" (or any other name)
+2\) Create business function files like below in directory "[./src](./examples/server1/src)" (or "./lib", "./biz", etc.)
 
 ```js
 // ./src/say.hi.js
@@ -116,49 +116,32 @@ module.exports = async (name, age) => {
     return {msg: `Hi, I am ${name}, ${age} years old.`};
 };
 ```
-3\) Create "index.js"
+3\) Create file "index.js" and run it.
 
 ```js
-require('booms').initService();
-```
-
-4\) Run
-
-```sh
-node index.js
-Service s1 is running on port 50051...
+require('booms').server.init();
 ```
 
 ### 2\. Client
 
 1\) Install Booms: `npm install booms --save`
-2\) Create "boomsInit.js"
+2\) Create file "boomsInit.js" and run it to save the remote services definitions to local directory "./boomsServers".
 
 ```js
-require('booms').fetchServices();
+require('booms').client.fetchServers();
 ```
 
-Run it
-
-```sh
-node boomsInit.js
-[Booms] The remote services definitions will be saved to ./boomsServices
-[09:43:54] Done.
-```
-
-3\) Call the remote functions
+3\) Call the remote functions like below.
 
 ```js
-// do.js
-const {s1} = require('./boomsServices');
+// The s1 is the name of the server which we created above
+const {s1} = require('./boomsServers');
 const main = async () => {
     const result = await s1.say.hi('owen', 100);
     console.log(result);
 };
 main();
 ```
-
-As we can see, we can require the remote services and call the remote functions as same as do it with local files. That is, we can  easily disassemble a project, move sub modules directories to any other location and load them as microservices any time without the caller having to adjust any code. 
 
 ## Example
 
@@ -179,15 +162,15 @@ const options = {
     },
 };
 
-require('booms').initService(options);
+require('booms').server.init(options);
 ```
 
 Or
 
 ```js
-// The name of this microservice.
+// The name of this server.
 // If it is omitted, it will be set as "s1".
-const serviceName = 's1';
+const serverName = 's1';
 
 // The name of the folder which will be loaded.
 // It can be omitted if it is "./src".
@@ -195,7 +178,7 @@ const serviceName = 's1';
 const folderName = './src'; 
 
 // The order of the parameters can be arbitrary.
-require('booms').initService(serviceName, folderName, options);
+require('booms').server.init(serverName, folderName, options);
 ```
 
 ### Client
@@ -209,7 +192,7 @@ const options = {
     },
 };
 
-require('booms').fetchServices(options);
+require('booms').client.fetchServers(options);
 ```
 
 Or
@@ -217,19 +200,19 @@ Or
 ```js
 // The names of the remote services which will be fetched.
 // If it is omitted, Booms will fetch all remote services definitions.
-const servicesNames = ['s1', 's2']; 
+const serverNames = ['s1', 's2']; 
 
 // The folder where the remote services definitions will be stored.
-// If it is omitted, it will be set as './boomsServices'.
+// If it is omitted, it will be set as './boomsServers'.
 // It should be started with "."
-const folderName = './boomsServices'; 
+const saveToFolder = './boomsServers'; 
 
 // The timer for redoing fetch (unit is seconds).
 // If it is omitted, Booms will does fetch only once.
 // When the remote services change frequently, use it.
 const timer = 30;
 
-require('booms').fetchServices(servicesNames, folderName, options, timer);
+require('booms').client.fetchServers(serverNames, saveToFolder, options, timer);
 ```
 
 ## Test
@@ -243,9 +226,13 @@ npm test
 
 ## Performance
 
-Booms is extended from [gRPC-node](https://github.com/grpc/grpc-node). It is as fast as gRPC-node, much faster than socket-based and MQ-based RPC framworks. (See [Benchmark](https://github.com/hiowenluke/benchmark-easy))
+Booms is based on Node.js native TCP socket, much faster than other RPC frameworks based on gRPC or MQ. (See [Benchmark](https://github.com/hiowenluke/rpc-frameworks-performance-pk))
 
-## Why
+## Why Booms
+
+With Booms, we can require the remote services and call the remote functions as same as we do it at local. That is, we can  easily disassemble a project, move any sub module directory to any other location and load it as a microservices any time without the caller having to adjust any code. 
+
+## Why Microservices
 
 * [Why Enterprises Are Embracing Microservices and Node.js](https://thenewstack.io/enterprises-embracing-microservices-node-js/)
 * [Microservices With Node.js: Scalable, Superior, and Secure Apps](https://dzone.com/articles/microservices-with-nodejs-scalable-superior-and-se)

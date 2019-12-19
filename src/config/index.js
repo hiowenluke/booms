@@ -4,10 +4,10 @@ const getAllConfigurations = require('./getAllConfigurations');
 const me = {
 	booms: {
 		folder: './src',
-		name: 's1', // Microservice name
+		name: 's1', // Server name
 	},
 
-	gRPC: {
+	server: {
 		host: 'localhost',
 	},
 
@@ -16,8 +16,8 @@ const me = {
 	},
 
 	getAllConfigurations(args) {
-		const {boomsConfig, grpcConfig, redisConfig} = getAllConfigurations(args, this);
-		return {boomsConfig, grpcConfig, redisConfig};
+		const {boomsConfig, serverConfig, redisConfig} = getAllConfigurations(args, this);
+		return {boomsConfig, serverConfig, redisConfig};
 	}
 };
 

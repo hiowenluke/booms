@@ -13,8 +13,8 @@ describe('Booms', () => {
 	const cps = [];
 
 	before(async () => {
-		cps.push(spawn('node', ['../examples/service1']));
-		cps.push(spawn('node', ['../examples/service2']));
+		cps.push(spawn('node', ['../examples/server1']));
+		cps.push(spawn('node', ['../examples/server2']));
 
 		// Waiting for all services are ready
 		await wait();
@@ -35,6 +35,6 @@ describe('Booms', () => {
 	});
 
 	it('message style', async () => {
-		await test('../examples/client-with-message-style/index');
+		await test('../examples/client-call/index');
 	});
 });

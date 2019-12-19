@@ -1,27 +1,29 @@
 
 const caller = require('caller');
-const service = require('./service');
+const server = require('./server');
 const client = require('./client');
-const call = require('./call');
-const omg = require('./omg');
 
 const me = {
-	async initService(...args) {
-		const pathToCaller = caller();
-		return await service.init(pathToCaller, ...args);
+	server: {
+		async init(...args) {
+			const pathToCaller = caller();
+			return await server.init(pathToCaller, ...args);
+		},
 	},
 
-	initCall(...args) {
-		return call.init(...args);
-	},
+	client: {
+		call(...args) {
+			return client.call.init(...args);
+		},
 
-	initClient(...args) {
-		return client.init(...args);
-	},
+		servers(...args) {
+			return client.lite.init(...args);
+		},
 
-	async fetchServices(...args) {
-		const pathToCaller = caller();
-		return await omg.do(pathToCaller, ...args);
+		async fetchServers(...args) {
+			const pathToCaller = caller();
+			return await client.omg.do(pathToCaller, ...args);
+		}
 	}
 };
 

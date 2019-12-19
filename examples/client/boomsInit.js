@@ -8,17 +8,17 @@ const options = {
 
 // The names of the remote services which will be fetched.
 // If it is omitted, Booms will fetch all remote services definitions.
-const servicesNames = ['s1', 's2'];
+const serverNames = ['s1', 's2'];
 
 // The folder where the remote services definitions will be stored.
-// It must be same as require('./boomsServices') in index.js.
-// If it is omitted, it will be set as './boomsServices'.
+// It must be same as require('./boomsServers') in index.js.
+// If it is omitted, it will be set as './boomsServers'.
 // It should be started with "."
-const folderName = './boomsServices';
+const saveToFolder = './boomsServers';
 
 // The timer for redoing fetch (unit is seconds).
 // If it is omitted, Booms will does fetch only once.
 // When the remote services change frequently, use it.
 const timer = 10;
 
-require('../../src').fetchServices(servicesNames, folderName, options, timer);
+require('../../src').client.fetchServers(serverNames, saveToFolder, options, timer);

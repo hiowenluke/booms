@@ -1,9 +1,9 @@
 
-// from fetchServices: [options]
-// from fetchServices: ['s1', './src', options]
+// from fetchServers: [options]
+// from fetchServers: ['s1', './src', options]
 const fn = (args, defaultOptions) => {
 	let boomsConfig = {};
-	let grpcConfig = {};
+	let serverConfig = {};
 	let redisConfig = {};
 
 	// No arguments
@@ -13,16 +13,16 @@ const fn = (args, defaultOptions) => {
 	else {
 		let ax = args[args.length - 1];
 
-		// {name: 's1', folder: './lib', {gRPC: {host: 'localhost'}, redis: {host: 'localhost'}}}
+		// {name: 's1', folder: './lib', {server: {host: 'localhost'}, redis: {host: 'localhost'}}}
 		// {name: 's1', folder: './lib', {host: 'localhost'}}
 		if (typeof ax === 'object') {
 			boomsConfig = {name: ax.name, folder: ax.folder};
-			grpcConfig = ax.gRPC;
+			serverConfig = ax.server;
 			redisConfig = ax.redis;
 
-			// {host} => {gRPC: {host}}
+			// {host} => {server: {host}}
 			if (ax.host) {
-				grpcConfig.host = ax.host;
+				serverConfig.host = ax.host;
 			}
 
 			args.pop();
@@ -50,10 +50,10 @@ const fn = (args, defaultOptions) => {
 	}
 
 	boomsConfig = Object.assign({}, defaultOptions.booms, boomsConfig);
-	grpcConfig = Object.assign({}, defaultOptions.gRPC, grpcConfig);
+	serverConfig = Object.assign({}, defaultOptions.server, serverConfig);
 	redisConfig = Object.assign({}, defaultOptions.redis, redisConfig);
 
-	return {boomsConfig, grpcConfig, redisConfig};
+	return {boomsConfig, serverConfig, redisConfig};
 };
 
 module.exports = fn;
