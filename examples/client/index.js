@@ -1,7 +1,6 @@
 
 // Note:
-// 		Please run ./boomsInit.js first.
-// 		It will does fetch the remote services definitions
+// 		Please run ./boomsInit.js first to fetch the remote services definitions
 // 		and save to directory ./boomsServers before run this file.
 
 const {s1, s2} = require('./boomsServers');

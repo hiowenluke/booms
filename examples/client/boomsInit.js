@@ -7,8 +7,8 @@ const options = {
 };
 
 // The names of the remote services which will be fetched.
-// If it is omitted, Booms will fetch all remote services definitions.
-const serverNames = ['s1', 's2'];
+// If it is omitted, Booms will fetches all.
+const serverNames = ['s1', 's2']; // Or "s1" if you just need it.
 
 // The folder where the remote services definitions will be stored.
 // It must be same as require('./boomsServers') in index.js.
