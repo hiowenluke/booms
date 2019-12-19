@@ -1,9 +1,9 @@
 
-const net = require('net');
+const Socket = require('./Socket');
+const proxy = require('./proxy');
 
 const config = require('../config');
 const myRedis = require('../__lib/myRedis');
-const proxy = require('./proxy');
 
 let isInitialized;
 let isServicesFetched;
@@ -41,10 +41,9 @@ const me = {
 			const name = names[i];
 			const {host, port, apis} = await myRedis.getServerData(name);
 
-			const client = new net.Socket();
-			client.connect(port, host);
-
+			const client = Socket.new(name, host, port);
 			const obj = attachCallFunction(client, name, apis);
+
 			this.servers[name] = obj;
 		}
 
