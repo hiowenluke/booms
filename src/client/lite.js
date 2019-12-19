@@ -1,10 +1,10 @@
 
-const net = require('net');
 const keyPaths = require('keypaths');
 
+const Socket = require('./Socket');
+const proxy = require('./proxy');
 const config = require('../config');
 const myRedis = require('../__lib/myRedis');
-const proxy = require('./proxy');
 
 let isInitialized;
 let isServersFetched;
@@ -47,11 +47,9 @@ const me = {
 		for (let i = 0; i < names.length; i ++) {
 			const name = names[i];
 			const {host, port, apis} = await myRedis.getServerData(name);
-
-			const client = new net.Socket();
-			client.connect(port, host);
-
 			const obj = keyPaths.toObject(apis);
+
+			const client = Socket.new(name, host, port);
 			attachCallFunction(client, name, obj);
 
 			this.servers[name] = obj;
