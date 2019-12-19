@@ -1,5 +1,5 @@
 
-const net = require('net');
+const Socket = require('./Socket');
 const rpcArgs = require('./lib/rpcArgs');
 const myJson = require('./lib/myJson');
 
@@ -8,9 +8,7 @@ const clients = {
 
 	get(serverName, host, port) {
 		if (!this.data[serverName]) {
-			const client = new net.Socket();
-			client.connect(port, host);
-
+			const client = Socket.new(serverName, host, port);
 			this.data[serverName] = client;
 		}
 
@@ -23,10 +21,6 @@ const proxy = (client, serverName, api, args) => {
 		args = rpcArgs.encode(args);
 
 		client.once('data', data => {
-			if (!data) {
-				throw new Error(`Server ${serverName} is not available. Is it running?`);
-			}
-
 			const message = data.toString();
 			const result = myJson.parse(message);
 			resolve(result);
