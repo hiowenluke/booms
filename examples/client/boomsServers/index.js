@@ -1,5 +1,5 @@
 
-const call = require('./call');
+const call = require('./booms/call');
 const definitions = require('./definitions');
 
 let isInitialized;
