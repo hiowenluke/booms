@@ -108,6 +108,7 @@ node index.js
 ### 1\. Server
 
 1\) Install Booms: `npm install booms --save`
+
 2\) Create business function files like below in directory "[./src](./examples/server1/src)" (or "./lib", "./biz", etc.)
 
 ```js
@@ -125,6 +126,7 @@ require('booms').server.init();
 ### 2\. Client
 
 1\) Install Booms: `npm install booms --save`
+
 2\) Create file "boomsInit.js" and run it to save the remote services definitions to local directory "./boomsServers".
 
 ```js
