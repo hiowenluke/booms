@@ -21,9 +21,12 @@ describe('Booms', () => {
 	});
 
 	after(() => {
-		cps.forEach(cp => {
-			process.kill(cp.pid, 'SIGTERM');
-		});
+		try {
+			cps.forEach(cp => {
+				process.kill(cp.pid, 'SIGTERM');
+			});
+		}
+		catch(e) {}
 	});
 
 	it('object style', async () => {
