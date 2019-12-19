@@ -1,12 +1,11 @@
 
-const Socket = require('./Socket');
-const proxy = require('./proxy');
-
+const Socket = require('./lib/Socket');
+const proxy = require('./lib/proxy');
 const config = require('../config');
 const myRedis = require('../__lib/myRedis');
 
 let isInitialized;
-let isServicesFetched;
+let isServersFetched;
 
 const attachCallFunction = (client, serverName, apis) => {
 	const obj = {};
@@ -20,9 +19,42 @@ const attachCallFunction = (client, serverName, apis) => {
 	return obj;
 };
 
-const me = {
+const fetchServers = {
+	names: [],
+	infos: {},
 	servers: {},
 
+	async init() {
+		const names = await myRedis.getAllServerNames();
+		const infos = {};
+
+		for (let i = 0; i < names.length; i ++) {
+			const name = names[i];
+			const info = await myRedis.getServerData(name);
+			infos[name] = info;
+		}
+
+		myRedis.disconnect();
+
+		this.names = names;
+		this.infos = infos;
+	},
+
+	do(serverName) {
+		let server = this.servers[serverName];
+		if (!server) {
+			const {host, port, apis} = this.infos[serverName];
+
+			const client = Socket.new(serverName, host, port);
+			server = attachCallFunction(client, serverName, apis);
+
+			this.servers[serverName] = server;
+		}
+		return server;
+	}
+};
+
+const me = {
 	init(...args) {
 		if (!isInitialized) {
 			isInitialized = 1;
@@ -31,45 +63,28 @@ const me = {
 			myRedis.init(redisConfig);
 		}
 
-		return this.get.bind(this);
+		return this.get;
 	},
 
-	async fetchServers() {
-		const names = await myRedis.getAllServerNames();
-
-		for (let i = 0; i < names.length; i ++) {
-			const name = names[i];
-			const {host, port, apis} = await myRedis.getServerData(name);
-
-			const client = Socket.new(name, host, port);
-			const obj = attachCallFunction(client, name, apis);
-
-			this.servers[name] = obj;
-		}
-
-		myRedis.disconnect();
-	},
-
-	async get(apiPath, ...serverNames) {
+	async get(apiPath, ...args) {
 		try {
-			if (!isServicesFetched) {
-				isServicesFetched = 1;
-				await this.fetchServers();
+			let [serverName, api] = apiPath.split(':');
+
+			if (api.indexOf('/') >= 0) {
+				api = api.replace(/^\//, '').replace(/\//g, '.');
 			}
 
-			const [serverName, api] = apiPath.split(':');
-			const server = this.servers[serverName];
+			if (!isServersFetched) {
+				isServersFetched = 1;
+				await fetchServers.init();
+			}
 
-			const apiX = (() => {
-				if (api.indexOf('/') >= 0) {
-					return api.replace(/^\//, '').replace(/\//g, '.');
-				}
-				else {
-					return api;
-				}
-			})();
+			const server = fetchServers.do(serverName);
+			if (!server[api]) {
+				throw new Error(`The api "/${api}" is not found on server ${serverName}`);
+			}
 
-			const result = await server[apiX](...serverNames);
+			const result = await server[api](...args);
 			return result;
 		}
 		catch(e) {
