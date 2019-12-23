@@ -94,6 +94,9 @@ node index.js
 { msg: 'Hi, I am owen, 100 years old.' }
 ```
 
+BTW: Booms fetches the remote services data and save it to the file "./boomsServices.js" so that you can easily view all the microservices APIs information.
+
+
 ## Example
 
 See files in [examples](./examples) to learn more.
