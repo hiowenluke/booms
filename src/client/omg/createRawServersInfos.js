@@ -3,7 +3,6 @@ const fs = require('fs');
 const path = require('path');
 
 const myRedis = require('../../__lib/myRedis');
-const replaceInFile = require('../../__lib/replaceInFile');
 const omgConfig = require('./config');
 
 let userConfig = {};
@@ -34,7 +33,8 @@ const getRawServersInfos = async () => {
 
 const writeToFile = (infos) => {
 	const filePath = path.resolve(__dirname, omgConfig.tempPath + '/rawServersInfos.js');
-	replaceInFile(filePath, '`{rawServersInfos}`', infos);
+	const content = 'module.exports = ' + JSON.stringify(infos, null, 4);
+	fs.writeFileSync(filePath, content, 'utf-8');
 };
 
 const fn = async () => {
