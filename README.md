@@ -144,19 +144,6 @@ require('booms').server.init(serverName, folderName, options);
 
 ### Client
 
-```js
-// Only redis options required. 
-// The options can be omitted if it is same as the following.
-const options = {
-    redis: {
-        host: 'localhost'
-    },
-};
-
-require('booms').client.fetchServers(options);
-```
-
-Or
 
 ```js
 // The names of the remote services which will be fetched.
