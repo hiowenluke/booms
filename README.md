@@ -82,14 +82,14 @@ Run it
 
 ```sh
 node boomsInit.js
-[Booms] The remote services definitions will be saved to ./boomsServers
+[Booms] The remote services definitions will be saved to ./boomsServices
 [09:43:54] Done.
 ```
 
 2\) Create file "index.js"
 
 ```js
-const {s1} = require('./boomsServers');
+const {s1} = require('./boomsServices');
 const main = async () => {
     const result = await s1.say.hi('owen', 100);
     console.log(result);
@@ -132,7 +132,7 @@ require('booms').server.init('s1');
 2\) Create file "boomsInit.js" and run it.
 
 ```js
-// Save the remote services definitions to local directory "./boomsServers".
+// Save the remote services definitions to local directory "./boomsServices".
 require('booms').client.fetchServers();
 ```
 
@@ -140,7 +140,7 @@ require('booms').client.fetchServers();
 
 ```js
 // The "s1" is the name of the server which we created above
-const {s1} = require('./boomsServers');
+const {s1} = require('./boomsServices');
 const main = async () => {
     const result = await s1.say.hi('owen', 100);
     console.log(result); // { msg: 'Hi, I am owen, 100 years old.' }
@@ -208,9 +208,9 @@ Or
 const serverNames = ['s1', 's2']; // Or "s1" if you just need it.
 
 // The folder where the remote services definitions will be stored.
-// If it is omitted, it will be set as './boomsServers'.
+// If it is omitted, it will be set as './boomsServices'.
 // It should be started with "."
-const saveToFolder = './boomsServers'; 
+const saveToFolder = './boomsServices'; 
 
 // The timer for redoing fetch (unit is seconds).
 // If it is omitted, Booms will does fetch only once.
