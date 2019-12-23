@@ -3,8 +3,8 @@ const getAllConfigurations = require('./getAllConfigurations');
 
 const me = {
 	booms: {
-		folder: './src',
 		name: 's1', // Server name
+		dir: './src',
 	},
 
 	server: {

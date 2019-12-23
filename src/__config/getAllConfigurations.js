@@ -13,10 +13,10 @@ const fn = (args, defaultOptions) => {
 	else {
 		let ax = args[args.length - 1];
 
-		// {name: 's1', folder: './lib', {server: {host: 'localhost'}, redis: {host: 'localhost'}}}
-		// {name: 's1', folder: './lib', {host: 'localhost'}}
+		// {name: 's1', dir: './lib', {server: {host: 'localhost'}, redis: {host: 'localhost'}}}
+		// {name: 's1', dir: './lib', {host: 'localhost'}}
 		if (typeof ax === 'object') {
-			boomsConfig = {name: ax.name, folder: ax.folder};
+			boomsConfig = {name: ax.name, dir: ax.dir};
 			serverConfig = ax.server;
 			redisConfig = ax.redis;
 
@@ -32,11 +32,11 @@ const fn = (args, defaultOptions) => {
 		if (args.length) {
 			let [a0, a1] = args;
 
-			// The first arg is folder name
+			// The first arg is directory name
 			// 		('./lib')
 			// 		('./lib', 's1')
 			if (a0.substr(0, 1) === '.') {
-				boomsConfig.folder = a0;
+				boomsConfig.dir = a0;
 				a1 && (boomsConfig.name = a1);
 			}
 			else {
@@ -44,7 +44,7 @@ const fn = (args, defaultOptions) => {
 				// 		('s1')
 				// 		('s1', './lib')
 				boomsConfig.name = a0;
-				a1 && (boomsConfig.folder = a1);
+				a1 && (boomsConfig.dir = a1);
 			}
 		}
 	}

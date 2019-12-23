@@ -32,9 +32,9 @@ const me = {
 	},
 
 	async initSource(caller, boomsConfig) {
-		const {folder} = boomsConfig;
+		const {dir} = boomsConfig;
 		const root = path.resolve(caller, '..');
-		this.source = kdo(root + '/' + folder);
+		this.source = kdo(root + '/' + dir);
 	},
 
 	async calcServerPort(boomsConfig, serverConfig) {
