@@ -52,6 +52,8 @@ const me = {
 	},
 
 	async createServer(boomsConfig, serverConfig) {
+		const {name} = boomsConfig;
+
 		const server = net.createServer(sock => {
 			sock.on('data', async data => {
 				const message = data.toString();
@@ -59,7 +61,6 @@ const me = {
 				const argsOk = rpcArgs.decode(args);
 
 				const fn = keyPaths.get(this.source, funcName);
-				const result = await fn(...argsOk);
 				if (!fn) {
 					throw new Error(`API ${funcName} can not be found on server ${name}`);
 				}
@@ -80,7 +81,6 @@ const me = {
 		const {host, port} = serverConfig;
 		server.listen(port, host);
 
-		const {name} = boomsConfig;
 		console.log(`Server ${name} listening on ${host}:${port}`);
 	}
 };
