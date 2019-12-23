@@ -1,5 +1,5 @@
 
-const serverName = 's1';
-const folderName = './src';
+const name = 's1';
+const dir = './src';
 
-require('../..').server.init(serverName, folderName);
+require('../..').server.init(name, dir);

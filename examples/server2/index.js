@@ -20,11 +20,11 @@ const options = {
 
 // The name of this server.
 // If it is omitted, it will be "s1".
-const serverName = 's2';
+const name = 's2';
 
-// The name of the folder which will be loaded.
+// The directory which will be loaded.
 // It can be omitted if it is "./src".
 // It should be started with "."
-const folderName = './src';
+const dir = './src';
 
-require('../..').server.init(serverName, folderName, options);
+require('../..').server.init(name, dir, options);
