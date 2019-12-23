@@ -33,10 +33,6 @@ describe('Booms', () => {
 		await test('../examples/client/index');
 	});
 
-	it('object style lite', async () => {
-		await test('../examples/client-lite/index');
-	});
-
 	it('message style', async () => {
 		await test('../examples/client-call/index');
 	});
