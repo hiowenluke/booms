@@ -16,11 +16,11 @@ const me = {
 			return client.call.init(...args);
 		},
 
-		servers(...args) {
+		services(...args) {
 			return client.lite.init(...args);
 		},
 
-		fetchServers(parentFilename) {
+		fetchServices(parentFilename) {
 			return client.omg.do(parentFilename);
 		}
 	}

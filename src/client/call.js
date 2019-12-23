@@ -5,7 +5,7 @@ const config = require('../__config');
 const myRedis = require('../__lib/myRedis');
 
 let isInitialized;
-let isServersFetched;
+let isDoneFetchServices;
 
 const attachCallFunction = (client, serverName, apis) => {
 	const obj = {};
@@ -19,10 +19,10 @@ const attachCallFunction = (client, serverName, apis) => {
 	return obj;
 };
 
-const fetchServers = {
+const fetchServices = {
 	names: [],
 	infos: {},
-	servers: {},
+	apis: {},
 
 	async init() {
 		const names = await myRedis.getAllServerNames();
@@ -41,16 +41,16 @@ const fetchServers = {
 	},
 
 	do(serverName) {
-		let server = this.servers[serverName];
-		if (!server) {
+		let apisObj = this.apis[serverName];
+		if (!apisObj) {
 			const {host, port, apis} = this.infos[serverName];
 
 			const client = Socket.new(serverName, host, port);
-			server = attachCallFunction(client, serverName, apis);
+			apisObj = attachCallFunction(client, serverName, apis);
 
-			this.servers[serverName] = server;
+			this.apis[serverName] = apisObj;
 		}
-		return server;
+		return apisObj;
 	}
 };
 
@@ -74,17 +74,17 @@ const me = {
 				api = api.replace(/^\//, '').replace(/\//g, '.');
 			}
 
-			if (!isServersFetched) {
-				isServersFetched = 1;
-				await fetchServers.init();
+			if (!isDoneFetchServices) {
+				isDoneFetchServices = 1;
+				await fetchServices.init();
 			}
 
-			const server = fetchServers.do(serverName);
-			if (!server[api]) {
+			const apisObj = fetchServices.do(serverName);
+			if (!apisObj[api]) {
 				throw new Error(`The api "/${api}" is not found on server ${serverName}`);
 			}
 
-			const result = await server[api](...args);
+			const result = await apisObj[api](...args);
 			return result;
 		}
 		catch(e) {

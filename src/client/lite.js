@@ -7,7 +7,7 @@ const config = require('../__config');
 const myRedis = require('../__lib/myRedis');
 
 let isInitialized;
-let isServersInfosFetched;
+let isDoneFetchServices;
 
 const attachCallFunction = (client, serverName, obj, path = '') => {
 	Object.keys(obj).forEach(key => {
@@ -27,7 +27,7 @@ const attachCallFunction = (client, serverName, obj, path = '') => {
 	});
 };
 
-const fetchServers = {
+const fetchServices = {
 	names: [],
 	infos: {},
 	serversApis: {},
@@ -95,12 +95,12 @@ const me = {
 		}
 
 		try {
-			if (!isServersInfosFetched) {
-				isServersInfosFetched = 1;
-				await fetchServers.init();
+			if (!isDoneFetchServices) {
+				isDoneFetchServices = 1;
+				await fetchServices.init();
 			}
 
-			return fetchServers.do(serverNames);
+			return fetchServices.do(serverNames);
 		}
 		catch(e) {
 			console.log(e);

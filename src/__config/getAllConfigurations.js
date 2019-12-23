@@ -1,6 +1,6 @@
 
-// from fetchServers: [options]
-// from fetchServers: ['s1', './src', options]
+// from fetchServices: [options]
+// from fetchServices: ['s1', './src', options]
 const fn = (args, defaultOptions) => {
 	let boomsConfig = {};
 	let serverConfig = {};
