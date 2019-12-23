@@ -110,20 +110,11 @@ const me = {
 		if (!isInitialized) {
 			const clientRoot = getClientRoot(parentFilename);
 			const userConfig = getUserConfig(clientRoot);
-			const {timer} = userConfig;
 
 			copyFilesToTemp();
 			this.once(clientRoot, userConfig);
 
 			isInitialized = 1;
-
-			// The latest updated apis information will only
-			// take effect the next time the client runs.
-			if (timer) {
-				setInterval(async () => {
-					await this.once(clientRoot, userConfig);
-				}, timer * 1000);
-			}
 		}
 
 		// Now that there is complete data in the temp directory,
