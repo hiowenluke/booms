@@ -61,7 +61,7 @@ const getRawServersInfos = (userConfig) => {
 	return serversInfos;
 };
 
-const getServicesApis = (rawInfos) => {
+const parseServicesApis = (rawInfos) => {
 	const data = {};
 	const names = Object.keys(rawInfos);
 
@@ -76,7 +76,7 @@ const getServicesApis = (rawInfos) => {
 	return data;
 };
 
-const getServersInfosFromRaw = (rawInfos) => {
+const parseServersInfosFromRaw = (rawInfos) => {
 
 	// Only need host and port of info
 	const names = Object.keys(rawInfos);
@@ -124,9 +124,9 @@ const me = {
 
 	once(clientRoot, userConfig) {
 		const rawServersInfos = getRawServersInfos(userConfig);
-		const servicesApis = getServicesApis(rawServersInfos);
-
-		const serversInfos = getServersInfosFromRaw(rawServersInfos);
+		const servicesApis = parseServicesApis(rawServersInfos);
+		const serversInfos = parseServersInfosFromRaw(rawServersInfos);
+		
 		writeToDataFile(clientRoot, serversInfos, servicesApis);
 	}
 };
