@@ -20,9 +20,8 @@ const me = {
 			return client.lite.init(...args);
 		},
 
-		async fetchServers(...args) {
-			const pathToCaller = caller();
-			return await client.omg.do(pathToCaller, ...args);
+		fetchServers(parentFilename) {
+			return client.omg.do(parentFilename);
 		}
 	}
 };
