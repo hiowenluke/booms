@@ -104,50 +104,6 @@ node index.js
 { msg: 'Hi, I am owen, 100 years old.' }
 ```
 
-## Usage
-
-### 1\. Server
-
-1\) Install Booms: `npm install booms --save`
-
-2\) Create business function files like below in directory "[./src](./examples/server1/src)" (or "./lib", "./biz", etc.)
-
-```js
-// E.g.: ./src/say.hi.js
-module.exports = async (name, age) => {
-    return {msg: `Hi, I am ${name}, ${age} years old.`};
-};
-```
-3\) Create file "index.js" and run it.
-
-```js
-// Create a server named "s1"
-require('booms').server.init('s1');
-```
-
-### 2\. Client
-
-1\) Install Booms: `npm install booms --save`
-
-2\) Create file "boomsInit.js" and run it.
-
-```js
-// Save the remote services definitions to local directory "./boomsServices".
-require('booms').client.fetchServers();
-```
-
-3\) Call the remote functions like below.
-
-```js
-// The "s1" is the name of the server which we created above
-const {s1} = require('./boomsServices');
-const main = async () => {
-    const result = await s1.say.hi('owen', 100);
-    console.log(result); // { msg: 'Hi, I am owen, 100 years old.' }
-};
-main();
-```
-
 ## Example
 
 See files in [examples](./examples) to learn more.
