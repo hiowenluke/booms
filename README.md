@@ -7,6 +7,8 @@ Booms is based on Node.js native TCP socket. It does not require you to write [p
 
 ## Server Environment
 
+Booms uses [Redis](https://github.com/luin/ioredis) to store remote server data. If you haven't installed it, please perform the following steps to install it in docker.
+
 1\. [Install Docker](https://docs.docker.com/v17.09/engine/installation/#supported-platforms) (Docker CE recommended)
 
 2\. Install Redis in Docker  
@@ -45,7 +47,7 @@ module.exports = async (name, age) => {
 };
 ```
 
-2\) Create file "index.js"
+2\) Create file "index.js". (See [options](#Server) to learn more)
 
 ```js
 // Create a server named "s1"
@@ -72,11 +74,12 @@ npm init -y
 npm install booms --save
 ```
 
+1\) Create file "boomsConfig.js", keep it empty. (See [options](#Client) to learn more)
 
 2\) Create file "index.js"
 
 ```js
-const {s1} = require('./boomsServices');
+const {s1} = require('booms/services');
 const main = async () => {
     const result = await s1.say.hi('owen', 100);
     console.log(result);
@@ -116,39 +119,36 @@ require('booms').server.init(options);
 Or
 
 ```js
-// The name of this server.
-// If it is omitted, it will be set as "s1".
-const serverName = 's1';
+// The name of this server. 
+// If it is omitted, it will be "s1".
+const name = 's1';
 
-// The name of the folder which will be loaded.
+// The directory which will be loaded.
 // It can be omitted if it is "./src".
 // It should be started with "."
-const folderName = './src'; 
+const dir = './src'; 
 
 // The order of the parameters can be arbitrary.
-require('booms').server.init(serverName, folderName, options);
+require('booms').server.init(name, dir, options);
 ```
 
 ### Client
 
+Use [boomsConfig.js](./examples/client/boomsConfig.js) (or a hidden file .boomsConfig.js) to configure Booms client. If it is empty, Booms client will uses default configuration data. It must be exists in your project root path.
 
 ```js
-// The names of the remote services which will be fetched.
-// If it is omitted, Booms will fetches all.
-const serverNames = ['s1', 's2']; // Or "s1" if you just need it.
+module.exports = {
 
-// The folder where the remote services definitions will be stored.
-// If it is omitted, it will be set as './boomsServices'.
-// It should be started with "."
-const saveToFolder = './boomsServices'; 
+    // It can be omitted if it is 'localhost'
+    redis: {
+        host: 'localhost',
+    },
 
-// The timer for redoing fetch (unit is seconds).
-// If it is omitted, Booms will does fetch only once.
-// When the remote services change frequently, use it.
-const timer = 30;
-
-// The order of the parameters can be arbitrary.
-require('booms').client.fetchServers(serverNames, saveTodirectory, options, timer);
+    // The names of the remote servers which will be fetched.
+    // If it is omitted, Booms will fetches all.
+    // Or "s1" if you just need this one.
+    servers: ['s1', 's2'],
+};
 ```
 
 ## Test
@@ -166,7 +166,7 @@ Booms is based on Node.js native TCP socket, much faster than other RPC framewor
 
 ## Why Booms
 
-With Booms, we can require the remote services and call the remote functions as same as we do it at local. That is, we can  easily disassemble a project, move any sub module directory to any other location and load it as a microservices any time without the caller having to adjust any code. 
+With Booms, we can require the remote services and call the remote functions as same as we do it at local. That is, we can  easily disassemble a project, move any sub module directory to any other location and load it as a microservices any time without adjust any code in parent module. 
 
 ## Why Microservices
 
