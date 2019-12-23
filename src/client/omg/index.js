@@ -76,7 +76,7 @@ const parseServicesApis = (rawInfos) => {
 	return data;
 };
 
-const parseServersInfosFromRaw = (rawInfos) => {
+const cropServersInfosFromRaw = (rawInfos) => {
 
 	// Only need host and port of info
 	const names = Object.keys(rawInfos);
@@ -125,8 +125,8 @@ const me = {
 	once(clientRoot, userConfig) {
 		const rawServersInfos = getRawServersInfos(userConfig);
 		const servicesApis = parseServicesApis(rawServersInfos);
-		const serversInfos = parseServersInfosFromRaw(rawServersInfos);
-		
+		const serversInfos = cropServersInfosFromRaw(rawServersInfos);
+
 		writeToDataFile(clientRoot, serversInfos, servicesApis);
 	}
 };
