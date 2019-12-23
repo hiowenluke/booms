@@ -6,3 +6,4 @@ coverage/
 __logs/
 test/__count/__log.txt
 src/Proto/proto_files/
+.temp/
