@@ -21,7 +21,7 @@ npm install booms --save
 
 ## TRY IT! (in under 5 minutes)
 
-Create a demo folder first.
+Create a demo directory first.
 
 ```sh
 mkdir ./booms-demo && cd ./booms-demo
@@ -37,7 +37,7 @@ npm init -y
 npm install booms --save
 ```
 
-1\) Run `mkdir -p src/say` to create folders, then create file "./src/say/hi.js"
+1\) Run `mkdir -p src/say` to create directories, then create file "./src/say/hi.js"
 
 ```js
 module.exports = async (name, age) => {
@@ -148,7 +148,7 @@ const saveToFolder = './boomsServices';
 const timer = 30;
 
 // The order of the parameters can be arbitrary.
-require('booms').client.fetchServers(serverNames, saveToFolder, options, timer);
+require('booms').client.fetchServers(serverNames, saveTodirectory, options, timer);
 ```
 
 ## Test
