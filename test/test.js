@@ -36,6 +36,9 @@ const verify = (result) => {
 
 	result = result.replace(/\s*?$/g, '').split('\n');
 
+	// Clear the warning message, because some none-target remote server may be is not available in testing
+	result = result.filter(item => !/^\[WARN]/.test(item));
+
 	result.forEach((item, index) => {
 		if (item.substr(0, 1) === '{') {
 			let o;
