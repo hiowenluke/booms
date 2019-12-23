@@ -60,6 +60,9 @@ const me = {
 
 				const fn = keyPaths.get(this.source, funcName);
 				const result = await fn(...argsOk);
+				if (!fn) {
+					throw new Error(`API ${funcName} can not be found on server ${name}`);
+				}
 
 				const resultStr = myJson.stringify(result);
 				sock.write(resultStr);
