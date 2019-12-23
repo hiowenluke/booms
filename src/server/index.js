@@ -70,7 +70,7 @@ const me = {
 		server.listen(port, host);
 
 		const {name} = boomsConfig;
-		console.log(`Server ${name} listening on ${host}:${port}...`);
+		console.log(`Server ${name} listening on ${host}:${port}`);
 	}
 };
 
