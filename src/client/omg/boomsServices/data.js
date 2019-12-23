@@ -1,6 +1,6 @@
 
 const servers = `{serversInfos}`;
 
-const apis = `{serversApis}`;
+const apis = `{servicesApis}`;
 
 module.exports = {servers, apis};
