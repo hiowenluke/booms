@@ -4,7 +4,7 @@ const path = require('path');
 const keyPaths = require('keypaths');
 const readline = require('readline');
 
-const config = require('../config');
+const config = require('../__config');
 const myRedis = require('../__lib/myRedis');
 
 const defaultDestFolder = './boomsServers';

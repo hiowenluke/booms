@@ -1,7 +1,7 @@
 
 const Socket = require('./lib/Socket');
 const proxy = require('./lib/proxy');
-const config = require('../config');
+const config = require('../__config');
 const myRedis = require('../__lib/myRedis');
 
 let isInitialized;
