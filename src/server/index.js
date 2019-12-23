@@ -64,6 +64,14 @@ const me = {
 					throw new Error(`API ${funcName} can not be found on server ${name}`);
 				}
 
+				let result;
+				try {
+					result = await fn(...argsOk);
+				}
+				catch(e) {
+					console.log(e);
+				}
+
 				const resultStr = myJson.stringify(result);
 				sock.write(resultStr);
 			});
