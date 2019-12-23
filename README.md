@@ -7,7 +7,7 @@ Booms is based on Node.js native TCP socket. It does not require you to write [p
 
 ## Server Environment
 
-Booms uses [Redis](https://github.com/luin/ioredis) to store remote server data. If you haven't installed it, please perform the following steps to install it in docker.
+Booms uses [Redis](https://redis.io) to store the remote services definition data. If you haven't installed it, please perform the following steps to install it in docker.
 
 1\. [Install Docker](https://docs.docker.com/v17.09/engine/installation/#supported-platforms) (Docker CE recommended)
 
