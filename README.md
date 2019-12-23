@@ -72,19 +72,6 @@ npm init -y
 npm install booms --save
 ```
 
-1\) Create file "boomsInit.js"
-
-```js
-require('booms').client.fetchServers();
-```
-
-Run it
-
-```sh
-node boomsInit.js
-[Booms] The remote services definitions will be saved to ./boomsServices
-[09:43:54] Done.
-```
 
 2\) Create file "index.js"
 
