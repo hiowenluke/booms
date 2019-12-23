@@ -6,5 +6,5 @@ const options = {
 	}
 };
 
-const rpc = require('../../src').client.call(options);
+const rpc = require('../..').client.call(options);
 module.exports = rpc;

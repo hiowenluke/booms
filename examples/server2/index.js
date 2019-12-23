@@ -27,4 +27,4 @@ const serverName = 's2';
 // It should be started with "."
 const folderName = './src';
 
-require('../../src').server.init(serverName, folderName, options);
+require('../..').server.init(serverName, folderName, options);
