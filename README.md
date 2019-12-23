@@ -154,6 +154,11 @@ module.exports = {
 };
 ```
 
+## Calling Style
+
+In addition to object-style calling of remote functions like **s1.say.hi()**, Booms also supports message-style calling of remote functions like **call('s1:/say/hi')**. See [this example](./examples/client-message-style) to learn more.
+
+
 ## Test
 
 ```sh
