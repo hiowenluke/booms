@@ -34,6 +34,6 @@ describe('Booms', () => {
 	});
 
 	it('message style', async () => {
-		await test('../examples/client-call/index');
+		await test('../examples/client-message-style/index');
 	});
 });
