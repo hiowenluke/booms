@@ -56,7 +56,7 @@ require('booms').server.init('s1');
 
 ```sh
 node index.js
-Server s1 listening on localhost:50051...
+Server s1 listening on localhost:50051
 ```
 
 ### 2. Client
