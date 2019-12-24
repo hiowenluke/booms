@@ -1,6 +1,7 @@
 
-// This options can be omitted if options.redis.host is 'localhost'
 const options = {
+
+	// It can be omitted if it is 'localhost'
 	redis: {
 		host: 'localhost',
 	}
