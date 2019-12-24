@@ -1,13 +1,8 @@
 
-const getAllConfigurations = require('./getAllConfigurations');
-
 const me = {
-	booms: {
+	server: {
 		name: 's1', // Server name
 		dir: './src',
-	},
-
-	server: {
 		host: 'localhost',
 	},
 
@@ -15,10 +10,11 @@ const me = {
 		host: 'localhost',
 	},
 
-	getAllConfigurations(args) {
-		const {boomsConfig, serverConfig, redisConfig} = getAllConfigurations(args, this);
-		return {boomsConfig, serverConfig, redisConfig};
-	}
+	// This is just for note, it is not be used indeed
+	client: {
+		servers: null,
+		yesBoomsServicesFile: true,
+	},
 };
 
 module.exports = me;
