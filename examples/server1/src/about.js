@@ -1,5 +1,5 @@
 
-const fn = async () => {
+const fn = async function () {
 	return `Server #1`;
 };
 

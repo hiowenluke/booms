@@ -1,5 +1,5 @@
 
-const fn = async (name, age) => {
+const fn = async function (name, age) {
 	return {msg: `Hi, I am ${name}, ${age} years old.`};
 };
 

@@ -1,7 +1,7 @@
 
 const call = require('./boomsCall');
 
-const main = async () => {
+const main = async function () {
 	let result;
 
 	result = await call('s1:/about');

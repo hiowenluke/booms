@@ -1,7 +1,7 @@
 
 const {s1, s2} = require('../../services');
 
-const main = async () => {
+const main = async function () {
 	let result;
 
 	result = await s1.about();
