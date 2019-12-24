@@ -3,8 +3,9 @@ const keyPaths = require('keypaths');
 
 const Socket = require('./lib/Socket');
 const proxy = require('./lib/proxy');
-const config = require('../__config');
 const myRedis = require('../__lib/myRedis');
+
+const parseUserConfig = require('./parseUserConfig');
 
 let isInitialized;
 let isDoneFetchServices;
@@ -80,7 +81,7 @@ const me = {
 		if (!isInitialized) {
 			isInitialized = 1;
 
-			const {redisConfig} = config.getAllConfigurations(args);
+			const {redisConfig} = parseUserConfig(args);
 			myRedis.init(redisConfig);
 		}
 
