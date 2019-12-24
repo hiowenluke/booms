@@ -6,8 +6,8 @@ const cp = require('child_process');
 const fx = require('fs-extra');
 const keyPaths = require('keypaths');
 
-const replaceInFile = require('../../__lib/replaceInFile');
 const omgConfig = require('./config');
+const replaceInFile = require('../../__lib/replaceInFile');
 
 let isInitialized;
 
@@ -57,13 +57,18 @@ const getUserConfig = (clientRoot) => {
 		userConfig = require(clientRoot + '/' + filename);
 	}
 
+	// Just return the raw user config file,
+	// not apply the default config.client.
 	return userConfig || {};
 };
 
 const getRawServersInfos = (userConfig) => {
+
+	// Execute the command file and pass the raw user config to it
 	const cmdFilePath = path.resolve(__dirname, './createRawServersInfos.js');
 	cp.execSync(`node ${cmdFilePath} '${JSON.stringify(userConfig)}'`);
 
+	// Get the result from file
 	const dataFilePath = path.resolve(__dirname, omgConfig.tempPath + '/rawServersInfos.js');
 	const serversInfos = require(dataFilePath);
 
@@ -101,17 +106,19 @@ const cropServersInfosFromRaw = (rawInfos) => {
 	return infos;
 };
 
-const writeToDataFile = (clientRoot, infos, apis) => {
+const writeToDataFile = (clientRoot, userConfig, infos, apis) => {
 
 	// For Booms client running
 	const filePath = path.resolve(__dirname, omgConfig.tempPath + '/data.js');
 	replaceInFile(filePath, '`{serversInfos}`', infos);
 	replaceInFile(filePath, '`{servicesApis}`', apis);
 
-	// For user to view all apis information.
-	const sourceFile = filePath;
-	const targetFile = clientRoot + '/boomsServices.js';
-	fs.copyFileSync(sourceFile, targetFile);
+	// Create boomsServices.js for user to view all apis information.
+	if (userConfig.yesBoomsServicesFile) {
+		const sourceFile = filePath;
+		const targetFile = clientRoot + '/boomsServices.js';
+		fs.copyFileSync(sourceFile, targetFile);
+	}
 };
 
 const me = {
@@ -136,7 +143,7 @@ const me = {
 		const servicesApis = parseServicesApis(rawServersInfos);
 		const serversInfos = cropServersInfosFromRaw(rawServersInfos);
 
-		writeToDataFile(clientRoot, serversInfos, servicesApis);
+		writeToDataFile(clientRoot, userConfig, serversInfos, servicesApis);
 	}
 };
 
