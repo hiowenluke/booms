@@ -12,7 +12,7 @@ const getRawServersInfos = async () => {
 
 	let serversNames = userConfig.servers;
 
-	if (!serversNames || !serversNames.length) {
+	if (!serversNames || !serversNames.length || serversNames === 'all') {
 		serversNames = await myRedis.getAllServerNames();
 	}
 	else if (typeof serversNames === 'string') {
