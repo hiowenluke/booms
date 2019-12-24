@@ -21,23 +21,26 @@ const copyFilesToTemp = () => {
 	fx.copySync(sourceFolderPath, destFolderPath);
 };
 
-const getClientRoot = (parentFilename) => {
-	const seekFile = (parentFolder, filename) => {
-		let p = parentFolder;
+const getClientRoot = (startingFilename) => {
+	const seekFile = (startingDir, filename, cb) => {
+		let p = startingDir;
 
 		while (p !== '/') {
 			const dest = p + '/' + filename;
-			if (fs.existsSync(dest)) {
+			if (fs.existsSync(dest) && (!cb || cb(dest))) {
 				return dest;
 			}
 			p = path.resolve(p, '..');
 		}
 	};
 
-	const parentFolder = path.resolve(parentFilename, '..');
-	const userConfigFile = seekFile(parentFolder, 'boomsConfig.js') || seekFile(parentFolder, '.boomsConfig.js');
-	const userRoot = path.resolve(userConfigFile, '..');
+	const startingDir = path.resolve(startingFilename, '..');
+	const targetFile = seekFile(startingDir, 'package.json', (filePath) => {
+		const pkg = require(filePath);
+		return pkg.dependencies.booms;
+	});
 
+	const userRoot = path.resolve(targetFile, '..');
 	return userRoot;
 };
 
