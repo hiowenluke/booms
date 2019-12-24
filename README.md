@@ -42,7 +42,7 @@ npm install booms --save
 1\) Run `mkdir -p src/say` to create directories, then create file "./src/say/hi.js"
 
 ```js
-module.exports = async (name, age) => {
+module.exports = async function (name, age) {
     return {msg: `Hi, I am ${name}, ${age} years old.`};
 };
 ```
@@ -74,27 +74,25 @@ npm init -y
 npm install booms --save
 ```
 
-1\) Create file "boomsConfig.js", keep it empty. (See [options](#Client) to learn more)
-
-2\) Create file "index.js"
+1\) Create file "index.js"
 
 ```js
 const {s1} = require('booms/services');
-const main = async () => {
+const main = async function () {
     const result = await s1.say.hi('owen', 100);
     console.log(result);
 };
 main();
 ```
 
-3\) Run
+2\) Run
 
 ```sh
 node index.js
 { msg: 'Hi, I am owen, 100 years old.' }
 ```
 
-BTW: Booms fetches the remote services data and save it to the file "./boomsServices.js" so that you can easily view all the microservices APIs information.
+BTW: Booms client fetches the remote services definition data and save it to the file "[./boomsServices.js](./examples/client/boomsServices.js)" so that you can easily view all the microservices APIs information.
 
 
 ## Example
@@ -105,52 +103,40 @@ See files in [examples](./examples) to learn more.
 
 ### Server
 
+It can be omitted if it is the default value as below. See [demo file](./examples/server2/index.js) to learn more.
+
 ```js
-// The options can be omitted if it is same as the following.
+const booms = require('booms');
+
 const options = {
-    server: {
-        host: 'localhost'
-    },
+    name: 's1',
+    dir: './src',
+    host: 'localhost',
+
     redis: {
-        host: 'localhost'
-    },
+        host: 'localhost',
+    }
 };
 
-require('booms').server.init(options);
-```
-
-Or
-
-```js
-// The name of this server. 
-// If it is omitted, it will be "s1".
-const name = 's1';
-
-// The directory which will be loaded.
-// It can be omitted if it is "./src".
-// It should be started with "."
-const dir = './src'; 
-
-// The order of the parameters can be arbitrary.
-require('booms').server.init(name, dir, options);
+booms.server.init(options);
 ```
 
 ### Client
 
-Use [boomsConfig.js](./examples/client/boomsConfig.js) (or a hidden file .boomsConfig.js) to configure Booms client. If it is empty, Booms client will uses default configuration data. It must be exists in your project root path.
+Create file boomsConfig.js under your project root path to configure Booms client if needed. It can be omitted if it is the default value as below. See [demo file](./examples/client/boomsConfig.js) to learn more.
 
 ```js
 module.exports = {
 
-    // It can be omitted if it is 'localhost'
     redis: {
         host: 'localhost',
     },
 
-    // The names of the remote servers which will be fetched.
-    // If it is omitted, Booms will fetches all.
-    // Or "s1" if you just need this one.
-    servers: ['s1', 's2'],
+    // The server names which will be fetched
+    servers: 'all', 
+    
+    // Whether to create boomsServics.js
+    yesBoomsServicesFile: true 
 };
 ```
 
