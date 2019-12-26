@@ -32,12 +32,13 @@ const me = {
 				const maxPort = Math.max.apply(Math, arr.map(o => o.value - 0));
 				port = maxPort + 1;
 			}
-		}
 
-		// Save to redis
-		arr.push({name: serverName, value: port});
-		const value = JSON.stringify(arr);
-		await redis.set(key, value);
+			// Save to redis
+			arr.push({name: serverName, value: port});
+
+			const value = JSON.stringify(arr);
+			await redis.set(key, value);
+		}
 
 		return port;
 	}
