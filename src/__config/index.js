@@ -4,6 +4,7 @@ const me = {
 		name: 's1', // Server name
 		dir: './src',
 		host: 'localhost',
+		basePort: 30201, // The starting port number
 	},
 
 	redis: {
