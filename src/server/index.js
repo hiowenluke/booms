@@ -103,13 +103,13 @@ const me = {
 					});
 
 					result = await fn(...argsOk);
+
+					const resultStr = myJson.stringify(result);
+					sock.write(resultStr);
 				}
 				catch(e) {
 					console.log(e);
 				}
-
-				const resultStr = myJson.stringify(result);
-				sock.write(resultStr);
 			});
 		});
 
