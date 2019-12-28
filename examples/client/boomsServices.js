@@ -2,11 +2,11 @@
 const servers = {
     "s1": {
         "host": "localhost",
-        "port": 30001
+        "port": 30201
     },
     "s2": {
         "host": "localhost",
-        "port": 30002
+        "port": 30202
     }
 };
 
