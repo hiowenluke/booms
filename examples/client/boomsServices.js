@@ -13,6 +13,7 @@ const servers = {
 const apis = {
     "s1": {
         "about": {},
+        "callback": {},
         "say": {
             "hi": {}
         }
