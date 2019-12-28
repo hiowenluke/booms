@@ -14,6 +14,25 @@ const parseUserConfig = require('./parseUserConfig');
 const Emitter = require('events').EventEmitter;
 const myEmitter = new Emitter;
 
+const cache = {
+	fns: {},
+	pms: {},
+
+	getFnByName(source, funcName) {
+		if (!this.fns[funcName]) {
+			this.fns[funcName] = keyPaths.get(source, funcName);
+		}
+		return this.fns[funcName];
+	},
+
+	getParsedMessage(message) {
+		if (!this.pms[message]) {
+			this.pms[message] = myJson.parseMessage(message);
+		}
+		return this.pms[message];
+	}
+};
+
 const me = {
 	source: {},
 
@@ -69,8 +88,8 @@ const me = {
 				}
 
 				// Handle the normal rpc
-				const [funcName, args] = myJson.parseMessage(message);
-				const fn = keyPaths.get(this.source, funcName);
+				const [funcName, args] = cache.getParsedMessage(message);
+				const fn = cache.getFnByName(this.source, funcName);
 				if (!fn) {
 					throw new Error(`API ${funcName} can not be found on server ${name}`);
 				}
@@ -78,29 +97,31 @@ const me = {
 				let result;
 				try {
 					let argsOk = rpcArgs.decode(args);
-					argsOk = argsOk.map((arg, index) => {
+					if (argsOk.find(arg => arg === rpcArgs.FUNCTION)) {
+						argsOk = argsOk.map((arg, index) => {
 
-						// Create an asynchronous function for callback function
-						if (arg === rpcArgs.FUNCTION)	{
-							return (...args) => {
-								const argsStr = myJson.stringify(args);
-								return new Promise(resolve => {
+							// Create an asynchronous function for callback function
+							if (arg === rpcArgs.FUNCTION)	{
+								return (...args) => {
+									const argsStr = myJson.stringify(args);
+									return new Promise(resolve => {
 
-									// Return the result of callback
-									myEmitter.once('cb_result', (resultMessage) => {
-										const result = myJson.parse(resultMessage);
-										resolve(result);
-									});
+										// Return the result of callback
+										myEmitter.once('cb_result', (resultMessage) => {
+											const result = myJson.parse(resultMessage);
+											resolve(result);
+										});
 
-									// Tell the client to perform the callback function
-									sock.write( 'booms_callback_do_' + index + '#' + argsStr);
-								})
-							};
-						}
-						else {
-							return arg;
-						}
-					});
+										// Tell the client to perform the callback function
+										sock.write( 'booms_callback_do_' + index + '#' + argsStr);
+									})
+								};
+							}
+							else {
+								return arg;
+							}
+						});
+					}
 
 					result = await fn(...argsOk);
 
