@@ -1,7 +1,7 @@
 
 # Booms
 
-A high-performance and easy-to-use RPC microservices framework for [Node.js](https://nodejs.org), load a directory as a RPC server, call the remote functions in it like **s1.say.hi()**, as same as do it at local. 
+A high-performance and easy-to-use RPC microservices framework for [Node.js](https://nodejs.org), load a directory as a RPC server, call the remote functions in it like **s1.say.hi()**, as same as do it at local. Booms can pass not only data, but also callback functions to the server, that's awesome.
 
 Booms is based on Node.js native TCP socket. It does not require you to write [proto](https://developers.google.com/protocol-buffers/docs/proto3) files, which is more easier to use.
 
@@ -95,6 +95,32 @@ node index.js
 BTW: Booms client fetches the remote services definition data and save it to the file "[./boomsServices.js](./examples/client/boomsServices.js)" so that you can easily view all the microservices APIs information.
 
 
+## Passing Callback Function
+
+Booms can pass not only data, but also callback functions to the server, that's awesome.
+
+```js
+const {s1} = require('booms/services');
+
+const main = async function () {
+	const x = 1;
+	
+	// 1. The client passes a function "add" to the server via Booms.
+	// 2. The server calls function "add" to get a result, and handles with it.
+	// 3. The server returns the final result to the client.  
+	const result = await s1.callback('hi', function add (y) { // y = 2
+		return x + y;
+	});
+	console.log(result); // "hi, 3"
+};
+
+main();
+```
+
+## Calling Style
+
+In addition to object-style calling of remote functions like **s1.say.hi()**, Booms also supports message-style calling of remote functions like **call('s1:/say/hi')**. See [this example](./examples/client-message-style) to learn more.
+
 ## Example
 
 See files in [examples](./examples) to learn more.
@@ -140,11 +166,6 @@ module.exports = {
 };
 ```
 
-## Calling Style
-
-In addition to object-style calling of remote functions like **s1.say.hi()**, Booms also supports message-style calling of remote functions like **call('s1:/say/hi')**. See [this example](./examples/client-message-style) to learn more.
-
-
 ## Test
 
 ```sh
@@ -160,7 +181,7 @@ Booms is based on Node.js native TCP socket, much faster than other RPC framewor
 
 ## Why Booms
 
-With Booms, we can require the remote services and call the remote functions as same as we do it at local. That is, we can  easily disassemble a project, move any sub module directory to any other location and load it as a microservices any time without adjust any code in parent module. 
+With Booms, you can require the remote services and call the remote functions as same as you do it at local. That is, you can  easily disassemble a project, move any sub module directory to any other location and load it as a microservices any time without adjust any code in parent module. 
 
 ## Why Microservices
 
