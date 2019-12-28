@@ -12,6 +12,12 @@ const main = async function () {
 
 	result = await call('s1:/say/hi', 'owen', 100);
 	console.log(result); // { msg: 'Hi, I am owen, 100 years old.' }
+
+	const x = 1;
+	result = await call('s1:/callback', 'hi', function (y) { // y = 2
+		return x + y;
+	});
+	console.log(result); // "hi, 3"
 };
 
 main();
