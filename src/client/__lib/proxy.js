@@ -52,13 +52,9 @@ const fn = (client, serverName, api, args) => {
 				const cbResult = await fn(...argsOk);
 				const cbResultStr = myJson.stringify(cbResult);
 
-				// Use cbClient instead of the current client to get the result,
-				// because the current client just run once via client.once().
-
-				// We should not use client.on(), it will cause the
-				// following error when there is a lot of concurrency:
-				// 		MaxListenersExceededWarning: Possible EventEmitter memory leak detected.
+				// Redo client.once() to get the final result
 				const result = await getFinalResult(client, cbResultStr);
+
 				resolve(result);
 			}
 			else {
