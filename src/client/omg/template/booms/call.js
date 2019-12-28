@@ -1,5 +1,5 @@
 
-const Socket = require('./socket');
+const Socket = require('./Socket');
 const proxy = require('./proxy');
 
 const clients = {
