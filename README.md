@@ -111,6 +111,7 @@ const main = async function () {
 	const result = await s1.callback('hi', function add(y) { // y = 2
 		return x + y;
 	});
+	
 	console.log(result); // "hi, 3"
 };
 
