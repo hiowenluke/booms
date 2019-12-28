@@ -3,6 +3,6 @@
   "main": "index.js",
   "version": "0.1.0",
   "dependencies": {
-    "booms": "^1.5.5"
+    "booms": "^1.6.1"
   }
 }
