@@ -92,7 +92,7 @@ node index.js
 { msg: 'Hi, I am owen, 100 years old.' }
 ```
 
-BTW: Booms client fetches the remote services definition data and save it to the file "[./boomsServices.js](./examples/client/boomsServices.js)" so that you can easily view all the microservices APIs information.
+BTW: Booms client fetches the remote services definition data and save it to the file "[./boomsServices.js](./examples/client/boomsServices.js)" so that you can easily view all the microservices APIs information. You can disable it, see [options](#Client).
 
 
 ## Passing Callback Function
@@ -103,16 +103,16 @@ Booms can pass not only data, but also callback functions to the server, that's 
 const {s1} = require('booms/services');
 
 const main = async function () {
-	const x = 1;
-	
-	// 1. The client passes a function "add" to the server via Booms.
-	// 2. The server calls function "add" to get a result, and handles with it.
-	// 3. The server returns the final result to the client.  
-	const result = await s1.callback('hi', function add(y) { // y = 2
-		return x + y;
-	});
-	
-	console.log(result); // "hi, 3"
+    const x = 1;
+    
+    // 1. The client passes a function "add" to the server via Booms.
+    // 2. The server calls function "add" to get a result, and handles with it.
+    // 3. The server returns the final result to the client.  
+    const result = await s1.callback('hi', function add(y) { // y = 2
+        return x + y;
+    });
+    
+    console.log(result); // "hi, 3"
 };
 
 main();
