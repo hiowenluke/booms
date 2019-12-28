@@ -108,7 +108,7 @@ const main = async function () {
 	// 1. The client passes a function "add" to the server via Booms.
 	// 2. The server calls function "add" to get a result, and handles with it.
 	// 3. The server returns the final result to the client.  
-	const result = await s1.callback('hi', function add (y) { // y = 2
+	const result = await s1.callback('hi', function add(y) { // y = 2
 		return x + y;
 	});
 	console.log(result); // "hi, 3"
