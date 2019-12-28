@@ -32,6 +32,7 @@ const verify = (result) => {
 		"Server #1",
 		"Server #2",
 		{ msg: 'Hi, I am owen, 100 years old.' },
+		"hi, 3",
 	];
 
 	result = result.replace(/\s*?$/g, '').split('\n');
