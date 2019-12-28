@@ -1,6 +1,6 @@
 
 const me = {
-	boomsServicesPath: './boomsServices',
+	boomsServicesPath: './template',
 	tempPath: '../../../.temp',
 };
 
