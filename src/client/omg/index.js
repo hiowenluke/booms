@@ -29,7 +29,7 @@ const copyFilesToTemp = () => {
 			['../../__lib/myJson.js', '/lib/myJson.js'],
 			['../../__lib/rpcArgs.js', '/lib/rpcArgs.js'],
 			['../__lib/proxy.js', '/proxy.js'],
-			['../__lib/socket.js', '/socket.js'],
+			['../__lib/Socket.js', '/Socket.js'],
 		];
 
 		filenames.forEach(filenames => {
