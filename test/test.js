@@ -20,7 +20,7 @@ const createTempFile = (filePath) => {
 const getResult = (filePath) => {
 	return new Promise(resolve => {
 		const tmpFile = createTempFile(filePath);
-		exec('node ' + tmpFile, (code, stdout, stderr) => {
+		exec('node ' + tmpFile, (errCode, stdout, stderr) => {
 			fs.unlinkSync(tmpFile);
 			resolve(stdout);
 		});
