@@ -1,23 +1,47 @@
 
 const myJson = require('../../__lib/myJson');
 const rpcArgs = require('../../__lib/rpcArgs');
+const Socket = require('./Socket');
+
+const fetchCallbacks = (args) => {
+	const callbacks = [];
+
+	args.forEach((arg, index) => {
+		if (typeof arg === 'function') {
+			callbacks[index] = arg;
+		}
+	});
+
+	return callbacks;
+};
+
+const getFinalResult = (client, cbResultStr) => {
+	return new Promise(resolve => {
+
+		console.log(1);
+
+		client.once('data', data => {
+
+			console.log(2);
+
+			const message = data.toString();
+			const result = myJson.parse(message);
+			resolve(result);
+		});
+
+		client.write('booms_callback_result#' + cbResultStr);
+	});
+};
 
 const fn = (client, serverName, api, args) => {
 	return new Promise(resolve => {
 
 		// Save callback functions
-		const callbacks = [];
-		args.forEach((arg, index) => {
-			if (typeof arg === 'function') {
-				callbacks[index] = arg;
-			}
-		});
+		const callbacks = fetchCallbacks(args);
 
 		args = rpcArgs.encode(args);
 
-		// Use "on" instead of "once" for callbacks
-		const method = callbacks.length ? 'on' : 'once';
-		client[method]('data', async data => {
+		client.once('data', async data => {
 			if (!data) {
 				throw new Error(`Server ${serverName} is not available. Is it running?`);
 			}
@@ -32,13 +56,22 @@ const fn = (client, serverName, api, args) => {
 				const fn = callbacks[index];
 
 				const argsOk = rpcArgs.decode(args);
-				const result = await fn(...argsOk);
+				const cbResult = await fn(...argsOk);
+				const cbResultStr = myJson.stringify(cbResult);
 
-				const resultStr = myJson.stringify(result);
-				client.write('booms_callback_result#' + resultStr);
+				// Use cbClient instead of the current client to get the result,
+				// because the current client just run once via client.once().
+
+				// We should not use client.on(), it will cause the
+				// following error when there is a lot of concurrency:
+				// 		MaxListenersExceededWarning: Possible EventEmitter memory leak detected.
+				const result = await getFinalResult(client, cbResultStr);
+
+				console.log(3);
+
+				resolve(result);
 			}
 			else {
-				// The server send the result to the client
 				const result = myJson.parse(message);
 				resolve(result);
 			}
