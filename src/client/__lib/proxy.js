@@ -2,8 +2,32 @@
 const myJson = require('../../__lib/myJson');
 const rpcArgs = require('../../__lib/rpcArgs');
 
+const cache = {
+	ps: {},
+	pms: {},
+
+	getParsed(message) {
+		if (!this.ps[message]) {
+			this.ps[message] = myJson.parse(message);
+		}
+		return this.ps[message];
+	},
+
+	getParsedMessage(message) {
+		if (!this.pms[message]) {
+			this.pms[message] = myJson.parseMessage(message);
+		}
+		return this.pms[message];
+	}
+
+};
+
 const fetchCallbacks = (args) => {
 	const callbacks = [];
+
+	if (!args.find(arg => typeof arg === 'function')) {
+		return callbacks;
+	}
 
 	args.forEach((arg, index) => {
 		if (typeof arg === 'function') {
@@ -18,7 +42,7 @@ const getFinalResult = (client, cbResultStr) => {
 	return new Promise(resolve => {
 		client.once('data', data => {
 			const message = data.toString();
-			const result = myJson.parse(message);
+			const result = cache.getParsed(message);
 			resolve(result);
 		});
 
@@ -44,7 +68,7 @@ const fn = (client, serverName, api, args) => {
 			// The server tells the client to perform the callback function
 			// `booms_callback_do_2#["abc",123]` => args[2]("abc", 123)
 			if (message.substr(0, 17) === 'booms_callback_do') {
-				const [funcName, args] = myJson.parseMessage(message);
+				const [funcName, args] = cache.getParsedMessage(message);
 				const index = funcName.match(/\d+/)[0];
 				const fn = callbacks[index];
 
@@ -58,7 +82,7 @@ const fn = (client, serverName, api, args) => {
 				resolve(result);
 			}
 			else {
-				const result = myJson.parse(message);
+				const result = cache.getParsed(message);
 				resolve(result);
 			}
 		});
