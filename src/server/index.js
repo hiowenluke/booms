@@ -11,6 +11,9 @@ const rpcArgs = require('../__lib/rpcArgs');
 const ports = require('./ports');
 const parseUserConfig = require('./parseUserConfig');
 
+const Emitter = require('events').EventEmitter;
+const myEmitter = new Emitter;
+
 const me = {
 	source: {},
 
@@ -57,8 +60,16 @@ const me = {
 		const server = net.createServer(sock => {
 			sock.on('data', async data => {
 				const message = data.toString();
-				const [funcName, args] = myJson.parseMessage(message);
 
+				// Received the result of callback from the client
+				if (message.substr(0, 22) === 'booms_callback_result#') {
+					const resultMessage = message.substr(22);
+					myEmitter.emit('cb_result', resultMessage);
+					return;
+				}
+
+				// Handle the normal rpc
+				const [funcName, args] = myJson.parseMessage(message);
 				const fn = keyPaths.get(this.source, funcName);
 				if (!fn) {
 					throw new Error(`API ${funcName} can not be found on server ${name}`);
@@ -66,7 +77,31 @@ const me = {
 
 				let result;
 				try {
-					const argsOk = rpcArgs.decode(args);
+					let argsOk = rpcArgs.decode(args);
+					argsOk = argsOk.map((arg, index) => {
+
+						// Create an asynchronous function for callback function
+						if (arg === rpcArgs.FUNCTION)	{
+							return (...args) => {
+								const argsStr = myJson.stringify(args);
+								return new Promise(resolve => {
+
+									// Return the result of callback
+									myEmitter.once('cb_result', (resultMessage) => {
+										const result = myJson.parse(resultMessage);
+										resolve(result);
+									});
+
+									// Tell the client to perform the callback function
+									sock.write( 'booms_callback_do_' + index + '#' + argsStr);
+								})
+							};
+						}
+						else {
+							return arg;
+						}
+					});
+
 					result = await fn(...argsOk);
 				}
 				catch(e) {
