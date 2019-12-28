@@ -6,6 +6,7 @@ const cp = require('child_process');
 const fx = require('fs-extra');
 const keyPaths = require('keypaths');
 
+const config = require('../../__config');
 const omgConfig = require('./config');
 const replaceInFile = require('../../__lib/replaceInFile');
 
@@ -66,16 +67,20 @@ const getClientRoot = (startingFilename) => {
 	};
 
 	const startingDir = path.resolve(startingFilename, '..');
-	const pkgFile = seekFile(startingDir, 'package.json', (filePath) => {
-		const pkg = require(filePath);
-		return pkg.dependencies.booms;
-	});
+	const targetFile =
+		seekFile(startingDir, 'boomsConfig.js') ||
+		seekFile(startingDir, '.boomsConfig.js') ||
+		seekFile(startingDir, 'package.json', (filePath) => {
+			const pkg = require(filePath);
+			return pkg.dependencies.booms;
+		})
+	;
 
-	if (!pkgFile) {
-		throw new Error(`Can not find package.json using booms in current project root path`);
+	if (!targetFile) {
+		throw new Error(`Can not find package.json or boomsConfig.js in current project root path`);
 	}
 
-	const userRoot = path.resolve(pkgFile, '..');
+	const userRoot = path.resolve(targetFile, '..');
 	return userRoot;
 };
 
@@ -83,14 +88,16 @@ const getUserConfig = (clientRoot) => {
 	const filenames = ['boomsConfig.js', '.boomsConfig.js'];
 	const filename = filenames.find(filename => fs.existsSync(clientRoot + '/' + filename));
 
-	let userConfig;
+	let userConfig = {};
 	if (filename) {
 		userConfig = require(clientRoot + '/' + filename);
 	}
 
-	// Just return the raw user config file,
-	// not apply the default config.client.
-	return userConfig || {};
+	userConfig.servers = userConfig.servers || config.client.servers;
+	userConfig.yesBoomsServicesFile = userConfig.yesBoomsServicesFile || config.client.yesBoomsServicesFile;
+	userConfig.redis = userConfig.redis || config.redis;
+
+	return userConfig;
 };
 
 const getRawServersInfos = (userConfig) => {
