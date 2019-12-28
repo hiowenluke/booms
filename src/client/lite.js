@@ -1,8 +1,8 @@
 
 const keyPaths = require('keypaths');
 
-const Socket = require('./lib/Socket');
-const proxy = require('./lib/proxy');
+const Socket = require('./__lib/Socket');
+const proxy = require('./__lib/proxy');
 const myRedis = require('../__lib/myRedis');
 
 const parseUserConfig = require('./parseUserConfig');
