@@ -19,6 +19,36 @@ const copyFilesToTemp = () => {
 
 	const sourceFolderPath = path.resolve(__dirname, omgConfig.boomsServicesPath);
 	fx.copySync(sourceFolderPath, destFolderPath);
+
+	const boomsDestFolderPath = destFolderPath + '/booms';
+	const copyBoomsFiles = () => {
+		fx.mkdirSync(boomsDestFolderPath + '/lib');
+
+		const filenames = [
+			['../../__lib/myJson.js', '/lib/myJson.js'],
+			['../../__lib/rpcArgs.js', '/lib/rpcArgs.js'],
+			['../lib/proxy', '/proxy.js'],
+			['../lib/socket', '/socket.js'],
+		];
+
+		filenames.forEach(filenames => {
+			const [from, to] = filenames;
+			const sourceFilePath = path.resolve(__dirname, from);
+			const destFilePath = boomsDestFolderPath + to;
+			fs.copyFileSync(sourceFilePath, destFilePath);
+		});
+	};
+
+	copyBoomsFiles();
+
+	const modifyRequirePath = () => {
+		const file = boomsDestFolderPath + '/proxy.js';
+		const content = fs.readFileSync(file, 'utf-8');
+		const newContent = content.replace(/\.\.\/\.\.\/__lib/g, './lib');
+		fs.writeFileSync(file, newContent, 'utf-8');
+	};
+
+	modifyRequirePath();
 };
 
 const getClientRoot = (startingFilename) => {
