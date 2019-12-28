@@ -13,7 +13,7 @@ const me = {
 
 	// This is just for note, it is not be used indeed
 	client: {
-		servers: [],
+		servers: 'all',
 		yesBoomsServicesFile: true,
 	},
 };
