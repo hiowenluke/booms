@@ -15,7 +15,7 @@ const copyFilesToTemp = () => {
 	const destPath = path.resolve(__dirname, omgConfig.tempPath);
 	const destBoomsPath = destPath + '/booms';
 
-	if (fs.existsSync(destBoomsPath)) return;
+	fx.removeSync(destPath);
 	fs.mkdirSync(destPath);
 
 	const sourcePath = path.resolve(__dirname, omgConfig.boomsServicesPath);
