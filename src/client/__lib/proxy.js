@@ -1,7 +1,6 @@
 
 const myJson = require('../../__lib/myJson');
 const rpcArgs = require('../../__lib/rpcArgs');
-const Socket = require('./Socket');
 
 const fetchCallbacks = (args) => {
 	const callbacks = [];
@@ -17,13 +16,7 @@ const fetchCallbacks = (args) => {
 
 const getFinalResult = (client, cbResultStr) => {
 	return new Promise(resolve => {
-
-		console.log(1);
-
 		client.once('data', data => {
-
-			console.log(2);
-
 			const message = data.toString();
 			const result = myJson.parse(message);
 			resolve(result);
@@ -66,9 +59,6 @@ const fn = (client, serverName, api, args) => {
 				// following error when there is a lot of concurrency:
 				// 		MaxListenersExceededWarning: Possible EventEmitter memory leak detected.
 				const result = await getFinalResult(client, cbResultStr);
-
-				console.log(3);
-
 				resolve(result);
 			}
 			else {
