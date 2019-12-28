@@ -13,14 +13,14 @@ let isInitialized;
 
 const copyFilesToTemp = () => {
 	const destPath = path.resolve(__dirname, omgConfig.tempPath);
-	if (fs.existsSync(destPath)) return;
+	const destBoomsPath = destPath + '/booms';
 
+	if (fs.existsSync(destBoomsPath)) return;
 	fs.mkdirSync(destPath);
 
 	const sourcePath = path.resolve(__dirname, omgConfig.boomsServicesPath);
 	fx.copySync(sourcePath, destPath);
 
-	const destBoomsPath = destPath + '/booms';
 	const copyBoomsFiles = () => {
 		const destBoomsLibPath = destBoomsPath + '/lib';
 		fx.mkdirSync(destBoomsLibPath);
