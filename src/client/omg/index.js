@@ -12,29 +12,30 @@ const replaceInFile = require('../../__lib/replaceInFile');
 let isInitialized;
 
 const copyFilesToTemp = () => {
-	const destFolderPath = path.resolve(__dirname, omgConfig.tempPath);
-	if (!fs.existsSync(destFolderPath)) {
-		fs.mkdirSync(destFolderPath);
-	}
+	const destPath = path.resolve(__dirname, omgConfig.tempPath);
+	if (fs.existsSync(destPath)) return;
 
-	const sourceFolderPath = path.resolve(__dirname, omgConfig.boomsServicesPath);
-	fx.copySync(sourceFolderPath, destFolderPath);
+	fs.mkdirSync(destPath);
 
-	const boomsDestFolderPath = destFolderPath + '/booms';
+	const sourcePath = path.resolve(__dirname, omgConfig.boomsServicesPath);
+	fx.copySync(sourcePath, destPath);
+
+	const destBoomsPath = destPath + '/booms';
 	const copyBoomsFiles = () => {
-		fx.mkdirSync(boomsDestFolderPath + '/lib');
+		const destBoomsLibPath = destBoomsPath + '/lib';
+		fx.mkdirSync(destBoomsLibPath);
 
 		const filenames = [
 			['../../__lib/myJson.js', '/lib/myJson.js'],
 			['../../__lib/rpcArgs.js', '/lib/rpcArgs.js'],
-			['../lib/proxy', '/proxy.js'],
-			['../lib/socket', '/socket.js'],
+			['../lib/proxy.js', '/proxy.js'],
+			['../lib/socket.js', '/socket.js'],
 		];
 
 		filenames.forEach(filenames => {
 			const [from, to] = filenames;
 			const sourceFilePath = path.resolve(__dirname, from);
-			const destFilePath = boomsDestFolderPath + to;
+			const destFilePath = destBoomsPath + to;
 			fs.copyFileSync(sourceFilePath, destFilePath);
 		});
 	};
@@ -42,7 +43,7 @@ const copyFilesToTemp = () => {
 	copyBoomsFiles();
 
 	const modifyRequirePath = () => {
-		const file = boomsDestFolderPath + '/proxy.js';
+		const file = destBoomsPath + '/proxy.js';
 		const content = fs.readFileSync(file, 'utf-8');
 		const newContent = content.replace(/\.\.\/\.\.\/__lib/g, './lib');
 		fs.writeFileSync(file, newContent, 'utf-8');
