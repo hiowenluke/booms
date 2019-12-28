@@ -1,7 +1,9 @@
 
+const config = require('../__config');
+
 const me = {
 	key: 'ports',
-	basePort: 30001,
+	basePort: config.server.basePort,
 	redis: null,
 
 	init(redis) {
