@@ -58,7 +58,6 @@ const me = {
 			sock.on('data', async data => {
 				const message = data.toString();
 				const [funcName, args] = myJson.parseMessage(message);
-				const argsOk = rpcArgs.decode(args);
 
 				const fn = keyPaths.get(this.source, funcName);
 				if (!fn) {
@@ -67,6 +66,7 @@ const me = {
 
 				let result;
 				try {
+					const argsOk = rpcArgs.decode(args);
 					result = await fn(...argsOk);
 				}
 				catch(e) {
