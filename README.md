@@ -245,9 +245,6 @@ module.exports = {
 
     // The server names which will be fetched
     servers: 'all', 
-    
-    // Whether to create boomsServics.js
-    yesBoomsServicesFile: true 
 };
 ```
 
