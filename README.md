@@ -21,7 +21,36 @@ Booms uses [Redis](https://redis.io) to store the remote services definition dat
 npm install booms --save
 ```
 
-## TRY IT! (in under 5 minutes)
+## TRY IT!
+
+#### 1. Download this repo first
+
+```sh
+git clone https://github.com/hiowenluke/booms.git
+cd booms
+npm install
+```
+
+#### 2. Run examples
+
+Open 4 new tabs in your terminal, then:
+
+1\) In 1st tab, run `node examples/server1`
+2\) In 2nd tab, run `node examples/server2`
+3\) In 3rd tab, run `node examples/client`
+4\) In 4th tab, run `node examples/client-message-style`
+
+The results in clients will be like below:
+
+```sh
+Server #1
+Server #2
+{ msg: 'Hi, I am owen, 100 years old.' }
+I am obj.do()
+hi, 3
+```
+
+## Quick start (in under 5 minutes)
 
 Create a demo directory first.
 
@@ -47,7 +76,7 @@ module.exports = async function (name, age) {
 };
 ```
 
-2\) Create file "index.js". (See [options](#Server-Options))
+2\) Create file "index.js". (See [options](#Server-options))
 
 ```js
 // Create a server named "s1"
@@ -92,17 +121,17 @@ node index.js
 { msg: 'Hi, I am owen, 100 years old.' }
 ```
 
-BTW: Booms client fetches the remote services definition data and save it to the file "[./boomsServices.js](./examples/client/boomsServices.js)" so that you can easily view all the microservices APIs information. You can disable it, see [options](#Client-Options).
+BTW: Booms client fetches the remote services definition data and save it to the file "[./boomsServices.js](./examples/client/boomsServices.js)" so that you can easily view all the microservices APIs information. You can disable it, see [options](#Client-options).
 
 ## Examples
 
-See [examples](./examples) to learn more, including two servers and two clients.
+See [examples](./examples) to learn more.
 
-## Call Remote Object method
+## Call remote object method
 
-You can also call a method of a remote object. Cool, right?
+In addition to calling a remote function, you can also call a method of a remote object. Cool, right?
 
-### 1\. In Server
+### 1\. In server
 
 ```js
 // obj.js
@@ -115,7 +144,7 @@ module.exports = {
 
 [Demo](./examples/server1/src/obj.js)
 
-### 2\. In Client
+### 2\. In client
 
 ```js
 const {s1} = require('booms/services');
@@ -128,11 +157,11 @@ main();
 
 [Demo](./examples/client/index.js)
 
-## Passing Callback Function
+## Passing callback function
 
 Booms can passes not only data, but also callback functions to the server, that's awesome.
 
-### 1\. In Server
+### 1\. In server
 
 ```js
 // callback.js
@@ -151,7 +180,7 @@ module.exports = async function(hi, cb) {
 
 [Demo](./examples/server1/src/callback.js)
 
-### 2\. In Client
+### 2\. In client
 
 ```js
 const {s1} = require('booms/services');
@@ -176,13 +205,13 @@ main();
 
 [Demo](./examples/client/index.js)
 
-## Calling Style
+## Calling style
 
 In addition to Object-Style calling like **s1.say.hi()**, Booms also supports Message-Style calling like **call('s1:/say/hi')**. [Demo](./examples/client-message-style)
 
 ## Options
 
-### Server Options
+### Server options
 
 It can be omitted if it is the default value as below.
 
@@ -204,7 +233,7 @@ booms.server.init(options);
 
 [Demo](./examples/server2/index.js)
  
-### Client Options
+### Client options
 
 Create file boomsConfig.js under your project root path to configure Booms client if needed. It can be omitted if it is the default value as below. 
 
@@ -227,10 +256,9 @@ module.exports = {
 
 ## Test
 
+Download this repo first (see [TRY IT](#try-it)) if not yet, then:
+
 ```sh
-git clone https://github.com/hiowenluke/booms.git
-cd booms
-npm install
 npm test
 ```
 
@@ -242,7 +270,7 @@ Booms is based on Node.js native TCP socket, much faster than other RPC framewor
 
 With Booms, you can require the remote services and call the remote functions as same as you do it at local. That is, you can  easily disassemble a project, move any sub module directory to any other location and load it as a microservices any time without adjust any code in parent module. 
 
-## Why Microservices
+## Why microservices
 
 * [Why Enterprises Are Embracing Microservices and Node.js](https://thenewstack.io/enterprises-embracing-microservices-node-js/)
 * [Microservices With Node.js: Scalable, Superior, and Secure Apps](https://dzone.com/articles/microservices-with-nodejs-scalable-superior-and-se)
