@@ -167,7 +167,7 @@ const writeToDataFile = (clientRoot, userConfig, infos, apis) => {
 		
 		const apis = ${apisStr};
 		
-		module.exports = apis;	
+		module.exports = apis;
 	`;
 	replaceInFile(servicesFilePath, /^[\s\S]*module\.exports = apis;/, clear(content));
 
