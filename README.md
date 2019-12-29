@@ -52,7 +52,7 @@ I am obj.do()
 hi, 3
 ```
 
-## Quick start (in under 5 minutes)
+## Quick start (in under 3 minutes)
 
 Create a demo directory first.
 
@@ -99,8 +99,7 @@ Open a new tab in your terminal first.
 0\) Initialize this client
 
 ```sh
-cd ..
-mkdir ./client && cd ./client
+cd .. && mkdir ./client && cd ./client
 npm init -y
 npm install booms --save
 ```
