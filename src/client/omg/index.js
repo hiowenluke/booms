@@ -120,15 +120,52 @@ const getRawServersInfos = (userConfig) => {
 };
 
 const parseServicesApis = (rawInfos) => {
+	const parseApiInfos = (apis, obj, fnParams, fnAsync) => {
+
+		const getFunctionBodyStr = (apiPath) => {
+			const paramsStr = fnParams[apiPath].join(', ');
+
+			// The keyword "async" should always be used to avoid misunderstanding
+			// that the keyword "await" is not necessary for some function in client.
+
+			// "^^async function () {}^^"
+			return `^^async function (${paramsStr}) {}^^`;
+		};
+
+		const attachFunctionBodyStr = (obj, parent = '') => {
+			Object.keys(obj).forEach(key => {
+				const node = obj[key];
+				const apiPath = parent + key;
+
+				// If it is ending node, replace it with function
+				if (!Object.keys(node).length) {
+					obj[key] = getFunctionBodyStr(apiPath);
+				}
+				else {
+					// Recursion
+					attachFunctionBodyStr(node, apiPath + '.');
+				}
+			});
+		};
+
+		attachFunctionBodyStr(obj);
+
+		return obj;
+	};
+
 	const data = {};
 	const names = Object.keys(rawInfos);
 
 	for (let i = 0; i < names.length; i ++) {
 		const name = names[i];
 		const info = rawInfos[name];
-		const {apis} = info;
+		let {apis, fnParams, fnAsync} = info;
+
 		const obj = keyPaths.toObject(apis);
-		data[name] = obj;
+		// fnParams = JSON.parse(fnParams);
+		// fnAsync = JSON.parse(fnAsync);
+
+		data[name] = parseApiInfos(apis, obj, fnParams, fnAsync);
 	}
 
 	return data;
@@ -136,7 +173,7 @@ const parseServicesApis = (rawInfos) => {
 
 const cropServersInfosFromRaw = (rawInfos) => {
 
-	// Only need host and port of info
+	// Only host and port required
 	const names = Object.keys(rawInfos);
 	const infos = {};
 
@@ -150,20 +187,29 @@ const cropServersInfosFromRaw = (rawInfos) => {
 	return infos;
 };
 
-const writeToDataFile = (clientRoot, userConfig, infos, apis) => {
+const writeToDataFile = (clientRoot, userConfig, servers, apis) => {
 
-	const infosStr = stringify(infos);
-	const apisStr = stringify(apis);
+	const serversStr = stringify(servers);
+	let apisStr = stringify(apis);
+
+	apisStr = apisStr
+
+		// "^^function () {}^^" => function () {}
+		.replace(/("\^\^)|(\^\^")/g, '')
+
+		// hi: async function (name, age) {} => async hi (name, age) {}
+		// .replace(/\b(\S*?): async function/g, 'async $1')
+	;
 
 	// For Booms client running
 	const dataFilePath = path.resolve(__dirname, omgConfig.tempPath + '/data.js');
-	replaceInFile(dataFilePath, '`{serversInfos}`', infosStr);
+	replaceInFile(dataFilePath, '`{serversInfos}`', serversStr);
 	replaceInFile(dataFilePath, '`{servicesApis}`', apisStr);
 
 	// For booms/services.js
 	const servicesFilePath = path.resolve(__dirname, '../../../services.js');
 	const content = `
-		const servers = ${infosStr};
+		const servers = ${serversStr};
 		
 		const apis = ${apisStr};
 		
