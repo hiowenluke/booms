@@ -35,13 +35,12 @@ npm install
 
 Open 4 new tabs in your terminal, then:
 
+```sh
 1\) In 1st tab, run `node examples/server1`
-
 2\) In 2nd tab, run `node examples/server2`
-
 3\) In 3rd tab, run `node examples/client`
-
 4\) In 4th tab, run `node examples/client-message-style`
+```
 
 The results in clients will be like below:
 
