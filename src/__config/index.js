@@ -13,7 +13,7 @@ const me = {
 
 	client: {
 		servers: 'all',
-		yesBoomsServicesFile: true,
+		yesBoomsServicesFile: false,
 	},
 };
 
