@@ -98,7 +98,7 @@ BTW: Booms client fetches the remote services definition data and save it to the
 
 Booms can passes not only data, but also callback functions to the server, that's awesome.
 
-### Server
+### Callback in server
 
 ```js
 // callback.js
@@ -119,7 +119,7 @@ module.exports = fn;
 
 See [demo file](./examples/server1/src/callback.js).
 
-### Client
+### Callback in client
 
 ```js
 const {s1} = require('booms/services');
