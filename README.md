@@ -1,7 +1,7 @@
 
 # Booms
 
-A high-performance and easy-to-use RPC microservices framework for [Node.js](https://nodejs.org), load a directory as a RPC server, call the remote functions in it like **s1.say.hi()**, as same as do it at local. Booms can pass not only data, but also callback functions to the server, that's awesome.
+A high-performance and easy-to-use RPC microservices framework for [Node.js](https://nodejs.org), load a directory as a RPC server, call the remote functions in it like **s1.say.hi()**, as same as do it at local. Booms can passes not only data, but also callback functions to the server, that's awesome.
 
 Booms is based on Node.js native TCP socket. It does not require you to write [proto](https://developers.google.com/protocol-buffers/docs/proto3) files, which is more easier to use.
 
@@ -94,10 +94,32 @@ node index.js
 
 BTW: Booms client fetches the remote services definition data and save it to the file "[./boomsServices.js](./examples/client/boomsServices.js)" so that you can easily view all the microservices APIs information. You can disable it, see [options](#Client).
 
-
 ## Passing Callback Function
 
-Booms can pass not only data, but also callback functions to the server, that's awesome.
+Booms can passes not only data, but also callback functions to the server, that's awesome.
+
+### Server
+
+```js
+// callback.js
+const fn = async function(hi, cb) {
+
+	// The cb is the callback comes from the client.
+	// The cb has wrapped as an asynchronous function by Booms automatically.
+	// You should use keyword await when invoke it.
+
+	// The cbResult is the result returned after the cb is executed.
+	const cbResult = await cb(2);
+
+	return hi + ', ' + cbResult;
+};
+
+module.exports = fn;
+```
+
+See [demo file](./examples/server1/src/callback.js).
+
+### Client
 
 ```js
 const {s1} = require('booms/services');
@@ -105,10 +127,12 @@ const {s1} = require('booms/services');
 const main = async function () {
     const x = 1;
     
-    // 1. The client passes a function "add" to the server via Booms.
-    // 2. The server calls function "add" to get a result, and handles with it.
+    // 1. The client passes a function to the server via Booms.
+    // 2. The server calls it to get a result, and handles with it.
     // 3. The server returns the final result to the client.  
-    const result = await s1.callback('hi', function add(y) { // y = 2
+    const result = await s1.callback('hi', function (y) { 
+    	
+    	// The argument y is passed from the server, its value is 2
         return x + y;
     });
     
@@ -117,6 +141,8 @@ const main = async function () {
 
 main();
 ```
+
+See [demo file](./examples/client/index.js).
 
 ## Calling Style
 
@@ -130,7 +156,7 @@ See files in [examples](./examples) to learn more.
 
 ### Server
 
-It can be omitted if it is the default value as below. See [demo file](./examples/server2/index.js) to learn more.
+It can be omitted if it is the default value as below. See [demo file](./examples/server2/index.js).
 
 ```js
 const booms = require('booms');
@@ -150,7 +176,7 @@ booms.server.init(options);
 
 ### Client
 
-Create file boomsConfig.js under your project root path to configure Booms client if needed. It can be omitted if it is the default value as below. See [demo file](./examples/client/boomsConfig.js) to learn more.
+Create file boomsConfig.js under your project root path to configure Booms client if needed. It can be omitted if it is the default value as below. See [demo file](./examples/client/boomsConfig.js).
 
 ```js
 module.exports = {
