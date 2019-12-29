@@ -147,13 +147,13 @@ const cropServersInfosFromRaw = (rawInfos) => {
 const writeToDataFile = (clientRoot, userConfig, infos, apis) => {
 
 	// For Booms client running
-	const filePath = path.resolve(__dirname, omgConfig.tempPath + '/data.js');
-	replaceInFile(filePath, '`{serversInfos}`', infos);
-	replaceInFile(filePath, '`{servicesApis}`', apis);
+	const dataFilePath = path.resolve(__dirname, omgConfig.tempPath + '/data.js');
+	replaceInFile(dataFilePath, '`{serversInfos}`', infos);
+	replaceInFile(dataFilePath, '`{servicesApis}`', apis);
 
 	// Create boomsServices.js for user to view all apis information.
 	if (userConfig.yesBoomsServicesFile) {
-		const sourceFile = filePath;
+		const sourceFile = dataFilePath;
 		const targetFile = clientRoot + '/boomsServices.js';
 		fs.copyFileSync(sourceFile, targetFile);
 	}
