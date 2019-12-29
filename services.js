@@ -25,7 +25,7 @@ const apis = {
     }
 };
 
-module.exports = apis;                
+module.exports = apis;
 
 (() => {
 	const parentFilename = module.parent.filename;
