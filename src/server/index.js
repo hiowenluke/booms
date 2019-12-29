@@ -9,6 +9,7 @@ const myRedis = require('../__lib/myRedis');
 const rpcArgs = require('../__lib/rpcArgs');
 
 const ports = require('./ports');
+const parseParamsNames = require('./parseParamsNames');
 const parseUserConfig = require('./parseUserConfig');
 
 const Emitter = require('events').EventEmitter;
@@ -35,6 +36,9 @@ const cache = {
 
 const me = {
 	source: {},
+	apis: {},
+	fnParams: {},
+	fnAsync: {},
 
 	async init(caller, ...args) {
 		try {
@@ -57,7 +61,24 @@ const me = {
 	async initSource(caller, boomsConfig) {
 		const {dir} = boomsConfig;
 		const root = path.resolve(caller, '..');
-		this.source = kdo(root + '/' + dir);
+		const source = kdo(root + '/' + dir);
+
+		const apis = keyPaths.toPaths(source);
+		const fnParams = {};
+		const fnAsync = {};
+
+		apis.forEach(api => {
+			const fn = keyPaths.get(source, api);
+			const params = parseParamsNames(fn.toString());
+
+			fnParams[api] = params;
+			fnAsync[api] = fn.constructor.name === "AsyncFunction" ? 1 : 0;
+		});
+
+		this.source = source;
+		this.apis = apis;
+		this.fnParams = fnParams;
+		this.fnAsync = fnAsync;
 	},
 
 	async calcServerPort(boomsConfig) {
@@ -66,10 +87,8 @@ const me = {
 
 	async saveServerData(boomsConfig) {
 		const {name, host, port} = boomsConfig;
-
-		const apis = keyPaths.toPaths(this.source);
-		const data = {host, port, apis};
-
+		const {apis, fnParams, fnAsync} = this;
+		const data = {host, port, apis, fnParams, fnAsync};
 		await myRedis.saveServerData(name, data);
 	},
 
