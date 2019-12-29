@@ -1,7 +1,7 @@
 
 # Booms
 
-A high-performance and easy-to-use RPC microservices framework for [Node.js](https://nodejs.org), load a directory as a RPC server, call the remote functions in it like **s1.say.hi()**, as same as do it at local. Booms can passes not only data, but also callback functions to the server, that's awesome.
+A high-performance and easy-to-use RPC microservices framework for [Node.js](https://nodejs.org), load a directory as a RPC server, call a remote function or method of a remote object like **s1.say.hi()**, as same as do it at local. Booms can passes not only data, but also callback functions to the server, that's awesome.
 
 Booms is based on Node.js native TCP socket. It does not require you to write [proto](https://developers.google.com/protocol-buffers/docs/proto3) files, which is more easier to use.
 
@@ -29,7 +29,7 @@ Create a demo directory first.
 mkdir ./booms-demo && cd ./booms-demo
 ```
 
-### 1. Server
+#### 1. Server
 
 0\) Initialize this server
 
@@ -47,7 +47,7 @@ module.exports = async function (name, age) {
 };
 ```
 
-2\) Create file "index.js". (See [options](#Server) to learn more)
+2\) Create file "index.js". (See [options](#Server-Options))
 
 ```js
 // Create a server named "s1"
@@ -61,7 +61,7 @@ node index.js
 Server s1 listening on localhost:50051
 ```
 
-### 2. Client
+#### 2. Client
 
 Open a new tab in your terminal first.
 
@@ -92,34 +92,66 @@ node index.js
 { msg: 'Hi, I am owen, 100 years old.' }
 ```
 
-BTW: Booms client fetches the remote services definition data and save it to the file "[./boomsServices.js](./examples/client/boomsServices.js)" so that you can easily view all the microservices APIs information. You can disable it, see [options](#Client).
+BTW: Booms client fetches the remote services definition data and save it to the file "[./boomsServices.js](./examples/client/boomsServices.js)" so that you can easily view all the microservices APIs information. You can disable it, see [options](#Client-Options).
+
+## Examples
+
+See [examples](./examples) to learn more, including two servers and two clients.
+
+## Call Remote Object method
+
+You can also call a method of a remote object. Cool, right?
+
+#### 1\. In Server
+
+```js
+// obj.js
+module.exports = {
+    async do() {
+        return `I am obj.do()`;
+    }
+};
+```
+
+[Demo](./examples/server1/src/obj.js)
+
+#### 2\. In Client
+
+```js
+const {s1} = require('booms/services');
+const main = async function () {
+    const result = await s1.obj.do();
+    console.log(result); // "I am obj.do()"
+};
+main();
+```
+
+[Demo](./examples/client/index.js)
 
 ## Passing Callback Function
 
 Booms can passes not only data, but also callback functions to the server, that's awesome.
 
-### Callback in server
+#### 1\. In Server
 
 ```js
 // callback.js
-const fn = async function(hi, cb) {
+module.exports = async function(hi, cb) {
 
-	// The cb is the callback comes from the client.
-	// The cb has wrapped as an asynchronous function by Booms automatically.
-	// You should use keyword await when invoke it.
+    // The cb is the callback comes from the client.
+    // The cb has wrapped as an asynchronous function by Booms automatically.
+    // You should use keyword await when invoke it.
 
-	// The cbResult is the result returned after the cb is executed.
-	const cbResult = await cb(2);
+    // The cbResult is the result returned after the cb is executed.
+    const cbResult = await cb(2);
 
-	return hi + ', ' + cbResult;
+    return hi + ', ' + cbResult;
 };
-
-module.exports = fn;
 ```
 
-See [demo file](./examples/server1/src/callback.js).
+[Demo](./examples/server1/src/callback.js)
 
-### Callback in client
+#### 2\. In Client
 
 ```js
 const {s1} = require('booms/services');
@@ -131,8 +163,8 @@ const main = async function () {
     // 2. The server calls it to get a result, and handles with it.
     // 3. The server returns the final result to the client.  
     const result = await s1.callback('hi', function (y) { 
-    	
-    	// The argument y is passed from the server, its value is 2
+        
+        // The argument y is passed from the server, its value is 2
         return x + y;
     });
     
@@ -142,21 +174,17 @@ const main = async function () {
 main();
 ```
 
-See [demo file](./examples/client/index.js).
+[Demo](./examples/client/index.js)
 
 ## Calling Style
 
-In addition to object-style calling of remote functions like **s1.say.hi()**, Booms also supports message-style calling of remote functions like **call('s1:/say/hi')**. See [this example](./examples/client-message-style) to learn more.
-
-## Example
-
-See files in [examples](./examples) to learn more.
+In addition to Object-Style calling like **s1.say.hi()**, Booms also supports Message-Style calling like **call('s1:/say/hi')**. [Demo](./examples/client-message-style)
 
 ## Options
 
-### Server
+#### Server Options
 
-It can be omitted if it is the default value as below. See [demo file](./examples/server2/index.js).
+It can be omitted if it is the default value as below.
 
 ```js
 const booms = require('booms');
@@ -174,9 +202,11 @@ const options = {
 booms.server.init(options);
 ```
 
-### Client
+[Demo](./examples/server2/index.js)
+ 
+#### Client Options
 
-Create file boomsConfig.js under your project root path to configure Booms client if needed. It can be omitted if it is the default value as below. See [demo file](./examples/client/boomsConfig.js).
+Create file boomsConfig.js under your project root path to configure Booms client if needed. It can be omitted if it is the default value as below. 
 
 ```js
 module.exports = {
@@ -192,6 +222,8 @@ module.exports = {
     yesBoomsServicesFile: true 
 };
 ```
+
+[Demo](./examples/client/boomsConfig.js)
 
 ## Test
 
