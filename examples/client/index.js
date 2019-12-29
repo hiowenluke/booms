@@ -14,7 +14,8 @@ const main = async function () {
 	console.log(result); // { msg: 'Hi, I am owen, 100 years old.' }
 
 	const x = 1;
-	result = await s1.callback('hi', function add(y) { // y = 2
+	result = await s1.callback('hi', function (y) {
+		// The argument y is passed from the server, its value is 2
 		return x + y;
 	});
 	console.log(result); // "hi, 3"
