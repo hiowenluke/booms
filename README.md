@@ -122,8 +122,6 @@ node index.js
 { msg: 'Hi, I am owen, 100 years old.' }
 ```
 
-BTW: Booms client fetches the remote services definition data and save it to the file "[./boomsServices.js](./examples/client/boomsServices.js)" so that you can easily view all the microservices APIs information. You can disable it, see [options](#Client-options).
-
 ## Examples
 
 See [examples](./examples) to learn more.
