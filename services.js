@@ -11,24 +11,18 @@ const servers = {
 
 const apis = {
     s1: {
-        about: {},
-        callback: {},
+        about: async function () {},
+        callback: async function (hi, cb) {},
         obj: {
-            do: {}
+            do: async function () {}
         },
         say: {
-            hi: {}
+            hi: async function (name, age) {}
         }
     },
     s2: {
-        about: {}
+        about: async function () {}
     }
 };
 
-module.exports = apis;
-
-(() => {
-	const parentFilename = module.parent.filename;
-	const booms = require('.');
-	module.exports = booms.client.fetchServices(parentFilename);
-})();
+module.exports = apis; (() => {module.exports = require('.').client.fetchServices(module.parent.filename)})();
