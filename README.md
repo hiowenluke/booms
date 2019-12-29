@@ -29,7 +29,7 @@ Create a demo directory first.
 mkdir ./booms-demo && cd ./booms-demo
 ```
 
-#### 1. Server
+### 1. Server
 
 0\) Initialize this server
 
@@ -61,7 +61,7 @@ node index.js
 Server s1 listening on localhost:50051
 ```
 
-#### 2. Client
+### 2. Client
 
 Open a new tab in your terminal first.
 
@@ -102,7 +102,7 @@ See [examples](./examples) to learn more, including two servers and two clients.
 
 You can also call a method of a remote object. Cool, right?
 
-#### 1\. In Server
+### 1\. In Server
 
 ```js
 // obj.js
@@ -115,7 +115,7 @@ module.exports = {
 
 [Demo](./examples/server1/src/obj.js)
 
-#### 2\. In Client
+### 2\. In Client
 
 ```js
 const {s1} = require('booms/services');
@@ -132,7 +132,7 @@ main();
 
 Booms can passes not only data, but also callback functions to the server, that's awesome.
 
-#### 1\. In Server
+### 1\. In Server
 
 ```js
 // callback.js
@@ -151,7 +151,7 @@ module.exports = async function(hi, cb) {
 
 [Demo](./examples/server1/src/callback.js)
 
-#### 2\. In Client
+### 2\. In Client
 
 ```js
 const {s1} = require('booms/services');
@@ -182,7 +182,7 @@ In addition to Object-Style calling like **s1.say.hi()**, Booms also supports Me
 
 ## Options
 
-#### Server Options
+### Server Options
 
 It can be omitted if it is the default value as below.
 
@@ -204,7 +204,7 @@ booms.server.init(options);
 
 [Demo](./examples/server2/index.js)
  
-#### Client Options
+### Client Options
 
 Create file boomsConfig.js under your project root path to configure Booms client if needed. It can be omitted if it is the default value as below. 
 
