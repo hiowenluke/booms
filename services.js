@@ -1,5 +1,12 @@
 
-const parentFilename = module.parent.filename;
+const servers = `{serversInfos}`;
 
-const booms = require('.');
-module.exports = booms.client.fetchServices(parentFilename);
+const apis = `{servicesApis}`;
+
+module.exports = apis;
+
+(() => {
+	const parentFilename = module.parent.filename;
+	const booms = require('.');
+	booms.client.fetchServices(parentFilename);
+})();
