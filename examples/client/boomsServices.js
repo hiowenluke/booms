@@ -14,6 +14,9 @@ const apis = {
     "s1": {
         "about": {},
         "callback": {},
+        "obj": {
+            "do": {}
+        },
         "say": {
             "hi": {}
         }

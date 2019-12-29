@@ -13,6 +13,9 @@ const main = async function () {
 	result = await s1.say.hi('owen', 100);
 	console.log(result); // { msg: 'Hi, I am owen, 100 years old.' }
 
+	result = await s1.obj.do();
+	console.log(result); // "I am obj.do()"
+
 	const x = 1;
 	result = await s1.callback('hi', function (y) {
 		// The argument y is passed from the server, its value is 2

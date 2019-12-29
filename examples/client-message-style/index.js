@@ -13,6 +13,9 @@ const main = async function () {
 	result = await call('s1:/say/hi', 'owen', 100);
 	console.log(result); // { msg: 'Hi, I am owen, 100 years old.' }
 
+	result = await call('s1:/obj/do');
+	console.log(result); // "I am obj.do()"
+
 	const x = 1;
 	result = await call('s1:/callback', 'hi', function add(y) { // y = 2
 		return x + y;
