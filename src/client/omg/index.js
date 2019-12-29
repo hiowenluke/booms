@@ -5,12 +5,18 @@ const cp = require('child_process');
 
 const fx = require('fs-extra');
 const keyPaths = require('keypaths');
+const clear = require('removeredundanttabs');
 
 const config = require('../../__config');
 const omgConfig = require('./config');
 const replaceInFile = require('../../__lib/replaceInFile');
 
 let isInitialized;
+
+const stringify = (obj) => {
+	const str = JSON.stringify(obj, null, 4);
+	return str.replace(/"(\w+)"\s*:/g, '$1:');
+};
 
 const copyFilesToTemp = () => {
 	const destPath = path.resolve(__dirname, omgConfig.tempPath);
@@ -146,10 +152,24 @@ const cropServersInfosFromRaw = (rawInfos) => {
 
 const writeToDataFile = (clientRoot, userConfig, infos, apis) => {
 
+	const infosStr = stringify(infos);
+	const apisStr = stringify(apis);
+
 	// For Booms client running
 	const dataFilePath = path.resolve(__dirname, omgConfig.tempPath + '/data.js');
-	replaceInFile(dataFilePath, '`{serversInfos}`', infos);
-	replaceInFile(dataFilePath, '`{servicesApis}`', apis);
+	replaceInFile(dataFilePath, '`{serversInfos}`', infosStr);
+	replaceInFile(dataFilePath, '`{servicesApis}`', apisStr);
+
+	// For booms/services.js
+	const servicesFilePath = path.resolve(__dirname, '../../../services.js');
+	const content = `
+		const servers = ${infosStr};
+		
+		const apis = ${apisStr};
+		
+		module.exports = apis;	
+	`;
+	replaceInFile(servicesFilePath, /^[\s\S]*module\.exports = apis;/, clear(content));
 
 	// Create boomsServices.js for user to view all apis information.
 	if (userConfig.yesBoomsServicesFile) {
