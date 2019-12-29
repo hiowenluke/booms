@@ -11,7 +11,6 @@ const me = {
 		host: 'localhost',
 	},
 
-	// This is just for note, it is not be used indeed
 	client: {
 		servers: 'all',
 		yesBoomsServicesFile: true,
