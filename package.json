@@ -23,7 +23,7 @@
     "kdo": "^1.8.1",
     "keypaths": "^0.1.3",
     "lodash": "^4.6.1",
-    "removeredundanttabs": "^0.1.0"
+    "removeredundanttabs": "^0.1.1"
   },
   "devDependencies": {
     "chai": "^4.2.0",
