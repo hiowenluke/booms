@@ -128,8 +128,8 @@ const parseServicesApis = (rawInfos) => {
 		const getFunctionBodyStr = (apiPath) => {
 			const paramsStr = fnParamsStr ? fnParamsStr[apiPath] : '';
 
-			// "^^function () {}^^"
-			return `^^function(${paramsStr}){}^^`;
+			// "^^async function () {}^^"
+			return `^^async function(${paramsStr}){}^^`;
 		};
 
 		const attachFunctionBodyStr = (obj, parent = '') => {
@@ -189,14 +189,13 @@ const writeToDataFile = (clientRoot, userConfig, servers, apis) => {
 	const serversStr = stringify(servers);
 	let apisStr = stringify(apis);
 
-	apisStr = apisStr
+	// "^^async function() {}^^" => async function() {}
+	apisStr = apisStr.replace(/("\^\^)|(\^\^")/g, '');
 
-		// "^^function () {}^^" => function () {}
-		.replace(/("\^\^)|(\^\^")/g, '')
-
-		// hi: function (name, age) {} => hi(name, age) {}
-		.replace(/\b(\S*?): function\s*?(?=\()/g, '$1')
-	;
+	// hi: async function (name, age) {} => hi(name, age) {}
+	if (userConfig.isCompactFunctionList) {
+		apisStr = apisStr.replace(/\b(\S*?): async function\s*?(?=\()/g, '$1')
+	}
 
 	// For Booms client running
 	const dataFilePath = path.resolve(__dirname, omgConfig.tempPath + '/data.js');
