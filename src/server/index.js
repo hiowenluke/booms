@@ -9,7 +9,7 @@ const myRedis = require('../__lib/myRedis');
 const rpcArgs = require('../__lib/rpcArgs');
 
 const ports = require('./ports');
-const parseParamsNames = require('./parseParamsNames');
+const retrieveParamsStr = require('./retrieveParamsStr');
 const parseUserConfig = require('./parseUserConfig');
 
 const Emitter = require('events').EventEmitter;
@@ -37,7 +37,7 @@ const cache = {
 const me = {
 	source: {},
 	apis: {},
-	fnParams: {},
+	fnParamsStr: {},
 
 	async init(caller, ...args) {
 		try {
@@ -63,17 +63,16 @@ const me = {
 		const source = kdo(root + '/' + dir);
 
 		const apis = keyPaths.toPaths(source);
-		const fnParams = {};
+		const fnParamsStr = {};
 
 		apis.forEach(api => {
 			const fn = keyPaths.get(source, api);
-			const params = parseParamsNames(fn.toString());
-			fnParams[api] = params;
+			fnParamsStr[api] = retrieveParamsStr(fn);
 		});
 
 		this.source = source;
 		this.apis = apis;
-		this.fnParams = fnParams;
+		this.fnParamsStr = fnParamsStr;
 	},
 
 	async calcServerPort(boomsConfig) {
@@ -82,8 +81,8 @@ const me = {
 
 	async saveServerData(boomsConfig) {
 		const {name, host, port} = boomsConfig;
-		const {apis, fnParams} = this;
-		const data = {host, port, apis, fnParams};
+		const {apis, fnParamsStr} = this;
+		const data = {host, port, apis, fnParamsStr};
 		await myRedis.saveServerData(name, data);
 	},
 
