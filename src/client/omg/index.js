@@ -123,7 +123,8 @@ const parseServicesApis = (rawInfos) => {
 	const parseApiInfos = (apis, obj, fnParams, fnAsync) => {
 
 		const getFunctionBodyStr = (apiPath) => {
-			const paramsStr = fnParams[apiPath].join(', ');
+			const params = fnParams[apiPath];
+			const paramsStr = params ? params.join(', ') : '';
 
 			// "^^function () {}^^"
 			return `^^function(${paramsStr}){}^^`;
