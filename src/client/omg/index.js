@@ -160,8 +160,6 @@ const parseServicesApis = (rawInfos) => {
 		let {apis, fnParams} = info;
 
 		const obj = keyPaths.toObject(apis);
-		// fnParams = JSON.parse(fnParams);
-
 		data[name] = parseApiInfos(apis, obj, fnParams);
 	}
 
