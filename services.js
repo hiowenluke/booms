@@ -9,8 +9,8 @@ const servers = {
     }
 };
 
-// The list of the remote functions with parameters. 
-// You should use the "await" keyword to call them.		
+// The list of remote functions with parameters.
+// You should use the "await" keyword to call them.
 const apis = {
     s1: {
         about: async function(){},
