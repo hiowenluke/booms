@@ -99,9 +99,12 @@ const getUserConfig = (clientRoot) => {
 		userConfig = require(clientRoot + '/' + filename);
 	}
 
-	userConfig.servers = userConfig.servers || config.client.servers;
-	userConfig.yesBoomsServicesFile = userConfig.yesBoomsServicesFile || config.client.yesBoomsServicesFile;
-	userConfig.redis = userConfig.redis || config.redis;
+	const defConfig = {...config.client};
+	defConfig.redis = config.redis;
+
+	Object.keys(defConfig).forEach(key => {
+		userConfig[key] = userConfig[key] || defConfig[key];
+	});
 
 	return userConfig;
 };
