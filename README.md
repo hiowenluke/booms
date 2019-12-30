@@ -23,7 +23,7 @@ npm install booms --save
 
 ## TRY IT!
 
-#### 1. Download this repo first
+### 1. Download this repo first
 
 ```sh
 git clone https://github.com/hiowenluke/booms.git
@@ -31,7 +31,7 @@ cd booms
 npm install
 ```
 
-#### 2. Run examples
+### 2. Run examples
 
 Open 4 new tabs in your terminal, then:
 
@@ -128,7 +128,7 @@ See [examples](./examples) to learn more.
 
 ## Call remote object method
 
-In addition to calling a remote function, you can also call a method of a remote object. Cool, right?
+In addition to calling a remote function, you can also call a method of a remote object.
 
 ### 1\. In server
 
@@ -158,7 +158,7 @@ main();
 
 ## Passing callback function
 
-Booms can passes not only data, but also callback functions to the server, that's awesome.
+Booms can passes not only data, but also callback functions to the server.
 
 ### 1\. In server
 
@@ -206,7 +206,61 @@ main();
 
 ## Calling style
 
-In addition to Object-Style calling like **s1.say.hi()**, Booms also supports Message-Style calling like **call('s1:/say/hi')**. [Demo](./examples/client-message-style)
+In addition to Object-Style calling like **s1.say.hi()**, Booms also supports Message-Style calling like **call('s1:/say/hi')**. 
+
+[Demo](./examples/client-message-style)
+
+## List of remote functions
+
+The client loads the remote functions definition via below:
+
+```js
+const {s1} = require('booms/services');
+```
+
+Click above "[booms/services.js](./services.js)" in your editor (such as VS Code or WebStorm) to view it:
+
+```js
+const apis = {
+    s1: {
+        about: async function(){},
+        callback: async function(hi, cb){},
+        obj: {
+            do: async function(){}
+        },
+        say: {
+            hi: async function(name, age){}
+        }
+    },
+    s2: {
+        about: async function(){}
+    }
+};
+...
+```
+
+It will be compact like below while options.isCompactFunctionList is true. (See [options](#Client-options))
+
+```js
+// The list of remote functions with parameters. 
+// You should use the "await" keyword to call them.
+const apis = {
+    s1: {
+        about(){},
+        callback(hi, cb){},
+        obj: {
+            do(){}
+        },
+        say: {
+            hi(name, age){}
+        }
+    },
+    s2: {
+        about(){}
+    }
+};
+...
+```
 
 ## Options
 
@@ -234,7 +288,7 @@ booms.server.init(options);
  
 ### Client options
 
-Create file boomsConfig.js under your project root path to configure Booms client if needed. It can be omitted if it is the default value as below. 
+Create file boomsConfig.js under your project root path if needed. It can be omitted if it is the default value as below. 
 
 ```js
 module.exports = {
@@ -245,6 +299,10 @@ module.exports = {
 
     // The server names which will be fetched
     servers: 'all', 
+    
+    // If it is true, the remote functions list in file 
+    // "booms/services.js" will be compact mode.
+    isCompactFunctionList: false,
 };
 ```
 
