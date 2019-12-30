@@ -122,6 +122,58 @@ node index.js
 { msg: 'Hi, I am owen, 100 years old.' }
 ```
 
+## List of remote functions
+
+The client loads the remote functions definition like below:
+
+```js
+const {s1} = require('booms/services');
+```
+
+Click above "[booms/services.js](./services.js)" in your editor (such as VS Code or WebStorm) to view it:
+
+```js
+const apis = {
+    s1: {
+        about: async function(){},
+        callback: async function(hi, cb){},
+        obj: {
+            do: async function(){}
+        },
+        say: {
+            hi: async function(name, age){}
+        }
+    },
+    s2: {
+        about: async function(){}
+    }
+};
+...
+```
+
+It will be compact like below while options.isCompactFunctionsList is true. (See [options](#Client-options))
+
+```js
+// The list of remote functions with parameters. 
+// You should use the "await" keyword to call them.
+const apis = {
+    s1: {
+        about(){},
+        callback(hi, cb){},
+        obj: {
+            do(){}
+        },
+        say: {
+            hi(name, age){}
+        }
+    },
+    s2: {
+        about(){}
+    }
+};
+...
+```
+
 ## Examples
 
 See [examples](./examples) to learn more.
@@ -209,58 +261,6 @@ main();
 In addition to Object-Style calling like **s1.say.hi()**, Booms also supports Message-Style calling like **call('s1:/say/hi')**. 
 
 [Demo](./examples/client-message-style)
-
-## List of remote functions
-
-The client loads the remote functions definition via below:
-
-```js
-const {s1} = require('booms/services');
-```
-
-Click above "[booms/services.js](./services.js)" in your editor (such as VS Code or WebStorm) to view it:
-
-```js
-const apis = {
-    s1: {
-        about: async function(){},
-        callback: async function(hi, cb){},
-        obj: {
-            do: async function(){}
-        },
-        say: {
-            hi: async function(name, age){}
-        }
-    },
-    s2: {
-        about: async function(){}
-    }
-};
-...
-```
-
-It will be compact like below while options.isCompactFunctionsList is true. (See [options](#Client-options))
-
-```js
-// The list of remote functions with parameters. 
-// You should use the "await" keyword to call them.
-const apis = {
-    s1: {
-        about(){},
-        callback(hi, cb){},
-        obj: {
-            do(){}
-        },
-        say: {
-            hi(name, age){}
-        }
-    },
-    s2: {
-        about(){}
-    }
-};
-...
-```
 
 ## Options
 
