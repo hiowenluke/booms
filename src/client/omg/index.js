@@ -207,7 +207,7 @@ const writeToDataFile = (clientRoot, userConfig, servers, apis) => {
 	const content = `
 		const servers = ${serversStr};
 
-		// The list of the remote functions with parameters. 
+		// The list of remote functions with parameters. 
 		// You should use the "await" keyword to call them.		
 		const apis = ${apisStr};
 		
