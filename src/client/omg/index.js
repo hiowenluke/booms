@@ -120,7 +120,7 @@ const getRawServersInfos = (userConfig) => {
 };
 
 const parseServicesApis = (rawInfos) => {
-	const parseApiInfos = (apis, obj, fnParams, fnAsync) => {
+	const parseApiInfos = (apis, obj, fnParams) => {
 
 		const getFunctionBodyStr = (apiPath) => {
 			const params = fnParams[apiPath];
@@ -157,13 +157,12 @@ const parseServicesApis = (rawInfos) => {
 	for (let i = 0; i < names.length; i ++) {
 		const name = names[i];
 		const info = rawInfos[name];
-		let {apis, fnParams, fnAsync} = info;
+		let {apis, fnParams} = info;
 
 		const obj = keyPaths.toObject(apis);
 		// fnParams = JSON.parse(fnParams);
-		// fnAsync = JSON.parse(fnAsync);
 
-		data[name] = parseApiInfos(apis, obj, fnParams, fnAsync);
+		data[name] = parseApiInfos(apis, obj, fnParams);
 	}
 
 	return data;

@@ -38,7 +38,6 @@ const me = {
 	source: {},
 	apis: {},
 	fnParams: {},
-	fnAsync: {},
 
 	async init(caller, ...args) {
 		try {
@@ -65,20 +64,16 @@ const me = {
 
 		const apis = keyPaths.toPaths(source);
 		const fnParams = {};
-		const fnAsync = {};
 
 		apis.forEach(api => {
 			const fn = keyPaths.get(source, api);
 			const params = parseParamsNames(fn.toString());
-
 			fnParams[api] = params;
-			fnAsync[api] = fn.constructor.name === "AsyncFunction" ? 1 : 0;
 		});
 
 		this.source = source;
 		this.apis = apis;
 		this.fnParams = fnParams;
-		this.fnAsync = fnAsync;
 	},
 
 	async calcServerPort(boomsConfig) {
@@ -87,8 +82,8 @@ const me = {
 
 	async saveServerData(boomsConfig) {
 		const {name, host, port} = boomsConfig;
-		const {apis, fnParams, fnAsync} = this;
-		const data = {host, port, apis, fnParams, fnAsync};
+		const {apis, fnParams} = this;
+		const data = {host, port, apis, fnParams};
 		await myRedis.saveServerData(name, data);
 	},
 
