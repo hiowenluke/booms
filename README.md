@@ -239,7 +239,7 @@ const apis = {
 ...
 ```
 
-It will be compact like below while options.isCompactFunctionList is true. (See [options](#Client-options))
+It will be compact like below while options.isCompactFunctionsList is true. (See [options](#Client-options))
 
 ```js
 // The list of remote functions with parameters. 
@@ -302,7 +302,7 @@ module.exports = {
     
     // If it is true, the remote functions list in file 
     // "booms/services.js" will be compact mode.
-    isCompactFunctionList: false,
+    isCompactFunctionsList: false,
 };
 ```
 

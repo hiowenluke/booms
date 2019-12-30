@@ -193,7 +193,7 @@ const writeToDataFile = (clientRoot, userConfig, servers, apis) => {
 	apisStr = apisStr.replace(/("\^\^)|(\^\^")/g, '');
 
 	// hi: async function (name, age) {} => hi(name, age) {}
-	if (userConfig.isCompactFunctionList) {
+	if (userConfig.isCompactFunctionsList) {
 		apisStr = apisStr.replace(/\b(\S*?): async function\s*?(?=\()/g, '$1')
 	}
 
