@@ -207,8 +207,8 @@ const writeToDataFile = (clientRoot, userConfig, servers, apis) => {
 	const content = `
 		const servers = ${serversStr};
 
-		// The list of remote functions with parameters. 
-		// You should use the "await" keyword to call them.		
+		// The list of remote functions with parameters.
+		// You should use the "await" keyword to call them.
 		const apis = ${apisStr};
 		
 		module.exports = apis;
