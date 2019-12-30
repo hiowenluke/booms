@@ -14,6 +14,7 @@ const me = {
 	client: {
 		servers: 'all',
 		yesBoomsServicesFile: false,
+		isCompactFunctionList: false,
 	},
 };
 
