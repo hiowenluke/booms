@@ -13,17 +13,17 @@ const servers = {
 // You should use the "await" keyword to call them.		
 const apis = {
     s1: {
-        about(){},
-        callback(hi, cb){},
+        about: async function(){},
+        callback: async function(hi, cb){},
         obj: {
-            do(){}
+            do: async function(){}
         },
         say: {
-            hi(name, age){}
+            hi: async function(name, age){}
         }
     },
     s2: {
-        about(){}
+        about: async function(){}
     }
 };
 
