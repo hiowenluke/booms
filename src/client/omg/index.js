@@ -125,11 +125,8 @@ const parseServicesApis = (rawInfos) => {
 		const getFunctionBodyStr = (apiPath) => {
 			const paramsStr = fnParams[apiPath].join(', ');
 
-			// The keyword "async" should always be used to avoid misunderstanding
-			// that the keyword "await" is not necessary for some function in client.
-
-			// "^^async function () {}^^"
-			return `^^async function (${paramsStr}) {}^^`;
+			// "^^function () {}^^"
+			return `^^function(${paramsStr}){}^^`;
 		};
 
 		const attachFunctionBodyStr = (obj, parent = '') => {
@@ -197,8 +194,8 @@ const writeToDataFile = (clientRoot, userConfig, servers, apis) => {
 		// "^^function () {}^^" => function () {}
 		.replace(/("\^\^)|(\^\^")/g, '')
 
-		// hi: async function (name, age) {} => async hi (name, age) {}
-		// .replace(/\b(\S*?): async function/g, 'async $1')
+		// hi: function (name, age) {} => hi(name, age) {}
+		.replace(/\b(\S*?): function\s*?(?=\()/g, '$1')
 	;
 
 	// For Booms client running
@@ -210,7 +207,9 @@ const writeToDataFile = (clientRoot, userConfig, servers, apis) => {
 	const servicesFilePath = path.resolve(__dirname, '../../../services.js');
 	const content = `
 		const servers = ${serversStr};
-		
+
+		// The list of the remote functions with parameters. 
+		// You should use the "await" keyword to call them.		
 		const apis = ${apisStr};
 		
 		module.exports = apis;
