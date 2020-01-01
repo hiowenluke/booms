@@ -4,7 +4,6 @@ const rpcArgs = require('../../__lib/rpcArgs');
 
 const cache = {
 	results: {},
-	messages: {},
 
 	getParsedResult(message) {
 		if (!this.results[message]) {
@@ -12,14 +11,6 @@ const cache = {
 		}
 		return this.results[message];
 	},
-
-	getParsedMessage(message) {
-		if (!this.messages[message]) {
-			this.messages[message] = myJson.parseMessage(message);
-		}
-		return this.messages[message];
-	}
-
 };
 
 const fetchCallbacks = (args) => {
@@ -68,7 +59,12 @@ const fn = (client, serverName, api, args) => {
 			// The server tells the client to perform the callback function
 			// `booms_callback_do_2#["abc",123]` => args[2]("abc", 123)
 			if (message.substr(0, 17) === 'booms_callback_do') {
-				const [funcName, args] = cache.getParsedMessage(message);
+
+				// Do not cache the parsed result.
+				// Because the args maybe has an array or an object,
+				// it may be modified after the handler "fn" executed.
+				const [funcName, args] = myJson.parseMessage(message);
+
 				const index = funcName.match(/\d+/)[0];
 				const fn = callbacks[index];
 
