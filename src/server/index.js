@@ -96,7 +96,7 @@ const me = {
 
 				// Do not cache the parsed result.
 				// Because the args maybe has an array or an object,
-				// it may be modified after the handler function executed.
+				// it may be modified after the handler "fn" executed.
 				const [funcName, args] = myJson.parseMessage(message);
 				const fn = cache.getFnByName(this.source, funcName);
 				if (!fn) {
