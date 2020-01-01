@@ -17,7 +17,6 @@ const myEmitter = new Emitter;
 
 const cache = {
 	fns: {},
-	pms: {},
 
 	getFnByName(source, funcName) {
 		if (!this.fns[funcName]) {
@@ -25,13 +24,6 @@ const cache = {
 		}
 		return this.fns[funcName];
 	},
-
-	getParsedMessage(message) {
-		if (!this.pms[message]) {
-			this.pms[message] = myJson.parseMessage(message);
-		}
-		return this.pms[message];
-	}
 };
 
 const me = {
@@ -101,7 +93,11 @@ const me = {
 				}
 
 				// Handle the normal rpc
-				const [funcName, args] = cache.getParsedMessage(message);
+
+				// Do not cache the parsed result.
+				// Because the args maybe has an array or an object,
+				// it may be modified after the handler function executed.
+				const [funcName, args] = myJson.parseMessage(message);
 				const fn = cache.getFnByName(this.source, funcName);
 				if (!fn) {
 					throw new Error(`API ${funcName} can not be found on server ${name}`);
