@@ -3,21 +3,21 @@ const myJson = require('../../__lib/myJson');
 const rpcArgs = require('../../__lib/rpcArgs');
 
 const cache = {
-	ps: {},
-	pms: {},
+	results: {},
+	messages: {},
 
-	getParsed(message) {
-		if (!this.ps[message]) {
-			this.ps[message] = myJson.parse(message);
+	getParsedResult(message) {
+		if (!this.results[message]) {
+			this.results[message] = myJson.parse(message);
 		}
-		return this.ps[message];
+		return this.results[message];
 	},
 
 	getParsedMessage(message) {
-		if (!this.pms[message]) {
-			this.pms[message] = myJson.parseMessage(message);
+		if (!this.messages[message]) {
+			this.messages[message] = myJson.parseMessage(message);
 		}
-		return this.pms[message];
+		return this.messages[message];
 	}
 
 };
@@ -42,7 +42,7 @@ const getFinalResult = (client, cbResultStr) => {
 	return new Promise(resolve => {
 		client.once('data', data => {
 			const message = data.toString();
-			const result = cache.getParsed(message);
+			const result = cache.getParsedResult(message);
 			resolve(result);
 		});
 
@@ -82,7 +82,7 @@ const fn = (client, serverName, api, args) => {
 				resolve(result);
 			}
 			else {
-				const result = cache.getParsed(message);
+				const result = cache.getParsedResult(message);
 				resolve(result);
 			}
 		});
