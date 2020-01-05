@@ -193,8 +193,16 @@ const writeToDataFile = (clientRoot, userConfig, servers, apis) => {
 	apisStr = apisStr.replace(/("\^\^)|(\^\^")/g, '');
 
 	// hi: async function (name, age) {} => hi(name, age) {}
-	if (userConfig.isCompactFunctionsList) {
-		apisStr = apisStr.replace(/\b(\S*?): async function\s*?(?=\()/g, '$1')
+	if (userConfig.functionList.isCompact) {
+		apisStr = apisStr.replace(/\b(\S*?): (async )*function\s*?(?=\()/g, '$2$1')
+	}
+	else {
+		if (userConfig.functionList.useArrowFunction) {
+			apisStr = apisStr
+				.replace(/function/g, '')
+				.replace(/\){}/g, ') => {}')
+			;
+		}
 	}
 
 	// For Booms client running
