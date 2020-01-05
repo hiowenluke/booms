@@ -300,9 +300,20 @@ module.exports = {
     // The server names which will be fetched
     servers: 'all', 
     
-    // If it is true, the remote functions list in file 
-    // "booms/services.js" will be compact mode.
-    isCompactFunctionsList: false,
+    // For file "booms/services.js"
+    functionList: {
+
+        // If it is true, the function list will be compact like below right.
+        // You should to always use "await" keyword to call these functions.
+        //         s1: {                                        s1: {
+        //            hi: async function(name, age) {}    =>         hi(name, age) {}
+        //         }                                            }
+        isCompact: false,
+
+        // The useArrowFunction is true only takes effect when isCompact is false
+        useArrowFunction: true,
+    },
+
 };
 ```
 
