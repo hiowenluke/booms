@@ -3,7 +3,9 @@
 
 A high-performance and easy-to-use RPC microservices framework for [Node.js](https://nodejs.org), load a directory as a RPC server, call a remote function or method of a remote object like **s1.say.hi()**, as same as do it at local. Booms can passes not only data, but also callback functions to the server, that's awesome.
 
-Booms is based on Node.js native TCP socket. It does not require you to write [proto](https://developers.google.com/protocol-buffers/docs/proto3) files, which is more easier to use.
+Booms is based on Node.js native TCP socket. It does not require you to write [proto](https://developers.google.com/protocol-buffers/docs/proto3) files, which is more easier to use. 
+
+Booms is used for modules which are on different machines. If you want to load modules which is on same machine, you should use [Zooms](https://github.com/hiowenluke/zooms).
 
 ## Server Environment
 
